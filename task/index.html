@@ -1,0 +1,95 @@
+<!doctype html>
+
+<html lang="en">
+
+	<head>
+
+		<meta charset="utf-8">
+
+		<title>Task</title>
+
+        <link rel="stylesheet" href="libs\css\style.css">
+	</head>
+
+	<body>
+
+		<table>
+            <caption>Tasks</caption>
+            <thead>
+              <tr>
+                <th>API name</th>
+                <th>API description</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ocean</td>
+                <td>
+                  <p>The name of the ocean or sea</p>
+                  <form method="post" action="php/threeApiApps.php">
+                    <label for="lat">Latitude:</label>
+                    <input type="text" id="lat" name="lat"><br><br>
+                    <label for="lng">Longitude:</label>
+                    <input type="text" id="lng" name="lng"><br><br>
+                  </form>
+              </td>
+                <td>
+                  <form action="php/threeApiApps.php" method="post">
+                    <input type="submit" id="btnRun1">
+                  </form>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td height=200 colspan="3">
+                  <div id="divResults">
+			
+                    <table>
+              
+                      <tr>
+                        <td align="right">
+                          Distance: 
+                        </td>
+                        <td id="distance">
+                          
+                        </td>
+              
+                      </tr>
+              
+                      <tr>
+                        <td align="right">
+                          Geoname ID: 
+                        </td>
+                        <td id="geonameId">
+                          
+                        </td>
+              
+                      </tr>
+              
+                      <tr>
+                        <td align="right">
+                          Name: 
+                        </td>
+                        <td id="name">
+                          
+                        </td>
+              
+                      </tr>
+              
+                      
+                    </table>
+              
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+
+		<script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
+		<script type="application/javascript" src="libs/js/script.js"></script>
+
+	</body>
+
+</html>
