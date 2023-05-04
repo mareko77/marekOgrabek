@@ -12,80 +12,93 @@
 	</head>
 
 	<body>
-
-		<table>
-            <caption>Tasks</caption>
-            <thead>
-              <tr>
-                <th>API name</th>
-                <th>API description</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Ocean</td>
-                <td>
-                  <p>The name of the ocean or sea</p>
-                  <form method="post" action="php/threeApiApps.php">
-                    <label for="lat">Latitude:</label>
-                    <input type="text" id="lat" name="lat"><br><br>
-                    <label for="lng">Longitude:</label>
-                    <input type="text" id="lng" name="lng"><br><br>
-                  </form>
+    <div>
+      <table>
+        <caption>Tasks</caption>
+        <thead>
+          <tr>
+            <th>API name</th>
+            <th>API description</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <div id="ocean">
+            <tr>
+              <td>Ocean</td>
+              <td>
+                <p>The name of the ocean or sea</p>  
+                  <label for="selLongitude">Longitude:</label>
+                  <input type="text" id="selLongitude"><br><br>
+                  <label for="selLatitude">Latitude:</label>
+                  <input type="text" id="selLatitude"><br><br>
               </td>
-                <td>
-                  <form action="php/threeApiApps.php" method="post">
-                    <input type="submit" id="btnRun1">
-                  </form>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td height=200 colspan="3">
-                  <div id="divResults">
-			
-                    <table>
-              
-                      <tr>
-                        <td align="right">
-                          Distance: 
-                        </td>
-                        <td id="distance">
-                          
-                        </td>
-              
-                      </tr>
-              
-                      <tr>
-                        <td align="right">
-                          Geoname ID: 
-                        </td>
-                        <td id="geonameId">
-                          
-                        </td>
-              
-                      </tr>
-              
-                      <tr>
-                        <td align="right">
-                          Name: 
-                        </td>
-                        <td id="name">
-                          
-                        </td>
-              
-                      </tr>
-              
-                      
-                    </table>
-              
-                  </div>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+              <td>
+                <button id="btnRun1" class="submit">Submit</button>
+              </td>
+            </tr>
+          </div>
+         
+          <div id="weather">
+            <tr>
+              <td>Weather Station</td>
+              <td>
+                <p>Weather Station with most recent weather observation</p>  
+                  <label for="selLongitude1">Longitude:</label>
+                  <input type="text" id="selLongitude1"><br><br>
+                  <label for="selLatitude1">Latitude:</label>
+                  <input type="text" id="selLatitude1"><br><br>
+              </td>
+              <td>
+                <button id="btnRun2" class="submit">Submit</button>
+              </td>
+            </tr>
+          </div>
+
+          <div id="country">
+            <tr>
+              <td>Currency Code</td>
+              <td>
+                <p>Check country's currency code</p>
+                <label for="currency">Select country</label>
+                <select id="currency"> 
+                  <option value="US">United States</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="DE">Germany</option>
+                  <option value="PL">Poland</option>
+                  <option value="DK">Denmark</option>
+                  <option value="ES">Spain</option>
+                  <option value="IT">Italy</option>
+                  <option value="GR">Greece</option>
+                </select> <br><br>
+                
+                <label for="language">Select language</label>
+                <select id="language">
+                  <option value="en">English</option>
+                  <option value="fr">Francais</option>
+                  <option value="de">Deutsche</option>
+                </select>
+
+              </td>
+              <td>
+                <button id="btnRun3" class="submit">Submit</button>
+              </td>
+            </tr>
+          </div>
+        </tbody>
+      </table>
+    </div>
+		<br>
+    <h3>Results</h3>
+    <p id="result1"></p>
+
+    <p id="stationNameResult"></p>
+    <p id="countryCodeResult"></p>
+    <p id="temperatureResult"></p>
+    <p id="humidityResult"></p>
+    <p id="cloudsResult"></p>
+    
+    <p id="currencyResult"></p>     
 
 		<script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
 		<script type="application/javascript" src="libs/js/script.js"></script>
