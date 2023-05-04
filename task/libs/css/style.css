@@ -68,9 +68,6 @@ table {
       text-align: right;
     }
 
-    table tfoot {
-      text-align: center;
-    }
     
     table td::before {
       content: attr(data-label);
@@ -101,5 +98,5 @@ table {
     border-radius: 15%;
   }
   
-
+  
 
