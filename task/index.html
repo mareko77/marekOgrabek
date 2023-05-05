@@ -55,50 +55,136 @@
             </tr>
           </div>
 
-          <div id="country">
+          <div id="time">
             <tr>
-              <td>Currency Code</td>
+              <td>Timezone</td>
               <td>
-                <p>Check country's currency code</p>
-                <label for="currency">Select country</label>
-                <select id="currency"> 
-                  <option value="US">United States</option>
-                  <option value="UK">United Kingdom</option>
-                  <option value="DE">Germany</option>
-                  <option value="PL">Poland</option>
-                  <option value="DK">Denmark</option>
-                  <option value="ES">Spain</option>
-                  <option value="IT">Italy</option>
-                  <option value="GR">Greece</option>
-                </select> <br><br>
-                
-                <label for="language">Select language</label>
-                <select id="language">
-                  <option value="en">English</option>
-                  <option value="fr">Francais</option>
-                  <option value="de">Deutsche</option>
-                </select>
-
+                <p>Returns timezone at latitude/longitude</p>  
+                <label for="timezoneLongitude">Longitude: </label>
+                <input type="text" id="timezoneLongitude"><br><br>
+                <label for="timezoneLatitude">Latitude: </label>
+                <input type="text" id="timezoneLatitude">
               </td>
               <td>
                 <button id="btnRun3" class="submit">Submit</button>
               </td>
             </tr>
           </div>
+          
         </tbody>
       </table>
     </div>
 		<br>
-    <h3>Results</h3>
-    <p id="result1"></p>
+    <h3 id="result">Results</h3>
+     
+    <div id="divResults">
+			
+			<table>
 
-    <p id="stationNameResult"></p>
-    <p id="countryCodeResult"></p>
-    <p id="temperatureResult"></p>
-    <p id="humidityResult"></p>
-    <p id="cloudsResult"></p>
-    
-    <p id="currencyResult"></p>     
+				<tr>
+					<td align="right">
+						Sea or ocean: 
+					</td>
+					<td id="result1">
+						
+					</td>
+
+				</tr>
+
+				<tr>
+					<td align="right">
+						Station name: 
+					</td>
+					<td id="stationNameResult">
+						
+					</td>
+
+				</tr>
+
+				<tr>
+					<td align="right">
+						Country code: 
+					</td>
+					<td id="countryCodeResult">
+						
+					</td>
+
+				</tr>
+
+				<tr>
+					<td align="right">
+						Temperature: 
+					</td>
+					<td id="temperatureResult">
+						
+					</td>
+
+				</tr>
+
+				<tr>
+					<td align="right">
+						Humidity: 
+					</td>
+					<td id="humidityResult">
+						
+					</td>
+
+				</tr>
+
+        <tr>
+					<td align="right">
+						Clouds cover: 
+					</td>
+					<td id="cloudsResult">
+						
+					</td>
+
+				</tr>
+        
+        <tr>
+					<td align="right">
+						Timezone: 
+					</td>
+					<td id="TimezoneResult">
+						
+					</td>
+
+				</tr>
+
+        <tr>
+					<td align="right">
+						Country: 
+					</td>
+					<td id="TimezoneCountryResult">
+						
+					</td>
+
+				</tr>
+
+        <tr>
+					<td align="right">
+						Sunrise: 
+					</td>
+					<td id="TimezoneSunriseResult">
+						
+					</td>
+
+				</tr>
+
+        <tr>
+					<td align="right">
+						Sunset: 
+					</td>
+					<td id="TimezoneSunsetResult">
+						
+					</td>
+
+				</tr>
+
+
+			</table>
+
+		</div>
 
 		<script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
 		<script type="application/javascript" src="libs/js/script.js"></script>
