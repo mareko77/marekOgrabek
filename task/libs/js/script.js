@@ -50,12 +50,13 @@ $('#btnRun2').click(function() {
 
 $('#btnRun3').click(function() {
     $.ajax({
-        url: "libs/php/currency.php",
+        url: "libs/php/time.php",
         type: 'POST',
         dataType: 'json',
         data: {
-            currency: $('#currency').val(),
-            lang: $('#language').val()
+            lat: $('#timezoneLatitude').val(),
+            lng: $('#timezoneLongitude').val()
+            
         },
         success: function(result) {
             console.log(JSON.stringify(result));
@@ -63,11 +64,22 @@ $('#btnRun3').click(function() {
 
 
             if (result.status.name == "ok") {
-                $('#currencyResult').html(result['data'][0]['currencyCode']);
+                if (result['data']['timezoneId'] == null) {
+                    $('#TimezoneResult').html("Wrong location!");
+                    $('#TimezoneCountryResult').html('-');
+                    $('#TimezoneSunriseResult').html('-');
+                    $('#TimezoneSunsetResult').html('-');
+                    
+                } else {
+                $('#TimezoneResult').html(result['data']['timezoneId']);
+                $('#TimezoneCountryResult').html(result['data']['countryName']);
+                $('#TimezoneSunriseResult').html(result['data']['sunrise']);
+                $('#TimezoneSunsetResult').html(result['data']['sunset']);
+                }
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            $('#currencyResult').html("There is an error! Try again!");
+            $('#TimezoneResult').html("Error!");
         }
     }); 
 });
