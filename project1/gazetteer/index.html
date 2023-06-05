@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gazetteer</title>
+        <meta name="description" content="Gazetteer">
+        <meta name="author" content="MarekOgrabek">
+
+        <link rel="icon" href="images/favicon.png">
+
+        <link rel="stylesheet" href="vendors/css/leaflet.css"/>
+        <link rel="stylesheet" href="vendors/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="vendors/css/all.min.css"/>
+        <link rel="stylesheet" href="vendors/css/easy-button.css"/>
+        <link rel="stylesheet" href="vendors/css/MarkerCluster.css"/>
+        <link rel="stylesheet" href="vendors/css/MarkerCluster.Default.css"/>
+        
+        <link rel="stylesheet" type="text/css" href="libs/css/style.css" >    
+    </head>
+
+    <body>
+         <nav class="navbar fixed-top"> 
+            <div class=" nav-wrapper container-fluid justify-content-center"> 
+                <div class="nav-logo">
+                    <div class="logo-image">
+                        <h4 id="logo">Gazetteer</h4>
+                    </div>
+                    
+                    <div class="search-select-box">
+                        <select class="form-select form-select-sm" id="select-country">
+                           <option selected disabled hidden>Search for a country...</option>
+                        </select>
+                    </div>       
+                </div>
+            </div>
+        </nav>
+
+        <!--begin modal window-->
+        <div class="modal fade" id="countryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modalTitle">&bull; Country Info &bull;</h6>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+                    </div>
+                        <div class="modal-body">
+                            
+                            <div class="container-fluid country-info" id="country-info">
+
+                                    <table>
+                        
+                                        <tr>
+                                            <td align="right">
+                                                Continent: 
+                                            </td>
+                                            <td id="txtContinent">
+                                                
+                                            </td>
+                        
+                                        </tr>
+                        
+                                        <tr>
+                                            <td align="right">
+                                                Capital: 
+                                            </td>
+                                            <td id="txtCapital">
+                                                
+                                            </td>
+                        
+                                        </tr>
+                        
+                                        <tr>
+                                            <td align="right">
+                                                Languages: 
+                                            </td>
+                                            <td id="txtLanguages">
+                                                
+                                            </td>
+                        
+                                        </tr>
+                        
+                                        <tr>
+                                            <td align="right">
+                                                Population: 
+                                            </td>
+                                            <td id="txtPopulation">
+                                                
+                                            </td>
+                        
+                                        </tr>
+                        
+                                        <tr>
+                                            <td align="right">
+                                                Area (km<sup>2</sup>): 
+                                            </td>
+                                            <td id="txtArea">
+                                                
+                                            </td>
+                        
+                                        </tr>
+                        
+                        
+                                    </table>
+                        
+                                </div>
+            
+                            </div>
+                                   
+                        </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="container-fluid map" id="map"></div>
+        
+        <div class="loader-wrapper">
+            <div class="preloader"></div>
+        </div>
+        <div id="loader" class="lds-dual-ring hidden overlay"></div>
+            
+
+        <script src="vendors/js/jquery-3.7.0.js"></script>
+        <script src="vendors/js/leaflet.js"></script>
+        <script src="vendors/js/bootstrap.min.js"></script>
+        <script src="vendors/js/all.min.js"></script>
+        <script src="vendors/js/moment.min.js"></script>
+        <script src="vendors/js/easy-button.js"></script>
+        <script src="vendors/js/leaflet.markercluster.js"></script>
+
+        <script type="application/javascript" src="libs/js/main.js"></script>
+    </body>
+
+</html>
