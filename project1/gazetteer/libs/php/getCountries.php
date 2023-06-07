@@ -7,7 +7,7 @@
     foreach ($countryData['features'] as $feature) {
 
         $country = null;
-        $country['iso3'] = $feature['properties']['iso_a3'];
+        $country['iso2'] = $feature['properties']['iso_a2'];
         $country['name'] = $feature['properties']['name'];
 
         array_push($countries, $country); 

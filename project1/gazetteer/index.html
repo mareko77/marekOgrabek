@@ -36,7 +36,7 @@
             </div>
         </nav>
 
-        <!--begin modal window-->
+        <!--bcountry info modal-->
         <div class="modal fade" id="countryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                 <div class="modal-content">
@@ -49,12 +49,23 @@
                             <div class="container-fluid country-info" id="country-info">
 
                                     <table>
+
+                                        <tr>
+                                            <td align="right">
+                                                Country name: 
+                                            </td>
+                                            <td id="countryName">
+                                                
+                                            </td>
+                        
+                                        </tr>
+
                         
                                         <tr>
                                             <td align="right">
                                                 Continent: 
                                             </td>
-                                            <td id="txtContinent">
+                                            <td id="continentName">
                                                 
                                             </td>
                         
@@ -75,6 +86,16 @@
                                                 Languages: 
                                             </td>
                                             <td id="txtLanguages">
+                                                
+                                            </td>
+                        
+                                        </tr>
+
+                                        <tr>
+                                            <td align="right">
+                                                Currency: 
+                                            </td>
+                                            <td id="currencyCode">
                                                 
                                             </td>
                         
@@ -106,14 +127,71 @@
                                 </div>
             
                             </div>
-                                   
                         </div>
                     <div class="modal-footer">
                     </div>
                 </div>
             </div>
-        </div>
+        </div>           
+                        
 
+        <!--Weather Modal -->
+  <div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title txtCapitalWeatherName" id="weatherModalLabel" ></h1>
+        </div>
+        <div class="modal-body short-modal">
+          <h1 id="txtCapitalWeatherName"></h1>
+          <table id="weatherTable" class="table">
+            <tbody>
+              <tr>
+                <td id="CapitalWeatherIcon"></td>
+                <th scope="row">Current Temp:</th>
+                <td id="txtCapitalWeatherCurrent"></td>
+              </tr>
+              <tr>
+                <td id="CapitalWindIcon"></td>
+                <th class="text-sm-left" scope="row">Windspeed:</th>
+                <td id="txtCapitalWeatherWindspeed"></td>
+              </tr>
+              <tr>
+                <td id="CapitalHumidityIcon"></td>
+                <th scope="row">Humidity:</th>
+                <td id="txtCapitalWeatherHumidity"></td>
+              </tr>
+              <tr>
+                <td class="CapitalHiTempIcon"></td>
+                <th scope="row">High:</th>
+                <td id="txtCapitalWeatherHi"></td>
+              </tr>
+              <tr>
+                <td class="CapitalLoTempIcon"></td>
+                <th scope="row">Low:</th>
+                <td id="txtCapitalWeatherLo"></td>
+              </tr>
+              <tr>
+                <td class="CapitalHiTempIcon"></td>
+                <th scope="row">Tomorrow's High:</th>
+                <td id="txtCapitalTomorrowsWeatherHi"></td>
+              </tr>
+              <tr>
+                <td class="CapitalLoTempIcon"></td>
+                <th scope="row">Tomorrow's Low:</th>
+                <td id="txtCapitalTomorrowsWeatherLo"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary closeBtn" data-bs-dismiss="modal">Close</button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  
         
         <div class="container-fluid map" id="map"></div>
         

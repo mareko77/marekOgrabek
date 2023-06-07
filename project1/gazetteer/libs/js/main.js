@@ -45,6 +45,12 @@ const countryInfoButton = new L.easyButton('<i class="fas fa-info"></i>', functi
 }, "Country Info");
 countryInfoButton.addTo(map);
 
+// button to show Modal with Weather Info
+const weatherInfoButton = new L.easyButton('<i class="fas fa-cloud-sun"></i>', function() {
+    $("#weatherModal").modal("show");
+}, "Weather Info");
+weatherInfoButton.addTo(map);
+
 // Get User Location
 function userLocation() {
     if (!navigator.geolocation) {
@@ -56,7 +62,7 @@ function userLocation() {
         const longitude = position.coords.longitude;
 
         $.ajax({
-            url: "libs/php/getUserIsoA3.php",
+            url: "libs/php/getUserIsoA2.php",
             type: 'POST',
             dataType: 'json',
             data: {
@@ -64,7 +70,7 @@ function userLocation() {
                 lng: longitude
             },
             success: function(result) {
-                $("#select-country").val(result.isoA3).change();
+                $("#select-country").val(result.isoA2).change();
             },
             error: function(err) {
                 alert("Error: " + err);
@@ -77,6 +83,8 @@ function userLocation() {
     }
     navigator.geolocation.getCurrentPosition(success, error);
 }
+
+
 
 // Populate Select/Search Bar
 function getCountries() {
@@ -92,9 +100,9 @@ function getCountries() {
             const countries = result.data;
             countries.forEach(country => {
             
-                if (country.iso3 != "-99") {
+                if (country.iso2 != "-99") {
                     selectSearchBar.append($(
-                        `<option value="${country.iso3}">
+                        `<option value="${country.iso2}">
                             ${country.name}
                         </option>`
                     ));
@@ -117,7 +125,7 @@ function addBorders(country) {
         type: 'POST',
         dataType: 'json',
         data: {
-            isoA3: country
+            isoA2: country
         },
         success: function(result) {
             const countryBorders = result.data;
@@ -155,7 +163,7 @@ function addBorders(country) {
 }
 
 // Country Info
-$("#select-country").change(function(country){
+$("#select-country").change(function(){
     $.ajax({
         url: "libs/php/getCountryInfo1.php",
         type: 'POST',
@@ -167,24 +175,83 @@ $("#select-country").change(function(country){
             $("#loader").removeClass("hidden");
         },
         success: function(result) {
+            console.log(result);
             if (result.status.name == "ok") {
 
-                    $('#txtContinent').html(result['data'][0]['continent']);
+                    $('#countryName').html(result['data'][0]['countryName']);
+                    $('#continentName').html(result['data'][0]['continentName']);
 					$('#txtCapital').html(result['data'][0]['capital']);
 					$('#txtLanguages').html(result['data'][0]['languages']);
+                    $('#currencyCode').html(result['data'][0]['currencyCode']);
 					$('#txtPopulation').html(result['data'][0]['population']);
 					$('#txtArea').html(result['data'][0]['areaInSqKm']);
             }
                 
-               
+            $("#countryModal").modal("show");
         },
         complete: function () {
             $("#loader").addClass("hidden")
         },
-        error: function(textStatus, errorThrown) {
-            alert("Error: " + errorThrown);
+        error: function(jqXHR,textStatus, errorThrown) {
+            console.error(jqXHR);
         }
     });    
+});
+
+//Weather
+let capitalLat;
+let capitalLng;
+
+$("#select-country").change(function(){
+    $.ajax({
+        url: "libs/php/getWeather.php",
+        type: 'GET',
+        dataType: "json",
+        data: {
+           /* capitalLat: capitalLat,
+            capitalLng: capitalLng*/
+
+            capitalLat: $('#select-country').val(),
+            capitalLng: $('#select-country').val()
+        },
+        beforeSend: function () {
+            $("#loader").removeClass("hidden");
+        },
+        success: function(result) {
+            console.log(result);
+            /*$("#weatherTable tbody tr td").html("&nbsp;"); 
+            let weatherIcon = result.data.weather.current.weather[0].icon;
+                
+            $('.txtCapitalWeatherName').html(capitalCityName);
+            $('#txtCapitalWeatherCurrent').html( Math.round(result.data.weather.current.temp) +'&#8451<br>');
+            $('#txtCapitalWeatherDescription').html( result.data.weather.current.weather[0].description);
+            $('#txtCapitalWeatherWindspeed').html(result.data.weather.current.wind_speed + ' km/h');
+            $('#txtCapitalWeatherHumidity').html( Math.round(result.data.weather.current.humidity) +'&#37');
+            $('#txtCapitalWeatherLo').html( Math.round(result.data.weather.daily[0].temp.min) +'&#8451<br>');
+            $('#txtCapitalWeatherHi').html( Math.round(result.data.weather.daily[0].temp.max) +'&#8451<br>');
+            $('#txtCapitalTomorrowsWeatherLo').html( Math.round(result.data.weather.daily[1].temp.min) +'&#8451<br>');
+            $('#txtCapitalTomorrowsWeatherHi').html( Math.round(result.data.weather.daily[1].temp.max) +'&#8451<br>');
+            $('#CapitalWeatherIcon').html( `<img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" width="24px">`);
+            $('#CapitalHumidityIcon').html('<img src="assets/img/icons/humidity.svg" width="24px">');
+            $('#CapitalWindIcon').html('<img src="assets/img/icons/007-windy.svg" width="24px">');
+            $('.CapitalHiTempIcon').html('<img src="assets/img/icons/temperatureHi.svg" width="24px">');
+            $('.CapitalLoTempIcon').html('<img src="assets/img/icons/temperatureLo.svg" width="24px">');*/
+
+           
+            $('#txtCapitalWeatherCurrent').html( result['data']['weather']['current']['temp']);
+           
+
+            $('#weatherModal').modal('show');
+
+        },
+        complete: function () {
+            $("#loader").addClass("hidden")
+        },
+        error: function(jqXHR,textStatus, errorThrown) {
+            console.error(jqXHR);
+        }
+    });
+    
 });
 
 
@@ -192,11 +259,3 @@ $("#select-country").change(function(country){
 
 
 
-
-
-// When a country is selected
-$("#select-country").on("change", countrySelection);
-
-function countrySelection(event) {
-    countryInformation(event.target.value);
-}

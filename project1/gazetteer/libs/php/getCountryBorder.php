@@ -6,7 +6,7 @@
     $countryBorder = null;
 
     foreach ($countries as $country) {
-        if($country['properties']['iso_a3'] == $_REQUEST['isoA3']) {
+        if($country['properties']['iso_a2'] == $_REQUEST['isoA2']) {
             $countryBorder = $country['geometry'];
         }
         
