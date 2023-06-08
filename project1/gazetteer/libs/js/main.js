@@ -169,7 +169,7 @@ $("#select-country").change(function(){
         type: 'POST',
         dataType: 'json',
         data: {
-            country: $('#select-country').val()
+            country: $('#select-country option:selected').val()
         },
         beforeSend: function () {
             $("#loader").removeClass("hidden");
@@ -204,53 +204,80 @@ let capitalLng;
 
 $("#select-country").change(function(){
     $.ajax({
-        url: "libs/php/getWeather.php",
-        type: 'GET',
-        dataType: "json",
+        url: "libs/php/getOpencage.php",
+        type: 'POST',
+        dataType: 'json',
         data: {
-           /* capitalLat: capitalLat,
-            capitalLng: capitalLng*/
-
-            capitalLat: $('#select-country').val(),
-            capitalLng: $('#select-country').val()
-        },
-        beforeSend: function () {
-            $("#loader").removeClass("hidden");
-        },
+            country: $('#select-country option:selected').text()
+        }, 
+/*$("#select-country").change(function(){
+        $.ajax({
+            url: "libs/php/getUserIsoA2.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                lat: latitude,
+                lng: longitude
+            },*/
         success: function(result) {
             console.log(result);
-            /*$("#weatherTable tbody tr td").html("&nbsp;"); 
-            let weatherIcon = result.data.weather.current.weather[0].icon;
+            if (result.status.name == "ok") {
+                $.ajax({
+                    url: "libs/php/getWeather.php",
+                    type: 'GET',
+                    dataType: "json",
+                    data: {
+                        capitalLat: result.latitude,
+                        capitalLng: result.longitude
+            
+                        
+                    },
+                    beforeSend: function () {
+                        $("#loader").removeClass("hidden");
+                    },
+                    success: function(result1) {
+                        console.log(result1);
+                        $("#weatherTable tbody tr td").html("&nbsp;"); 
+                        let weatherIcon = result1.data.weather.current.weather[0].icon;
+                            
+                        $('.txtCapitalWeatherName').html(capitalCityName);
+                        $('#txtCapitalWeatherCurrent').html( Math.round(result1.data.weather.current.temp) +'&#8451<br>');
+                        $('#txtCapitalWeatherDescription').html( result1.data.weather.current.weather[0].description);
+                        $('#txtCapitalWeatherWindspeed').html(result1.data.weather.current.wind_speed + ' km/h');
+                        $('#txtCapitalWeatherHumidity').html( Math.round(result1.data.weather.current.humidity) +'&#37');
+                        $('#txtCapitalWeatherLo').html( Math.round(result1.data.weather.daily[0].temp.min) +'&#8451<br>');
+                        $('#txtCapitalWeatherHi').html( Math.round(result1.data.weather.daily[0].temp.max) +'&#8451<br>');
+                        $('#txtCapitalTomorrowsWeatherLo').html( Math.round(result1.data.weather.daily[1].temp.min) +'&#8451<br>');
+                        $('#txtCapitalTomorrowsWeatherHi').html( Math.round(result1.data.weather.daily[1].temp.max) +'&#8451<br>');
+                        $('#CapitalWeatherIcon').html( `<img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" width="24px">`);
+                        $('#CapitalHumidityIcon').html('<img src="assets/img/icons/humidity.svg" width="24px">');
+                        $('#CapitalWindIcon').html('<img src="assets/img/icons/007-windy.svg" width="24px">');
+                        $('.CapitalHiTempIcon').html('<img src="assets/img/icons/temperatureHi.svg" width="24px">');
+                        $('.CapitalLoTempIcon').html('<img src="assets/img/icons/temperatureLo.svg" width="24px">');
+            
+                       
+                       
+            
+                        $('#weatherModal').modal('show');
+            
+                    },
+                    complete: function () {
+                        $("#loader").addClass("hidden")
+                    },
+                    error: function(jqXHR,textStatus, errorThrown) {
+                        console.error(jqXHR);
+                    }
+                });
+                    
+            }
                 
-            $('.txtCapitalWeatherName').html(capitalCityName);
-            $('#txtCapitalWeatherCurrent').html( Math.round(result.data.weather.current.temp) +'&#8451<br>');
-            $('#txtCapitalWeatherDescription').html( result.data.weather.current.weather[0].description);
-            $('#txtCapitalWeatherWindspeed').html(result.data.weather.current.wind_speed + ' km/h');
-            $('#txtCapitalWeatherHumidity').html( Math.round(result.data.weather.current.humidity) +'&#37');
-            $('#txtCapitalWeatherLo').html( Math.round(result.data.weather.daily[0].temp.min) +'&#8451<br>');
-            $('#txtCapitalWeatherHi').html( Math.round(result.data.weather.daily[0].temp.max) +'&#8451<br>');
-            $('#txtCapitalTomorrowsWeatherLo').html( Math.round(result.data.weather.daily[1].temp.min) +'&#8451<br>');
-            $('#txtCapitalTomorrowsWeatherHi').html( Math.round(result.data.weather.daily[1].temp.max) +'&#8451<br>');
-            $('#CapitalWeatherIcon').html( `<img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" width="24px">`);
-            $('#CapitalHumidityIcon').html('<img src="assets/img/icons/humidity.svg" width="24px">');
-            $('#CapitalWindIcon').html('<img src="assets/img/icons/007-windy.svg" width="24px">');
-            $('.CapitalHiTempIcon').html('<img src="assets/img/icons/temperatureHi.svg" width="24px">');
-            $('.CapitalLoTempIcon').html('<img src="assets/img/icons/temperatureLo.svg" width="24px">');*/
-
            
-            $('#txtCapitalWeatherCurrent').html( result['data']['weather']['current']['temp']);
-           
-
-            $('#weatherModal').modal('show');
-
-        },
-        complete: function () {
-            $("#loader").addClass("hidden")
         },
         error: function(jqXHR,textStatus, errorThrown) {
             console.error(jqXHR);
         }
-    });
+    });  
+    
     
 });
 
