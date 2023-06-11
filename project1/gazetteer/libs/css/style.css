@@ -64,41 +64,46 @@ body {
 }
 
 /* Country Info Card */
-.card.country {
+.country {
+    text-align: left;
+}
+
+.countryClass {
+    text-align: left;
+}
+
+/* Weather Card */
+.modal-content {
+    border: solid black 2px;
+    background-color: #a9f5e1;
+}
+
+
+.container-fluid.weather-info {
     border: hidden;
-}
-.card.country img {
-    width: 100%;
-    border: 5px solid var(--darkblue);
-    border-radius: 5px;
+    overflow: hidden;
 }
 
-.card-body.country {
-    background-color: #fff;
-}
-
-.card-body.country h4 {
+#txtCapitalWeatherName {
     text-align: center;
-    font-weight: bold; 
 }
 
-.card-body.country a {
-    color: var(--darkblue);
-    text-decoration: none;
+#txtCapitalWeatherDescription, #capitalWeatherIcon {
+    text-align: center;
 }
 
-.card-body.country a:hover {
-    color: var(--korai);
-    text-decoration: underline;
+
+
+.container-fluid.weather-info {
+    border: hidden;
+    overflow: hidden;
 }
 
-.table-country th,td {
-    color: var(--darkblue) !important;
+.text-center p {
+    font-family: 'Raleway', sans-serif;
+    color: #fff;
 }
 
-.table-country td {
-   text-align: right;
-}
 
 
 @keyframes lds-dual-ring {
