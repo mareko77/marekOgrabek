@@ -317,8 +317,8 @@ $("#select-country").change(function() {
 
 //earthquake 
 
-let earthquake = L.markerClusterGroup();
-map.addLayer(earthquake);
+let earthquakeM = L.markerClusterGroup();
+map.addLayer(earthquakeM);
 
 const earthquakeIcon = L.icon({
     iconUrl: 'images/earthquakeIcon.png',
@@ -328,7 +328,7 @@ const earthquakeIcon = L.icon({
 });
 
 function getEarthquakes(north, south, east, west) {
-    earthquakesCG.clearLayers();
+    earthquakeM.clearLayers();
     $.ajax({
         url: "libs/php/getEarthquake.php",
         type: 'POST',
@@ -363,7 +363,7 @@ function getEarthquakes(north, south, east, west) {
                                 </table>
                             <div>`
                 );
-                earthquakesCG.addLayer(earthquakeMarker);
+                earthquakesM.addLayer(earthquakeMarker);
             });
         },
         error: function(textStatus, errorThrown) {
