@@ -104,7 +104,13 @@ body {
     color: #fff;
 }
 
+/*Flag*/
 
+#flag-country {
+    color: var(--darkblue);
+    text-decoration: none;
+    text-align: center;
+}
 
 @keyframes lds-dual-ring {
     0% {
