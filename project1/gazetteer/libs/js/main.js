@@ -57,6 +57,12 @@ const countryFlagButton = new L.easyButton('<i class="fa fa-flag"></i>', functio
 }, "Country Flag");
 countryFlagButton.addTo(map);
 
+// button to show Modal with News Info
+const newsButton = new L.easyButton('<i class="far fa-newspaper"></i>', function() {
+    $("#newsModal").modal("show");
+}, "Country News");
+newsButton.addTo(map);
+
 // Get User Location
 function userLocation() {
     if (!navigator.geolocation) {
@@ -192,6 +198,9 @@ $("#select-country").change(function(){
             }
                 
             $("#countryModal").modal("show");
+            addBorders(country);
+            getEarthquakes(north, south, east, west);
+
         },
         complete: function () {
             $("#loader").addClass("hidden")
@@ -258,10 +267,6 @@ $("#select-country").change(function(){
                         $('.capitalHiTempIcon').html('<img src="images/icons/thermometer.svg" width="24px">');
                         $('.capitalLoTempIcon').html('<img src="images/icons/thermometer-colder.svg" width="24px">');
 
-                        
-                        
-            
-                        //$('#weatherModal').modal('show');
             
                     },
                     complete: function () {
@@ -279,36 +284,108 @@ $("#select-country").change(function(){
 //Flag
 $("#select-country").change(function() {
     $.ajax({
+
         url: "libs/php/getFlag.php",
+
+        type: 'POST',
+
+        dataType: 'json',
+
+        data: {
+
+            code: $('#select-country option:selected').val()
+
+        },
+
+        beforeSend: function () {
+
+            $("#loader").removeClass("hidden");
+
+        },
+
+        success: function(result) {
+
+            console.log(result);
+
+ 
+
+            let countryFlag = $("#country-flag");
+
+            countryFlag.html("");
+
+ 
+
+                countryFlag.append($(
+
+                    `<div class="card-body country">
+
+                        <h3 id='flag-country'><strong>${result[0].altSpellings[2]}</strong></h3>
+
+                    </div>
+
+                    <div class="card h-100 country">
+
+                            <img src="${result[0].flags.png}" alt="${result[0].flags.alt}"/>
+
+                    </div>
+
+                    `
+
+                ));
+
+                $("#countryFlagModal").modal("show");
+
+               
+
+        },
+
+        complete: function () {
+
+            $("#loader").addClass("hidden")
+
+        },
+
+        error: function(jqXHR,textStatus, errorThrown) {
+
+            alert("Error: " + errorThrown);
+
+            console.log(jqXHR);
+
+        }
+
+    });      
+});
+
+//News 
+$("#select-country").change(function() {
+    $.ajax({
+        url: "libs/php/getNews.php",
         type: 'POST',
         dataType: 'json',
         data: {
-            code: $('#select-country option:selected').val()
+            country: $('#select-country option:selected').val()  
         },
+
         beforeSend: function () {
             $("#loader").removeClass("hidden");
         },
         success: function(result) {
+            console.log(result);
 
-            let countryFlag = $("#country-flag");
-            countryFlag.html("");
+            if (result.status.name == "ok") {
 
-                countryFlag.append($(
-                    `<div class="card h-100 country">
-                            <img src="${result.flag}" alt="${result.name}"/>
-                    </div>
-                    <div class="card-body country">
-                        <h4><a href="https://en.wikipedia.org/wiki/${result.name}" target="_blank">${result.name}</a></h4>
-                    </div>`
-                ));
-                $("#countryFlagModal").modal("show");
+                $('#newsTitle').html(result['data']['articles'][0]['title']);
                 
-        },
+        }
+    },
+
         complete: function () {
             $("#loader").addClass("hidden")
         },
-        error: function(textStatus, errorThrown) {
+        error: function(jqXHR, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
+
+            console.log(jqXHR);
         }
     });    
 });
@@ -371,7 +448,6 @@ function getEarthquakes(north, south, east, west) {
         }
     });    
 }
-
 
 
 
