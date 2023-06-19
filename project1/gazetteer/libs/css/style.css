@@ -8,7 +8,7 @@
 :root {
     --darkblue: rgb(26, 0, 63);
     --blue: #361999;
-    --azul: #78FFF1;
+    /*--azul: #78FFF1;*/
     --korai: #FF6495;
 }
 
@@ -26,8 +26,8 @@ body {
 }
 
 .navbar {
-    background-color: var(--blue);
-    color: var(--darkblue);
+    background-color: rgb(29, 76, 243);
+    color: rgb(17, 17, 40);
 }
 
 .navbar.fixed-top {
@@ -64,18 +64,13 @@ body {
 }
 
 /* Country Info Card */
-.country {
-    text-align: left;
-}
-
-.countryClass {
+.country, .countryClass {
     text-align: left;
 }
 
 /* Weather Card */
 .modal-content {
     border: solid black 2px;
-    background-color: #a9f5e1;
 }
 
 
@@ -104,12 +99,77 @@ body {
     color: #fff;
 }
 
+.float-child {
+    width: 50%;
+    float: left;
+}
+
+#txtCapitalWeatherCurrent {
+    font-size: 50px;
+    color: rgb(8, 8, 102);
+}
+
+#txtCapitalWeatherDescription {
+    color: rgb(8, 8, 102);
+}
+
+#desc {
+    float: left;
+}
+
+.tomorrow {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#txtCapitalWeatherDescriptionTomorrow, #capitalWeatherIconTomorrow {
+    text-align: center;
+    font-weight: bold;
+}
+
+#wrapper1 {
+    background-color: rgb(63, 167, 228);
+}
+
+
 /*Flag*/
 
 #flag-country {
     color: var(--darkblue);
     text-decoration: none;
     text-align: center;
+}
+
+/* News Card */
+.card.news.h-100 h6 {
+    color: var(--azul);
+}
+
+/* Modal */
+.modal-dialog.modal-dialog-centered {
+    justify-content: center;
+}
+ .modal-content {
+    width: auto;
+} 
+
+.modal-body {
+    justify-content: center;
+    background-color: #fbf8f8;
+}
+
+.modal-header {
+    background: var(--blue);
+}
+
+.modal-header h6 {
+    color: var(--azul);
+}
+
+/* Loader */
+.lds-dual-ring.hidden {
+    display: none;
 }
 
 @keyframes lds-dual-ring {
