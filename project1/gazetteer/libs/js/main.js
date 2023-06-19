@@ -1,6 +1,8 @@
 let map;
 let border;
 
+
+
 $(window).on('load', function () {
     $(".loader-wrapper").fadeOut("slow");
     userLocation();
@@ -14,30 +16,21 @@ const wsm = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Wo
     minZoom: 2,
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 });
-wsm.addTo(map); 
 
-const stadiaDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-    maxZoom: 20,
-    minZoom: 2,
-    attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+
+// Satellite
+const SatelliteMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
 });
+
+SatelliteMap.addTo(map); 
+
+//Esri_NatGeoWorldMap
+var Esri_NatGeoWorldMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; National Geographic. Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> and <a href="https://smashicons.com/" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>', maxZoom: 12});
     
 getCountries();
     
-
-
-// Layer Controller
-const baseMaps = {
-    "WSM": wsm,
-    "Stadia Dark": stadiaDark
-};
-
-
-L.control.layers(baseMaps).addTo(map)
-    .setPosition("bottomright");
-
-L.control.scale().addTo(map);
-
 // L.easyButtons
 // button to show Modal with Country Info
 const countryInfoButton = new L.easyButton('<i class="fas fa-info"></i>', function() {
@@ -135,9 +128,10 @@ function addBorders(country) {
         type: 'POST',
         dataType: 'json',
         data: {
-            isoA2: country
+           isoA2: country
         },
         success: function(result) {
+            console.log(result);
             const countryBorders = result.data;
             
             if (map.hasLayer(border)) {
@@ -162,12 +156,12 @@ function addBorders(country) {
             const blLng = bounds._southWest.lng;
             const trLng = bounds._northEast.lng;
             
-            nearByCities(north, south, east, west);
+            getCities(north, south, east, west);
             getEarthquakes(north, south, east, west);
-            addRestaurants(blLat, trLat, blLng, trLng);
+            getWeather(north, south, east, west);
         },
-        error: function(textStatus, errorThrown) {
-            // console.log(textStatus, errorThrown);
+        error: function(jqXHR,textStatus, errorThrown) {
+            console.error(jqXHR);
         }
     });    
 }
@@ -195,11 +189,13 @@ $("#select-country").change(function(){
                     $('#currencyCode').html(result['data'][0]['currencyCode']);
 					$('#txtPopulation').html(result['data'][0]['population']);
 					$('#txtArea').html(result['data'][0]['areaInSqKm']);
+                    $('#txtCountryCode').html(result['data'][0]['countryCode']);
             }
                 
             $("#countryModal").modal("show");
-            addBorders(country);
-            getEarthquakes(north, south, east, west);
+            addBorders($('#select-country option:selected').val());
+            getEarthquakes(result.data[0].north, result.data[0].south, result.data[0].east, result.data[0].west);
+            getCities(result.data[0].north, result.data[0].south, result.data[0].east, result.data[0].west);
 
         },
         complete: function () {
@@ -241,11 +237,14 @@ $("#select-country").change(function(){
                         console.log(result1);
                         $("#weatherTable tbody tr td").html("&nbsp;"); 
                         let weatherIconCurrent = result1.data.weather.current.weather[0].icon;
+                        let weatherIconTomorrow = result1.data.weather.daily[0].weather[0].icon;
 
                         $('#capitalWeatherIcon').html( `<img src="https://openweathermap.org/img/wn/${weatherIconCurrent}@2x.png" width="120px">`);
+                        $('#capitalWeatherIconTomorrow').html( `<img src="https://openweathermap.org/img/wn/${weatherIconTomorrow}@2x.png" width="120px">`);
                         $('#txtCapitalWeatherName').html(result1.data.weather.timezone);
                         $('#txtCapitalWeatherCurrent').html( Math.round(result1.data.weather.current.temp) +'&#8451<br>');
                         $('#txtCapitalWeatherDescription').html( result1.data.weather.current.weather[0].description);
+                        $('#txtCapitalWeatherDescriptionTomorrow').html( result1.data.weather.daily[0].weather[0].description);
                         $('#txtCapitalWeatherWindspeed').html(result1.data.weather.current.wind_speed + ' km/h');
                         $('#txtCapitalWeatherHumidity').html( Math.round(result1.data.weather.current.humidity) +'&#37');
                         $('#txtCapitalWeatherLo').html( Math.round(result1.data.weather.daily[0].temp.min) +'&#8451<br>');
@@ -260,14 +259,13 @@ $("#select-country").change(function(){
 
                         $('#txtCapitalTomorrowsWeatherLo').html( Math.round(result1.data.weather.daily[1].temp.min) +'&#8451<br>');
                         $('#txtCapitalTomorrowsWeatherHi').html( Math.round(result1.data.weather.daily[1].temp.max) +'&#8451<br>');
-                       
+
                         $('#weatherIcon').html('<img src="images/icons/weather.svg" width="24px">');
                         $('#capitalHumidityIcon').html('<img src="images/icons/humidity.svg" width="24px">');
                         $('#capitalWindIcon').html('<img src="images/icons/007-windy.svg" width="24px">');
                         $('.capitalHiTempIcon').html('<img src="images/icons/thermometer.svg" width="24px">');
                         $('.capitalLoTempIcon').html('<img src="images/icons/thermometer-colder.svg" width="24px">');
 
-            
                     },
                     complete: function () {
                         $("#loader").addClass("hidden")
@@ -284,59 +282,36 @@ $("#select-country").change(function(){
 //Flag
 $("#select-country").change(function() {
     $.ajax({
-
         url: "libs/php/getFlag.php",
-
         type: 'POST',
-
         dataType: 'json',
-
         data: {
-
             code: $('#select-country option:selected').val()
-
         },
 
         beforeSend: function () {
-
             $("#loader").removeClass("hidden");
-
         },
 
         success: function(result) {
 
             console.log(result);
 
- 
-
             let countryFlag = $("#country-flag");
 
             countryFlag.html("");
 
- 
-
                 countryFlag.append($(
 
                     `<div class="card-body country">
-
                         <h3 id='flag-country'><strong>${result[0].altSpellings[2]}</strong></h3>
-
                     </div>
-
                     <div class="card h-100 country">
-
                             <img src="${result[0].flags.png}" alt="${result[0].flags.alt}"/>
-
-                    </div>
-
-                    `
-
+                    </div> `
                 ));
 
-                $("#countryFlagModal").modal("show");
-
-               
-
+                $("#flagModal").modal("show");            
         },
 
         complete: function () {
@@ -372,30 +347,43 @@ $("#select-country").change(function() {
         success: function(result) {
             console.log(result);
 
-            if (result.status.name == "ok") {
+        let newsInfo = $("#news-info-card");
 
-                $('#newsTitle').html(result['data']['articles'][0]['title']);
-                
-        }
-    },
+            newsInfo.html("");
+
+                newsInfo.append($(
+
+                   `<div class="col p-2">
+                        <div id="card-news">
+                            <img class="card-img" src="${result.articles[0].urlToImage}" alt="News Image">
+                        <div class="d-flex flex-column justify-content-end">
+                            <h6 id='news-source'>${result.articles[0].source.name}</h6>    
+                            <a href="${result.articles[0].url}" target="_blank">${result.articles[0].title}</a>
+                        </div>
+                        </div>
+                    </div>`
+
+                ));
+                    
+        },
 
         complete: function () {
             $("#loader").addClass("hidden")
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
-
+            
             console.log(jqXHR);
         }
     });    
 });
 
 
-
 //earthquake 
 
-let earthquakeM = L.markerClusterGroup();
-map.addLayer(earthquakeM);
+let earthquakesM;
+earthquakesM = L.markerClusterGroup();
+map.addLayer(earthquakesM);
 
 const earthquakeIcon = L.icon({
     iconUrl: 'images/earthquakeIcon.png',
@@ -405,7 +393,7 @@ const earthquakeIcon = L.icon({
 });
 
 function getEarthquakes(north, south, east, west) {
-    earthquakeM.clearLayers();
+    earthquakesM.clearLayers();
     $.ajax({
         url: "libs/php/getEarthquake.php",
         type: 'POST',
@@ -416,7 +404,8 @@ function getEarthquakes(north, south, east, west) {
             east: east,
             west: west
         },
-        success: function(result) {    
+        success: function(result) { 
+            console.log(result);  
             const earthquakes = result.data;
             
             earthquakes.forEach(earthquake => {
@@ -436,6 +425,9 @@ function getEarthquakes(north, south, east, west) {
                                         <tr>
                                             <th scope="row">Date and Time:</th> <td class="text-end">${window.moment(earthquake.datetime).format('MMMM Do YYYY, h:mm:ss A')}<td>
                                         </tr>
+                                        <tr>
+                                            <th scope="row">Depth:</th> <td class="text-end">${Math.round(earthquake.depth)} Km</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             <div>`
@@ -443,12 +435,89 @@ function getEarthquakes(north, south, east, west) {
                 earthquakesM.addLayer(earthquakeMarker);
             });
         },
-        error: function(textStatus, errorThrown) {
-            // console.log(textStatus, errorThrown);
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert("Error: " + errorThrown);
+
+            console.log(jqXHR);
         }
     });    
 }
 
+//Cities
 
+let citiesM;
+citiesM = L.markerClusterGroup();
+map.addLayer(citiesM);
+
+const cityIcon = L.icon({
+    iconUrl: 'images/cityIcon.png',
+    iconSize: [50, 50],
+    iconAnchor: [25, 45],
+    popupAnchor: [0, -40]
+});
+
+function getCities(north, south, east, west) {
+    citiesM.clearLayers();
+    $.ajax({
+        url: "libs/php/getCities.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            north: north,
+            south: south,
+            east: east,
+            west: west
+        },
+        success: function(result) {   
+            console.log(result)
+            const nearByCities = result.data;
+            nearByCities.forEach(city => {
+                const cityMarker = L.marker([`${city.lat}`, `${city.lng}`], {icon: cityIcon})
+                    .bindPopup(`
+                            <div class="container card h-100">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th><strong>City</strong></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">Name:</th> <td class="text-end"> <strong>${city.name}</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Population:</th> <td class="text-end"> ${city.population.toLocaleString("en-US")}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            `);
+                citiesM.addLayer(cityMarker);
+            });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert("Error: " + errorThrown);
+
+            console.log(jqXHR);
+        }
+    });    
+}
+
+// Layer Controller
+const baseMaps = {
+    "SatelliteMap": SatelliteMap,
+    "WSM": wsm,
+    "NatGeoWorldMap": Esri_NatGeoWorldMap
+};
+
+const markerLayers = {
+    "Cities": citiesM,
+    "Earthquakes": earthquakesM
+};
+
+L.control.layers(baseMaps, markerLayers).addTo(map)
+    .setPosition("bottomright");
+
+L.control.scale().addTo(map);
 
 
