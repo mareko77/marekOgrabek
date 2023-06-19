@@ -36,7 +36,7 @@
             </div>
         </nav>
 
-        <!--bcountry info modal-->
+        <!--country info modal-->
         <div class="modal fade" id="countryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                 <div class="modal-content">
@@ -44,93 +44,69 @@
                         <h6 class="modal-title" id="modalTitle">&bull; Country Info &bull;</h6>
                         <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
                     </div>
-                        <div class="modal-body">
-                            
+                        <div class="modal-body">                           
                             <div class="container-fluid country-info" id="country-info">
-
-                                    <table>
-                                    
+                                    <table>                                   
                                         <tr>
                                             <td class="country">
                                                 Country name: 
                                             </td>
-                                            <td id="countryName" class="countryClass">
-                                                
-                                            </td>
-                        
+                                            <td id="countryName" class="countryClass">                                              
+                                            </td>                        
                                         </tr>
-
-                        
                                         <tr>
                                             <td class="country">
                                                 Continent: 
                                             </td>
-                                            <td id="continentName" class="countryClass">
-                                                
-                                            </td>
-                        
-                                        </tr>
-                        
+                                            <td id="continentName" class="countryClass">                                               
+                                            </td>                       
+                                        </tr>                        
                                         <tr>
                                             <td class="country">
                                                 Capital: 
                                             </td>
-                                            <td id="txtCapital" class="countryClass">
-                                                
-                                            </td>
-                        
-                                        </tr>
-                        
+                                            <td id="txtCapital" class="countryClass">                                               
+                                            </td>                        
+                                        </tr>                       
                                         <tr>
                                             <td class="country">
                                                 Languages: 
                                             </td>
-                                            <td id="txtLanguages" class="countryClass">
-                                                
-                                            </td>
-                        
+                                            <td id="txtLanguages" class="countryClass">                                                
+                                            </td>                        
                                         </tr>
-
                                         <tr>
                                             <td class="country">
                                                 Currency: 
                                             </td>
-                                            <td id="currencyCode" class="countryClass">
-                                                
-                                            </td>
-                        
-                                        </tr>
-                        
+                                            <td id="currencyCode" class="countryClass">                                               
+                                            </td>                       
+                                        </tr>                      
                                         <tr>
                                             <td class="country">
                                                 Population: 
                                             </td>
-                                            <td id="txtPopulation" class="countryClass">
-                                                
-                                            </td>
-                        
-                                        </tr>
-                        
+                                            <td id="txtPopulation" class="countryClass">                                               
+                                            </td>                       
+                                        </tr>                       
                                         <tr>
                                             <td class="country">
                                                 Area (km<sup>2</sup>): 
                                             </td>
-                                            <td id="txtArea" class="countryClass">
-                                                
+                                            <td id="txtArea" class="countryClass">                                               
+                                            </td>                       
+                                        </tr> 
+                                        <tr>
+                                            <td class="country">
+                                                Country code:
                                             </td>
-                        
-                                        </tr>
-                        
-                                        
-                                    </table>
-                        
-                                </div>
-            
+                                            <td id="txtCountryCode" class="countryClass">                                               
+                                            </td>                       
+                                        </tr>                                       
+                                    </table>                       
+                                </div>           
                             </div>
                         </div>
-                    <div class="modal-footer">
-                        
-                    </div>
                 </div>
             </div>
         </div>           
@@ -142,28 +118,32 @@
       <div class="modal-content">
         <div class="modal-header">
                 <h1 class="modal-title txtCapitalWeatherName" id="weatherModalLabel" ></h1>
+                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
         </div>
         <div class="modal-body">
             <div class="container-fluid weather-info align-content-center">
 
                     <h1 id="txtCapitalWeatherName"></h1>
                     <div id="wrapper">
-                        <div id="desc">
-                            <strong><p id="txtCapitalWeatherDescription"></p></strong>
+                       
+                        <div class="float-container">
+                            <div class="float-child">
+                                <div id="capitalWeatherIcon"></div>
+                            </div>
+                            <div class="float-child">
+                                <div id="txtCapitalWeatherCurrent"></div>
+                                <div id="desc">
+                                    <strong><p id="txtCapitalWeatherDescription"></p></strong>
+                                </div>
+                            </div>                           
                         </div>
-                        <div id="capitalWeatherIcon"></div>
+                        
                         
                     </div>
                     
                     <table id="weatherTable" class="table">
                         <tbody>
-                            
-                            
-                        <tr>
-                            <td id="weatherIcon"></td>
-                            <th scope="row">Current Temp:</th>
-                            <td id="txtCapitalWeatherCurrent"></td>
-                        </tr>
+                              
                         <tr>
                             <td id="capitalWindIcon"></td>
                             <th class="text-sm-left" scope="row">Windspeed:</th>
@@ -194,25 +174,37 @@
                             <th scope="row">Sunset:</th>
                             <td id="txtCapitalSunset"></td>
                         </tr>
-                        
-                        <tr>
-                            <td class="capitalHiTempIcon"></td>
-                            <th scope="row">Tomorrow's High:</th>
-                            <td id="txtCapitalTomorrowsWeatherHi"></td>
-                        </tr>
-                        <tr>
-                            <td class="capitalLoTempIcon"></td>
-                            <th scope="row">Tomorrow's Low:</th>
-                            <td id="txtCapitalTomorrowsWeatherLo"></td>
-                        </tr>
                         </tbody>
-                        
+                    </table>
 
-                        </table>
+                    <div id="wrapper1">
+                       <p class="tomorrow">Weather forecast for tomorrow</p>
+                        <div class="float-container">
+                            <div class="float-child">
+                                <div id="capitalWeatherIconTomorrow"></div>
+                                <div>
+                                    <p id="txtCapitalWeatherDescriptionTomorrow"></p>
+                                </div>                                   
+                            </div>
+                            <div class="float-child">
+                                <table >
+                                    <tbody>
+                                        <tr>
+                                            <td class="capitalHiTempIcon"></td>
+                                            <th scope="row">Tomorrow's High:</th>
+                                            <td id="txtCapitalTomorrowsWeatherHi"></td>
+                                        </tr>
+                                        <tr>
+                                          <td class="capitalLoTempIcon"></td>
+                                            <th scope="row">Tomorrow's Low:</th>
+                                            <td id="txtCapitalTomorrowsWeatherLo"></td>
+                                        </tr>                                               
+                                    </tbody>
+                                </table>                            
+                            </div>                           
+                        </div>                       
+                    </div>    
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary closeBtn" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -232,9 +224,6 @@
     
                 </div>
                 </div>
-            <div class="modal-footer">
-                
-            </div>
         </div>
     </div>
 </div> 
@@ -245,18 +234,18 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h6 class="modal-title" id="modalTitle">&bull; News &bull;</h6>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
             </div>
                 <div class="modal-body">
                     
                     <div class="container-fluid news-info p-1">
-                        <div card="row row-cols-1" id="news-info-card"></div>  
-                        <p id="news_title"></p>                                                                         
+                        <div card="row row-cols-1" id="news-info-card">
+
+                        </div>  
+                                                                                                
                     </div>
                 
                 </div>
-            <div class="modal-footer">
-            </div>
         </div>
     </div>
 </div>
