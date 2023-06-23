@@ -11,6 +11,7 @@ $(window).on('load', function () {
 // Map Initialization
 map = L.map('map').setView([51.50, 0.13], 3);
 
+
 // Map Layers
 const wsm = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
     minZoom: 2,
@@ -121,55 +122,54 @@ function getCountries() {
     });
 }
 
+
+
+$("#select-country").change(function(){
+
 // Get Borders
-function addBorders(country) {
     $.ajax({
         url: "libs/php/getCountryBorder.php",
         type: 'POST',
         dataType: 'json',
         data: {
-           isoA2: country
+           isoA2: $('#select-country option:selected').val()
         },
+        
         success: function(result) {
             console.log(result);
             const countryBorders = result.data;
-            
-            if (map.hasLayer(border)) {
-                map.removeLayer(border);
+
+            if(border){
+                border.clearLayers();
             }
+
            border = L.geoJSON(countryBorders, {
-               color: blue,
-               weight: 14,
+               color: 'blue',
+               weight: 4,
                opacity: 1,
                fillOpacity: 0.1
            }).addTo(map);
+
             map.fitBounds(border.getBounds());  
-            
             const bounds = border.getBounds();
             const north = bounds.getNorth();
             const south = bounds.getSouth();
             const east = bounds.getEast();
             const west = bounds.getWest();
-
-            const blLat = bounds._southWest.lat;
-            const trLat = bounds._northEast.lat;
-            const blLng = bounds._southWest.lng;
-            const trLng = bounds._northEast.lng;
-            
+           
             getCities(north, south, east, west);
             getEarthquakes(north, south, east, west);
-            getWeather(north, south, east, west);
         },
+
         error: function(jqXHR,textStatus, errorThrown) {
             console.error(jqXHR);
         }
     });    
-}
 
-// Country Info
-$("#select-country").change(function(){
+    // Country Info
+
     $.ajax({
-        url: "libs/php/getCountryInfo1.php",
+        url: "libs/php/getCountryInfo.php",
         type: 'POST',
         dataType: 'json',
         data: {
@@ -192,8 +192,6 @@ $("#select-country").change(function(){
                     $('#txtCountryCode').html(result['data'][0]['countryCode']);
             }
                 
-            $("#countryModal").modal("show");
-            addBorders($('#select-country option:selected').val());
             getEarthquakes(result.data[0].north, result.data[0].south, result.data[0].east, result.data[0].west);
             getCities(result.data[0].north, result.data[0].south, result.data[0].east, result.data[0].west);
 
@@ -204,12 +202,11 @@ $("#select-country").change(function(){
         error: function(jqXHR,textStatus, errorThrown) {
             console.error(jqXHR);
         }
-    });    
-});
+    }); 
 
-//Weather
+    //Weather
 
-$("#select-country").change(function(){
+
     $.ajax({
         url: "libs/php/getOpencage.php",
         type: 'POST',
@@ -256,16 +253,15 @@ $("#select-country").change(function(){
                         $('#txtCapitalSunset').html(sunset);
                         $('.capitalSunriseIcon').html('<img src="images/icons/sunrise.png" width="24px">');
                         $('.capitalSunsetIcon').html('<img src="images/icons/sunset.png" width="24px">');
-
                         $('#txtCapitalTomorrowsWeatherLo').html( Math.round(result1.data.weather.daily[1].temp.min) +'&#8451<br>');
                         $('#txtCapitalTomorrowsWeatherHi').html( Math.round(result1.data.weather.daily[1].temp.max) +'&#8451<br>');
-
                         $('#weatherIcon').html('<img src="images/icons/weather.svg" width="24px">');
                         $('#capitalHumidityIcon').html('<img src="images/icons/humidity.svg" width="24px">');
                         $('#capitalWindIcon').html('<img src="images/icons/007-windy.svg" width="24px">');
                         $('.capitalHiTempIcon').html('<img src="images/icons/thermometer.svg" width="24px">');
                         $('.capitalLoTempIcon').html('<img src="images/icons/thermometer-colder.svg" width="24px">');
 
+            
                     },
                     complete: function () {
                         $("#loader").addClass("hidden")
@@ -277,10 +273,9 @@ $("#select-country").change(function(){
             } 
         }
     });    
-});
 
-//Flag
-$("#select-country").change(function() {
+    //Flag
+
     $.ajax({
         url: "libs/php/getFlag.php",
         type: 'POST',
@@ -311,7 +306,7 @@ $("#select-country").change(function() {
                     </div> `
                 ));
 
-                $("#flagModal").modal("show");            
+               // $("#countryFlagModal").modal("show");            
         },
 
         complete: function () {
@@ -328,11 +323,10 @@ $("#select-country").change(function() {
 
         }
 
-    });      
-});
+    });  
 
-//News 
-$("#select-country").change(function() {
+    //News 
+
     $.ajax({
         url: "libs/php/getNews.php",
         type: 'POST',
@@ -364,20 +358,17 @@ $("#select-country").change(function() {
                     </div>`
 
                 ));
-                    
-        },
+    },
 
         complete: function () {
             $("#loader").addClass("hidden")
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
-            
             console.log(jqXHR);
         }
-    });    
+    }); 
 });
-
 
 //earthquake 
 
@@ -502,6 +493,16 @@ function getCities(north, south, east, west) {
         }
     });    
 }
+
+//Exchange
+var currencies = ["AUD","BGN","BRL","CAD","CHF","CNY","CZK","DKK","EUR","GBP","HRK","HUF","IDR","ILS","INR","ISK","JPY","KRW","MXN","MYR","NOK","NZD","PHP","PLN","RON","RUB","SEK","SGD","THB","TRY","USD","ZAR"];
+    
+//Populate currencies -
+    $('#select').empty();
+    for (var i = 0; i <= currencies.length; i++) {
+        $('#from').append('<option value="' + currencies[i] + '">' + currencies[i] + '</option>');
+        $('#to').append('<option value="' + currencies[i] + '">' + currencies[i] + '</option>');
+    }
 
 // Layer Controller
 const baseMaps = {
