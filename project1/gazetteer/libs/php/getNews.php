@@ -1,7 +1,7 @@
 <?php
 
+	$url='https://newsapi.org/v2/everything?q=' . $_REQUEST['country'] . '&pageSize=10&sortBy=relevancy&apiKey=527711db59f84ad99164680f94a74fe5';
 	
-	$url='https://newsapi.org/v2/top-headlines?country=' . $_REQUEST['country'] . '&language=en' . '&apiKey=527711db59f84ad99164680f94a74fe5';
 	
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
