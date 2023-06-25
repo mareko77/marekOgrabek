@@ -46,65 +46,22 @@
                         <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
                     </div>
                         <div class="modal-body">                           
-                            <div class="container-fluid country-info" id="country-info">
-                                    <table>                                   
-                                        <tr>
-                                            <td class="country">
-                                                Continent: 
-                                            </td>
-                                            <td id="continentName" class="countryClass">                                               
-                                            </td>                       
-                                        </tr>                        
-                                        <tr>
-                                            <td class="country">
-                                                Capital: 
-                                            </td>
-                                            <td id="txtCapital" class="countryClass">                                               
-                                            </td>                        
-                                        </tr>                       
-                                        <tr>
-                                            <td class="country">
-                                                Languages: 
-                                            </td>
-                                            <td id="txtLanguages" class="countryClass">                                                
-                                            </td>                        
-                                        </tr>
-                                        <tr>
-                                            <td class="country">
-                                                Currency: 
-                                            </td>
-                                            <td id="currencyCode" class="countryClass">                                               
-                                            </td>                       
-                                        </tr>                      
-                                        <tr>
-                                            <td class="country">
-                                                Population: 
-                                            </td>
-                                            <td id="txtPopulation" class="countryClass">                                               
-                                            </td>                       
-                                        </tr>                       
-                                        <tr>
-                                            <td class="country">
-                                                Area (km<sup>2</sup>): 
-                                            </td>
-                                            <td id="txtArea" class="countryClass">                                               
-                                            </td>                       
-                                        </tr> 
-                                        <tr>
-                                            <td class="country">
-                                                Country code:
-                                            </td>
-                                            <td id="txtCountryCode" class="countryClass">                                               
-                                            </td>                       
-                                        </tr>                                       
-                                    </table>                       
-                                </div>           
+                            <div class="container-fluid country-info" id="country-info"></div>
+                            <div class="container-fluid country-info" id="country-info1"></div>
+                            <div class="container-fluid country-info" id="wikipedia-info">
+                                <div id="wiki" class="col-12" style="background-color:rgb(255, 255, 255);">
+                                    <h2>Wiki: <span id="sumTitle"></span> </h2>
+                                    <blockquote class="blockquote text-left">
+                                    <p id="summary"></p>
+                                    <footer style="text-align: center;" class="blockquote-footer"><p class="sourced">Sourced from</p> <cite title="Source Title"><a id="wikipediaUrl" style="color: white;"></a></cite></footer>
+                                    </blockquote>
+                                </div>
                             </div>
                         </div>
                 </div>
             </div>
-        </div>           
-                        
+        </div>          
+        
 
         <!--Weather Modal -->
   <div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true">
@@ -204,45 +161,49 @@
     </div>
   </div>
 
-<!--Flag modal-->
-<div class="modal fade" id="flagModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+
+
+    <!-- Images -->
+    <div class="modal fade" id="imagesModalScrollable" tabindex="-1" role="dialog" aria-labelledby="imagesModalScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+          <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
+              <h4 class="modal-title col-10" id="imagesModalScrollableTitle" data-dismiss="modal">Images</h4>
+              <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
             </div>
-                <div class="modal-body">
+            <div class="modal-body" id="page5"> 
+              <div class="row infoPanel p-0 m-0" aria-labelledby="headingFive">
+                <div id="countryImages" class="col-12">
                     
-                    <div class="container-fluid country-info" id="country-flag">
-                    </div>
-    
                 </div>
-                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
-</div> 
+      </div>
 
 <!--News modal-->
-<div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h6 class="modal-title" id="modalTitle">&bull; News &bull;</h6>
-                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
-            </div>
-                <div class="modal-body">
-                    
-                    <div class="container-fluid news-info p-1">
-                        <div card="row row-cols-1" id="news-info-card">
-
-                        </div>  
-                                                                                                
-                    </div>
-                
+    <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modalTitle">&bull; News &bull;</h6>
+                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
                 </div>
+                    <div class="modal-body">
+                        
+                        <div class="container-fluid news-info p-1">
+                            <div card="row row-cols-1" id="news-info-card">
+
+                            </div>  
+                                                                                                    
+                        </div>
+                    
+                    </div>
+            </div>
         </div>
     </div>
-</div>
+
           
         <div class="container-fluid map" id="map"></div>
         
