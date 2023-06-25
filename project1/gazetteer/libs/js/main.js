@@ -45,17 +45,18 @@ const weatherInfoButton = new L.easyButton('<i class="fas fa-cloud-sun"></i>', f
 }, "Weather Info");
 weatherInfoButton.addTo(map);
 
-// button to show Modal with Country flag
-const countryFlagButton = new L.easyButton('<i class="fa fa-flag"></i>', function() {
-    $("#flagModal").modal("show");
-}, "Country Flag");
-countryFlagButton.addTo(map);
-
 // button to show Modal with News Info
 const newsButton = new L.easyButton('<i class="far fa-newspaper"></i>', function() {
     $("#newsModal").modal("show");
 }, "Country News");
 newsButton.addTo(map);
+
+// button to show Modal with Images
+const imageButton = new L.easyButton('<i class="fas fa-camera-retro"></i>', function() {
+    $("#imagesModalScrollable").modal("show");
+}, "Images");
+imageButton.addTo(map);
+
 
 // Get User Location
 function userLocation() {
@@ -164,45 +165,8 @@ $("#select-country").change(function(){
         error: function(jqXHR,textStatus, errorThrown) {
             console.error(jqXHR);
         }
-    });    
-
-    // Country Info
-
-    $.ajax({
-        url: "libs/php/getCountryInfo.php",
-        type: 'POST',
-        dataType: 'json',
-        data: {
-            country: $('#select-country option:selected').val()
-        },
-        beforeSend: function () {
-            $("#loader").removeClass("hidden");
-        },
-        success: function(result) {
-            console.log(result);
-            if (result.status.name == "ok") {
-
-                    $('#countryName').html(result['data'][0]['countryName']);
-                    $('#continentName').html(result['data'][0]['continentName']);
-					$('#txtCapital').html(result['data'][0]['capital']);
-					$('#txtLanguages').html(result['data'][0]['languages']);
-                    $('#currencyCode').html(result['data'][0]['currencyCode']);
-					$('#txtPopulation').html(result['data'][0]['population']);
-					$('#txtArea').html(result['data'][0]['areaInSqKm']);
-                    $('#txtCountryCode').html(result['data'][0]['countryCode']);
-            }
-                
-            getEarthquakes(result.data[0].north, result.data[0].south, result.data[0].east, result.data[0].west);
-            getCities(result.data[0].north, result.data[0].south, result.data[0].east, result.data[0].west);
-
-        },
-        complete: function () {
-            $("#loader").addClass("hidden")
-        },
-        error: function(jqXHR,textStatus, errorThrown) {
-            console.error(jqXHR);
-        }
-    }); 
+    });  
+    
 
     //Weather
 
@@ -274,10 +238,10 @@ $("#select-country").change(function(){
         }
     });    
 
-    //Flag
+    //Country Info
 
     $.ajax({
-        url: "libs/php/getFlag.php",
+        url: "libs/php/getCountryInfo.php",
         type: 'POST',
         dataType: 'json',
         data: {
@@ -289,24 +253,47 @@ $("#select-country").change(function(){
         },
 
         success: function(result) {
-
+           
             console.log(result);
 
-            let countryFlag = $("#country-flag");
+            let countryInformation = $("#country-info");
 
-            countryFlag.html("");
-
-                countryFlag.append($(
+            countryInformation .html("");
+            countryInformation .append($(
+                
 
                     `<div class="card-body country">
-                        <h3 id='flag-country'><strong>${result[0].altSpellings[2]}</strong></h3>
+                        <h3 id='flag-country'><strong>${result[0].altSpellings[1]}</strong></h3>
                     </div>
                     <div class="card h-100 country">
                             <img src="${result[0].flags.png}" alt="${result[0].flags.alt}"/>
-                    </div> `
-                ));
+                    </div> 
+                        <table class="table table-striped table-sm">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Capital:</th><td>${result[0].capital}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Population:</th><td>${result[0].population.toLocaleString()}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Area:</th><td>${result[0].area.toLocaleString()} Km<sup>2</sup></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Region:</th><td>${result[0].region}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Subregion:</th><td>${result[0].subregion}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Timezone:</th><td>${result[0].timezones}</td>
+                                </tr>
+                            </tbody>
+                        </table>`
 
-               // $("#countryFlagModal").modal("show");            
+
+                ));
+        
         },
 
         complete: function () {
@@ -324,6 +311,138 @@ $("#select-country").change(function(){
         }
 
     });  
+
+    //Country info 1
+
+    $.ajax({
+        url: "libs/php/getCountryInfo1.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            country: $('#select-country option:selected').val()
+        },
+
+        beforeSend: function () {
+            $("#loader").removeClass("hidden");
+        },
+
+        success: function(result) {
+           
+            console.log(result);
+
+            let countryInformation1 = $("#country-info1");
+
+            countryInformation1 .html("");
+            countryInformation1 .append($(
+                
+
+                    
+                        `<table class="table table-striped table-sm">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Languages:</th><td>${result.data[0].languages}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Currencies:</th><td>${result.data[0].currencyCode}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Country Code:</th><td>${result.data[0].countryCode}</td>
+                                </tr>
+                            </tbody>
+                        </table>`
+
+
+                ));
+        
+        },
+
+        complete: function () {
+
+            $("#loader").addClass("hidden")
+
+        },
+
+        error: function(jqXHR,textStatus, errorThrown) {
+
+            alert("Error: " + errorThrown);
+
+            console.log(jqXHR);
+
+        }
+
+    });  
+
+      //Location Images:
+      $.ajax({
+        url: "php/getLocationImages.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            query: $('#select-country option:selected').text()
+        },
+        beforeSend: function () {
+            $("#loader").removeClass("hidden");
+        },
+        success: function(result) {
+
+            console.log(result);
+            $("#countryImages").empty();
+            
+            if (result.status.name == "ok") {
+                    
+                    $("#countryImages").append("<p style='color:white' id='description' class='countryDescription'>")
+                    $("#countryImages").append("<img src='' alt='' id='image' class='countryImages'><br><br>")
+                    $("#image").attr('src', result['data']['results']['urls']['regular']);
+                    $("#image").attr('alt', result['data']['results']['description']);
+                    $("#description").append(result['data']['results']['description']);
+            }
+        
+        },
+
+        complete: function () {
+            $("#loader").addClass("hidden")
+        },
+
+        error: function(jqXHR,textStatus, errorThrown) {
+            alert("Error: " + errorThrown);
+            console.log(jqXHR);
+        }
+    });
+
+     //wikiApi-
+     $.ajax({
+        url: "php/getWikiinfo.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            country: $('#select-country option:selected').text()
+        },
+        beforeSend: function () {
+            $("#loader").removeClass("hidden");
+        },
+        success: function(result) {            
+            console.log(result);
+
+            if (result.status.name == "ok") {
+                $("#sumTitle").empty();
+                $("#sumTitle").append(result['data']['0']['title']);
+                $("#summary").html(result['data']['0']['summary']);
+                $("#wikipediaUrl").attr('href', result['data']['0']['wikipediaUrl']);
+                $("#wikipediaUrl").html(result['data']['0']['wikipediaUrl']);                
+            }
+        
+        },
+        complete: function () {
+            $("#loader").addClass("hidden")
+        },
+
+        error: function(jqXHR,textStatus, errorThrown) {
+            alert("Error: " + errorThrown);
+            console.log(jqXHR);
+        }
+    }); 
+
+
 
     //News 
 
@@ -344,16 +463,22 @@ $("#select-country").change(function(){
         let newsInfo = $("#news-info-card");
 
             newsInfo.html("");
-
+          
                 newsInfo.append($(
-
                    `<div class="col p-2">
                         <div id="card-news">
-                            <img class="card-img" src="${result.articles[0].urlToImage}" alt="News Image">
-                        <div class="d-flex flex-column justify-content-end">
-                            <h6 id='news-source'>${result.articles[0].source.name}</h6>    
-                            <a href="${result.articles[0].url}" target="_blank">${result.articles[0].title}</a>
+                            <div class="d-flex flex-column justify-content-end">                      
+                                <a href="${result.articles[0].url}" target="_blank">${result.articles[0].title}</a><br>                               
+                            </div>
                         </div>
+                        <div class="row infoPanel p-0 m-0" aria-labelledby="headingThree">
+                            <strong><span id='news-source'>${result.articles[0].source.Name}</span></strong> 
+                        </div>
+                        <div class="row infoPanel p-0 m-0" aria-labelledby="headingThree">
+                            <strong><p>Author: <span id="articleAuthor">${result.articles[0].author}</span></p></strong>
+                        </div>
+                        <div class="row infoPanel p-0 m-0" aria-labelledby="headingThree">
+                            <strong><p>Published at: <span id="published">${result.articles[0].publishedAt}</span></p></strong>
                         </div>
                     </div>`
 
@@ -368,7 +493,9 @@ $("#select-country").change(function(){
             console.log(jqXHR);
         }
     }); 
+
 });
+
 
 //earthquake 
 
@@ -494,15 +621,6 @@ function getCities(north, south, east, west) {
     });    
 }
 
-//Exchange
-var currencies = ["AUD","BGN","BRL","CAD","CHF","CNY","CZK","DKK","EUR","GBP","HRK","HUF","IDR","ILS","INR","ISK","JPY","KRW","MXN","MYR","NOK","NZD","PHP","PLN","RON","RUB","SEK","SGD","THB","TRY","USD","ZAR"];
-    
-//Populate currencies -
-    $('#select').empty();
-    for (var i = 0; i <= currencies.length; i++) {
-        $('#from').append('<option value="' + currencies[i] + '">' + currencies[i] + '</option>');
-        $('#to').append('<option value="' + currencies[i] + '">' + currencies[i] + '</option>');
-    }
 
 // Layer Controller
 const baseMaps = {
