@@ -72,6 +72,42 @@ body {
     text-align: center;
 }
 
+.card.country {
+    border: hidden;
+}
+.card.country img {
+    width: 100%;
+    border: 5px solid var(--darkblue);
+    border-radius: 5px;
+}
+
+.card-body.country {
+    background-color: #fff;
+}
+
+.card-body.country h4 {
+    text-align: center;
+    font-weight: bold; 
+}
+
+.card-body.country a {
+    color: var(--darkblue);
+    text-decoration: none;
+}
+
+.card-body.country a:hover {
+    color: var(--korai);
+    text-decoration: underline;
+}
+
+.table-country th,td {
+    color: var(--darkblue) !important;
+}
+
+.table-country td {
+   text-align: right;
+}
+
 /* Weather Card */
 .modal-content {
     border: solid black 2px;
@@ -144,9 +180,12 @@ body {
     text-align: center;
 }
 
-/* News Card */
-.card.news.h-100 h6 {
-    color: var(--azul);
+/* Country images */
+.countryImages{
+    width: 250px;
+}
+.countryDescription p{
+    color:white;
 }
 
 /* Modal */
