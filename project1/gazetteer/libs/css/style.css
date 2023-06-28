@@ -55,6 +55,27 @@ body {
     width: auto;
 }
 
+/* Modal */
+.modal-dialog.modal-dialog-centered {
+    justify-content: center;
+}
+ .modal-content {
+    width: auto;
+} 
+
+.modal-body {
+    justify-content: center;
+    background-color: #fbf8f8;
+}
+
+.modal-header {
+    background: var(--blue);
+}
+
+.modal-header h6 {
+    color: var(--azul);
+}
+
 /* Map */
 #map {
     width: 100%;
@@ -181,32 +202,38 @@ body {
 }
 
 /* Country images */
-.countryImages{
+.countryImages {
     width: 250px;
-}
-.countryDescription p{
-    color:white;
-}
-
-/* Modal */
-.modal-dialog.modal-dialog-centered {
-    justify-content: center;
-}
- .modal-content {
-    width: auto;
-} 
-
-.modal-body {
-    justify-content: center;
-    background-color: #fbf8f8;
+    margin: 0 auto;
+    width: 100%;
+    border: 3px solid #5095e9;
+    padding: 10px;
 }
 
-.modal-header {
-    background: var(--blue);
+#image-header {
+    background-image: linear-gradient(to right, rgba(255,255,255, 0.5) 0 100%), url("../../images/photo-background.jpg");
+   background-size: contain;
+}
+#page5 {
+   background-image: linear-gradient(to right, rgba(255,255,255, 0.5) 0 100%), url("../../images/photo-background.jpg");
+   background-size: contain;
 }
 
-.modal-header h6 {
-    color: var(--azul);
+
+/*Exchange*/
+#exchangeModalTitle {
+    text-align: center;
+}
+
+#exchange-header {
+   background-image: linear-gradient(to right, rgba(255,255,255, 0.6) 0 100%), url("../../images/money.jpg");
+   background-size: contain;
+}
+
+#page4 {
+   background-image: linear-gradient(to right, rgba(255,255,255, 0.6) 0 100%), url("../../images/money.jpg");
+   background-size: contain;
+   
 }
 
 /* Loader */
