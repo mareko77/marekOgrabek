@@ -57,6 +57,11 @@ const imageButton = new L.easyButton('<i class="fas fa-camera-retro"></i>', func
 }, "Images");
 imageButton.addTo(map);
 
+// button to show Modal with Currency Exchange
+const currencyButton = new L.easyButton('<i class="fas fa-donate"></i>', function() {
+    $("#exchangeModal").modal("show");
+}, "Currency Exchange");
+currencyButton.addTo(map);
 
 // Get User Location
 function userLocation() {
@@ -290,10 +295,7 @@ $("#select-country").change(function(){
                                 </tr>
                             </tbody>
                         </table>`
-
-
                 ));
-        
         },
 
         complete: function () {
@@ -350,31 +352,50 @@ $("#select-country").change(function(){
                                 </tr>
                             </tbody>
                         </table>`
-
-
-                ));
-        
+                ));       
         },
-
         complete: function () {
-
             $("#loader").addClass("hidden")
-
         },
-
         error: function(jqXHR,textStatus, errorThrown) {
-
             alert("Error: " + errorThrown);
-
             console.log(jqXHR);
-
         }
-
     });  
+
+        //Currency Code
+
+        $.ajax({
+            url: "libs/php/getCurrencyCode.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                country: $('#select-country option:selected').val()
+            },
+    
+            beforeSend: function () {
+                $("#loader").removeClass("hidden");
+            },
+    
+            success: function(result) {
+               
+                console.log(result);
+    
+                $("#currencyInput").html(); 
+                $('#country_currency').html(result.data[0].countryName + ' currency code is: ' + result.data[0].currencyCode);     
+            },
+            complete: function () {
+                $("#loader").addClass("hidden")
+            },
+            error: function(jqXHR,textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+                console.log(jqXHR);
+            }
+        }); 
 
       //Location Images:
       $.ajax({
-        url: "php/getLocationImages.php",
+        url: "libs/php/getLocationImages.php",
         type: 'POST',
         dataType: 'json',
         data: {
@@ -389,12 +410,14 @@ $("#select-country").change(function(){
             $("#countryImages").empty();
             
             if (result.status.name == "ok") {
+                for(var i = 0; i < result['data']['results'].length; i++){
                     
-                    $("#countryImages").append("<p style='color:white' id='description' class='countryDescription'>")
-                    $("#countryImages").append("<img src='' alt='' id='image' class='countryImages'><br><br>")
-                    $("#image").attr('src', result['data']['results']['urls']['regular']);
-                    $("#image").attr('alt', result['data']['results']['description']);
-                    $("#description").append(result['data']['results']['description']);
+                    $("#countryImages").append("<p style='color:black' id='description" + i +"'class='countryDescription'>")
+                    $("#countryImages").append("<img src='' alt='' id='image" + i +"'class='countryImages'><br><br>")
+                    $("#image" + i).attr('src', result['data']['results'][i]['urls']['regular']);
+                    $("#image" + i).attr('alt', result['data']['results'][i]['alt_description']);
+                    $("#description" + i).append(result['data']['results'][i]['alt_description']);
+                }
             }
         
         },
@@ -411,7 +434,7 @@ $("#select-country").change(function(){
 
      //wikiApi-
      $.ajax({
-        url: "php/getWikiinfo.php",
+        url: "libs/php/getWikiInfo.php",
         type: 'POST',
         dataType: 'json',
         data: {
@@ -470,9 +493,6 @@ $("#select-country").change(function(){
                             <div class="d-flex flex-column justify-content-end">                      
                                 <a href="${result.articles[0].url}" target="_blank">${result.articles[0].title}</a><br>                               
                             </div>
-                        </div>
-                        <div class="row infoPanel p-0 m-0" aria-labelledby="headingThree">
-                            <strong><span id='news-source'>${result.articles[0].source.Name}</span></strong> 
                         </div>
                         <div class="row infoPanel p-0 m-0" aria-labelledby="headingThree">
                             <strong><p>Author: <span id="articleAuthor">${result.articles[0].author}</span></p></strong>
@@ -621,6 +641,41 @@ function getCities(north, south, east, west) {
     });    
 }
 
+//Exchange
+
+const input_currency = document.querySelector('#input_currency');
+const output_currency = document.querySelector('#output_currency');
+const input_amount = document.querySelector('#input_amount');
+const output_amount = document.querySelector('#output_amount');
+const exchange = document.querySelector('#exchange');
+const rate = document.querySelector('#rate');
+
+input_currency.addEventListener('change', calculate);
+output_currency.addEventListener('change', calculate);
+input_amount.addEventListener('input', calculate);
+output_amount.addEventListener('input', calculate);
+
+exchange.addEventListener('click', ()=>{
+    const temp = input_currency.value;
+    input_currency.value = output_currency.value;
+    output_currency.value= temp;
+    calculate();
+});
+
+function calculate(){
+    const input_currency1 = input_currency.value;
+    const output_currency1 = output_currency.value;
+
+    fetch(`https://api.exchangerate-api.com/v4/latest/${input_currency1}`)
+    .then(res => res.json())
+    .then(res => {
+        const new_rate = res.rates[output_currency1];
+        rate.innerText = `1 ${input_currency1} = ${new_rate} ${output_currency1}`
+        output_amount.value = (input_amount.value * new_rate).toFixed(2);
+    })
+}
+
+calculate();
 
 // Layer Controller
 const baseMaps = {
