@@ -129,7 +129,32 @@ body {
    text-align: right;
 }
 
+.coatOfArms {
+    border: none;
+    width: 200px;
+    height: 200px;
+}
+
+.country-body {
+    position: relative;
+}
+
+.coatOfArms img {
+    position: absolute;
+    left: 30%;
+    width: 150px;
+    height: 150px;
+}
+
 /* Weather Card */
+#weather-header {
+    background-image: linear-gradient(to right, rgba(255,255,255, 0.6) 0 100%), url("../../images/sky.jpg");
+}
+
+#pages1 {
+    background-image: linear-gradient(to right, rgba(255,255,255, 0.6) 0 100%), url("../../images/sky.jpg");
+}
+
 .modal-content {
     border: solid black 2px;
 }
