@@ -2,7 +2,6 @@ let map;
 let border;
 
 
-
 $(window).on('load', function () {
     $(".loader-wrapper").fadeOut("slow");
     userLocation();
@@ -250,7 +249,7 @@ $("#select-country").change(function(){
         type: 'POST',
         dataType: 'json',
         data: {
-            code: $('#select-country option:selected').val()
+            country: $('#select-country option:selected').val()
         },
 
         beforeSend: function () {
@@ -260,18 +259,18 @@ $("#select-country").change(function(){
         success: function(result) {
            
             console.log(result);
-
             let countryInformation = $("#country-info");
 
             countryInformation .html("");
             countryInformation .append($(
                 
 
-                    `<div class="card-body country">
+                    `<div class='country-body'>
+                    <div class="card-body country">
                         <h3 id='flag-country'><strong>${result[0].altSpellings[1]}</strong></h3>
                     </div>
                     <div class="card h-100 country">
-                            <img src="${result[0].flags.png}" alt="${result[0].flags.alt}"/>
+                            <img src="${result[0].flags.png}" alt="${result[0].flags.alt}"/><br>
                     </div> 
                         <table class="table table-striped table-sm">
                             <tbody>
@@ -293,25 +292,50 @@ $("#select-country").change(function(){
                                 <tr>
                                     <th scope="row">Timezone:</th><td>${result[0].timezones}</td>
                                 </tr>
+                                 <tr>
+                                    <th scope="row">Timezone:</th><td>${result[0].timezones}</td>
+                                </tr>
                             </tbody>
-                        </table>`
+                        </table>
+                    <div class="coatOfArms" id='coatOfArms'>
+                        <img src="${result[0].coatOfArms.png}"/>
+                    </div>
+                    </div>`
                 ));
-        },
 
+                currencyCode = result.currencies;
+                currencySymbol = result.currencies.symbol;
+                $('#nav-currency').html();
+                $('#currency').html('<strong> ' + result.currency.name + '</strong><br>');
+                $('#currencyCode').html('Code: <strong>' + currencyCode + '</strong><br>');
+                $('#currencySymbol').html('Symbol: <strong>' + result.currencies.symbol + '</strong><br>');
+
+                // Exchange Rates
+                $.ajax({
+                    url: "libs/php/getExchangeRates.php",
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(result) {
+                        console.log(result);
+                        if (result.status.name == "ok") {
+                        
+                        exchangeRate = result.exchangeRate.rates[currencyCode];
+                        $('#nav-currency').html();
+                        $('#exchangeRate').html('Exchange Rate: <strong>' + exchangeRate.toFixed(3) + '</strong> ' + currencyCode + ' = <strong>1</strong> USD. <br>');
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    }
+                });
+        },
         complete: function () {
-
             $("#loader").addClass("hidden")
-
         },
-
         error: function(jqXHR,textStatus, errorThrown) {
-
             alert("Error: " + errorThrown);
-
             console.log(jqXHR);
-
         }
-
     });  
 
     //Country info 1
@@ -363,35 +387,7 @@ $("#select-country").change(function(){
         }
     });  
 
-        //Currency Code
-
-        $.ajax({
-            url: "libs/php/getCurrencyCode.php",
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                country: $('#select-country option:selected').val()
-            },
-    
-            beforeSend: function () {
-                $("#loader").removeClass("hidden");
-            },
-    
-            success: function(result) {
-               
-                console.log(result);
-    
-                $("#currencyInput").html(); 
-                $('#country_currency').html(result.data[0].countryName + ' currency code is: ' + result.data[0].currencyCode);     
-            },
-            complete: function () {
-                $("#loader").addClass("hidden")
-            },
-            error: function(jqXHR,textStatus, errorThrown) {
-                alert("Error: " + errorThrown);
-                console.log(jqXHR);
-            }
-        }); 
+      
 
       //Location Images:
       $.ajax({
@@ -466,7 +462,6 @@ $("#select-country").change(function(){
     }); 
 
 
-
     //News 
 
     $.ajax({
@@ -512,9 +507,11 @@ $("#select-country").change(function(){
             alert("Error: " + errorThrown);
             console.log(jqXHR);
         }
-    }); 
+    });
+     
+ }); 
+                
 
-});
 
 
 //earthquake 
@@ -641,41 +638,6 @@ function getCities(north, south, east, west) {
     });    
 }
 
-//Exchange
-
-const input_currency = document.querySelector('#input_currency');
-const output_currency = document.querySelector('#output_currency');
-const input_amount = document.querySelector('#input_amount');
-const output_amount = document.querySelector('#output_amount');
-const exchange = document.querySelector('#exchange');
-const rate = document.querySelector('#rate');
-
-input_currency.addEventListener('change', calculate);
-output_currency.addEventListener('change', calculate);
-input_amount.addEventListener('input', calculate);
-output_amount.addEventListener('input', calculate);
-
-exchange.addEventListener('click', ()=>{
-    const temp = input_currency.value;
-    input_currency.value = output_currency.value;
-    output_currency.value= temp;
-    calculate();
-});
-
-function calculate(){
-    const input_currency1 = input_currency.value;
-    const output_currency1 = output_currency.value;
-
-    fetch(`https://api.exchangerate-api.com/v4/latest/${input_currency1}`)
-    .then(res => res.json())
-    .then(res => {
-        const new_rate = res.rates[output_currency1];
-        rate.innerText = `1 ${input_currency1} = ${new_rate} ${output_currency1}`
-        output_amount.value = (input_amount.value * new_rate).toFixed(2);
-    })
-}
-
-calculate();
 
 // Layer Controller
 const baseMaps = {
