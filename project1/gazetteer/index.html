@@ -45,12 +45,12 @@
                         <h3 id="countryName" class="countryClass"></h3>
                         <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
                     </div>
-                        <div class="modal-body">                           
+                        <div class="modal-body" id="country-body">                           
                             <div class="container-fluid country-info" id="country-info"></div>
                             <div class="container-fluid country-info" id="country-info1"></div>
                             <div class="container-fluid country-info" id="wikipedia-info">
                                 <div id="wiki" class="col-12">
-                                    <h2>Wiki Info: <span id="sumTitle"></span> </h2>
+                                    <h2>Wikipedia: <span id="sumTitle"></span> </h2>
                                     <blockquote class="blockquote text-left">
                                     <p id="summary"></p>
                                     <footer style="text-align: center;" class="blockquote-footer">
@@ -65,18 +65,41 @@
                         </div>
                 </div>
             </div>
-        </div>          
+        </div>   
+        
+        <!--currency modal-->
+        <div class="modal fade" id="exchangeModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
+                    </div>
+                        <div class="modal-body" id="currency-body">
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <span id="nav-currency-tab">Currency</span> 
+                            </div>
+
+                            <div class="tab-pane fade" id="nav-currency" role="tabpanel" aria-labelledby="nav-currency-tab">
+                                <span id="currency"></span>
+                                <span id="currencySymbol"></span>
+                                <span id="currencyCode"></span>
+                                <span id="exchangeRate"></span>
+                              </div>
+                        </div>
+                </div>
+            </div>
+        </div>  
         
 
         <!--Weather Modal -->
   <div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header" id="weather-header">
                 <h1 class="modal-title txtCapitalWeatherName" id="weatherModalLabel" ></h1>
                 <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="pages1">
             <div class="container-fluid weather-info align-content-center">
 
                     <h1 id="txtCapitalWeatherName"></h1>
@@ -208,152 +231,6 @@
             </div>
         </div>
     </div>
-
-  <!-- Exchange Modal-->
-  <div class="modal fade" id="exchangeModal" tabindex="-1" role="dialog" aria-labelledby="exchangeModalScrollableTitle" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header" id="exchange-header">
-          <strong><h3 class="modal-title col-10" id="exchangeModalTitle" data-dismiss="modal">EXCHANGE</h3></strong>
-          <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
-        </div>
-        <div class="modal-body" id="page4">
-          <div class="row infoPanel p-0 m-0" aria-labelledby="headingFour">
-            <div class="container">
-              <div class="currency">
-                <div id="currencyInput">
-                    <strong><p id="country_currency"></p></strong>
-                    <strong><p id="choose_currency">Please choose this currency from drop-down menu to exchange to currency of your choice</p></strong>
-                </div> 
-                <select name="" id="input_currency">
-                    <option value="AED">AED</option>
-                    <option value="ARS">ARS</option>
-                    <option value="AUD">AUD</option>
-                    <option value="BGN">BGN</option>
-                    <option value="BRL">BRL</option>
-                    <option value="BSD">BSD</option>
-                    <option value="CAD">CAD</option>
-                    <option value="CHF">CHF</option>
-                    <option value="CLP">CLP</option>
-                    <option value="CNY">CNY</option>
-                    <option value="COP">COP</option>
-                    <option value="CZK">CZK</option>
-                    <option value="DKK">DKK</option>
-                    <option value="DOP">DOP</option>
-                    <option value="EGP">EGP</option>
-                    <option value="EUR">EUR</option>
-                    <option value="FJD">FJD</option>
-                    <option value="GBP" selected>GBP</option>
-                    <option value="GTQ">GTQ</option>
-                    <option value="HKD">HKD</option>
-                    <option value="HRK">HRK</option>
-                    <option value="HUF">HUF</option>
-                    <option value="IDR">IDR</option>
-                    <option value="ILS">ILS</option>
-                    <option value="INR">INR</option>
-                    <option value="ISK">ISK</option>
-                    <option value="JPY">JPY</option>
-                    <option value="KRW">KRW</option>
-                    <option value="KZT">KZT</option>
-                    <option value="MXN">MXN</option>
-                    <option value="MYR">MYR</option>
-                    <option value="NOK">NOK</option>
-                    <option value="NZD">NZD</option>
-                    <option value="PAB">PAB</option>
-                    <option value="PEN">PEN</option>
-                    <option value="PHP">PHP</option>
-                    <option value="PKR">PKR</option>
-                    <option value="PLN">PLN</option>
-                    <option value="PYG">PYG</option>
-                    <option value="RON">RON</option>
-                    <option value="RUB">RUB</option>
-                    <option value="SAR">SAR</option>
-                    <option value="SEK">SEK</option>
-                    <option value="SGD">SGD</option>
-                    <option value="THB">THB</option>
-                    <option value="TRY">TRY</option>
-                    <option value="TWD">TWD</option>
-                    <option value="UAH">UAH</option>
-                    <option value="USD">USD</option>
-                    <option value="UYU">UYU</option>
-                    <option value="VND">VND</option>
-                    <option value="ZAR">ZAR</option>
-                </select>                 
-                  <input type="number" name="" id="input_amount" value="1">
-              </div>
-              <button id="exchange">
-                      ↕   
-                  </button>
-              <div class="currency">
-                  <select name="" id="output_currency">
-                          <option value="AED">AED</option>
-                          <option value="ARS">ARS</option>
-                          <option value="AUD">AUD</option>
-                          <option value="BGN">BGN</option>
-                          <option value="BRL">BRL</option>
-                          <option value="BSD">BSD</option>
-                          <option value="CAD">CAD</option>
-                          <option value="CHF">CHF</option>
-                          <option value="CLP">CLP</option>
-                          <option value="CNY">CNY</option>
-                          <option value="COP">COP</option>
-                          <option value="CZK">CZK</option>
-                          <option value="DKK">DKK</option>
-                          <option value="DOP">DOP</option>
-                          <option value="EGP">EGP</option>
-                          <option value="EUR">EUR</option>
-                          <option value="FJD">FJD</option>
-                          <option value="GBP">GBP</option>
-                          <option value="GTQ">GTQ</option>
-                          <option value="HKD">HKD</option>
-                          <option value="HRK">HRK</option>
-                          <option value="HUF">HUF</option>
-                          <option value="IDR">IDR</option>
-                          <option value="ILS">ILS</option>
-                          <option value="INR">INR</option>
-                          <option value="ISK">ISK</option>
-                          <option value="JPY">JPY</option>
-                          <option value="KRW">KRW</option>
-                          <option value="KZT">KZT</option>
-                          <option value="MXN">MXN</option>
-                          <option value="MYR">MYR</option>
-                          <option value="NOK">NOK</option>
-                          <option value="NZD">NZD</option>
-                          <option value="PAB">PAB</option>
-                          <option value="PEN">PEN</option>
-                          <option value="PHP">PHP</option>
-                          <option value="PKR">PKR</option>
-                          <option value="PLN">PLN</option>
-                          <option value="PYG">PYG</option>
-                          <option value="RON">RON</option>
-                          <option value="RUB">RUB</option>
-                          <option value="SAR">SAR</option>
-                          <option value="SEK">SEK</option>
-                          <option value="SGD">SGD</option>
-                          <option value="THB">THB</option>
-                          <option value="TRY">TRY</option>
-                          <option value="TWD">TWD</option>
-                          <option value="UAH">UAH</option>
-                          <option value="USD" selected>USD</option>
-                          <option value="UYU">UYU</option>
-                          <option value="VND">VND</option>
-                          <option value="ZAR">ZAR</option>
-                  </select>
-                  <input type="number" name="" id="output_amount" placeholder="0"/>
-              </div>
-              <div class="result">
-                      <div class="rate" id="rate"></div>
-      
-              </div>
-              
-          </div>
-          </div>
-
-          
-        </div>
-      </div>
-    </div>
-  </div>
 
           
         <div class="container-fluid map" id="map"></div>
