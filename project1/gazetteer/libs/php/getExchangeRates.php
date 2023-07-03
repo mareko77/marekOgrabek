@@ -1,7 +1,7 @@
 <?php
 
 	$executionStartTime = microtime(true) / 1000;
-    $url='https://openexchangerates.org/api/latest.json?app_id=beca99bc74e14766a8d9f7bb1dcc3797';
+    $url='https://openexchangerates.org/api/latest.json?app_id=45b8ebcdbdfc40f784788810ecba04ff';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -16,7 +16,7 @@
 
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
-	$output['status']['description'] = "mission saved";
+	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
 	$output['exchangeRate'] = $decode;
 	
