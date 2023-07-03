@@ -303,18 +303,26 @@ $("#select-country").change(function(){
                     </div>`
                 ));
 
-                currencyCode = result.currencies;
-                currencySymbol = result.currencies.symbol;
+                currencyCode = Object.keys(result[0].currencies)[0];
+                currencySymbol = result[0].currencies[currencyCode].symbol;
+                currencyName = result[0].currencies[currencyCode].name; 
                 $('#nav-currency').html();
-                $('#currency').html('<strong> ' + result.currency.name + '</strong><br>');
+                $('#currency').html('Currency: <strong>' + currencyName + '</strong><br>');
                 $('#currencyCode').html('Code: <strong>' + currencyCode + '</strong><br>');
-                $('#currencySymbol').html('Symbol: <strong>' + result.currencies.symbol + '</strong><br>');
+                $('#currencySymbol').html('Symbol: <strong>' + currencySymbol + '</strong><br>');
+                console.log(currencyCode);
+                console.log(currencySymbol);
+                console.log(currencyName);
 
                 // Exchange Rates
                 $.ajax({
                     url: "libs/php/getExchangeRates.php",
                     type: 'GET',
                     dataType: 'json',
+                    
+                    beforeSend: function () {
+                        $("#loader").removeClass("hidden");
+                    },
                     success: function(result) {
                         console.log(result);
                         if (result.status.name == "ok") {
