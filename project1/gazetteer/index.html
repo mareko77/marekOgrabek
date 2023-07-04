@@ -71,20 +71,34 @@
         <div class="modal fade" id="exchangeModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header" id="currency-header">
                         <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
                     </div>
                         <div class="modal-body" id="currency-body">
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <span id="nav-currency-tab">Currency</span> 
-                            </div>
-
-                            <div class="tab-pane fade" id="nav-currency" role="tabpanel" aria-labelledby="nav-currency-tab">
-                                <span id="currency"></span>
-                                <span id="currencySymbol"></span>
-                                <span id="currencyCode"></span>
-                                <span id="exchangeRate"></span>
-                              </div>
+                            <table id="nav-currency" class="table">
+                                <tbody>                                     
+                                <tr>
+                                    <td id="currencyData"><strong>Currency: </strong></td>
+                                    <th class="text-sm-left" scope="row"></th>
+                                    <td id="currency"></td>
+                                </tr>
+                                <tr>
+                                    <td id="currencySymbolData"><strong>Symbol: </strong></td>
+                                    <th class="text-sm-left" scope="row"></th>
+                                    <td id="currencySymbol"></td>
+                                </tr>
+                                <tr>
+                                    <td id="currencyCodeData"><strong>Code: </strong></td>
+                                    <th class="text-sm-left" scope="row"></th>
+                                    <td id="currencyCode"></td>
+                                </tr>
+                                <tr>
+                                    <td id="exchangeRateData"><strong>Rate: </strong></td>
+                                    <th class="text-sm-left" scope="row"></th>
+                                    <td id="exchangeRate"></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                 </div>
             </div>
@@ -214,11 +228,11 @@
     <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="modalTitle">&bull; News &bull;</h6>
+                <div class="modal-header" id="news-header">
+                    <h6 class="modal-title" id="modalTitle">News</h6>
                     <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
                 </div>
-                    <div class="modal-body">
+                    <div class="modal-body" id="news-body">
                         
                         <div class="container-fluid news-info p-1">
                             <div card="row row-cols-1" id="news-info-card">
