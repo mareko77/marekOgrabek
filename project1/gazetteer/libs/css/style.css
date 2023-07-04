@@ -146,9 +146,20 @@ body {
     height: 150px;
 }
 
+#wikipedia-info {
+    background-image: linear-gradient(to right, rgba(255,255,255, 0.5) 0 100%), url("../../images/wikipedia-logo.jpg");
+    background-size: cover;
+}
+
+#country-info-image {
+    background-image: linear-gradient(to right, rgba(255,255,255, 0.5) 0 100%), url("../../images/country.jpg");
+    background-size: cover;
+}
+
 /* Weather Card */
 #weather-header, #pages1 {
     background-image: linear-gradient(to right, rgba(255,255,255, 0.6) 0 100%), url("../../images/sky.jpg");
+    background-size: cover;
 }
 
 .modal-content {
@@ -215,9 +226,9 @@ body {
 }
 
 /*News*/
-#news-header, #news-body {
+#news-body {
     background-image: linear-gradient(to right, rgba(255,255,255, 0.5) 0 100%), url("../../images/news.jpg");
-    background-size: contain;
+    background-size: cover;
 }
 
 /*Flag*/
