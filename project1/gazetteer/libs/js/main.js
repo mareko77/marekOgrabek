@@ -267,12 +267,12 @@ $("#select-country").change(function(){
 
                     `<div class='country-body'>
                     <div class="card-body country">
-                        <h3 id='flag-country'><strong>${result[0].altSpellings[1]}</strong></h3>
+                        <h3 id='flag-country'><strong>${result[0].name.common}</strong></h3>
                     </div>
                     <div class="card h-100 country">
                             <img src="${result[0].flags.png}" alt="${result[0].flags.alt}"/><br>
                     </div> 
-                        <table class="table table-striped table-sm">
+                        <table class="table table-striped table-sm" id='country-info-image'>
                             <tbody>
                                 <tr>
                                     <th scope="row">Capital:</th><td>${result[0].capital}</td>
@@ -295,13 +295,23 @@ $("#select-country").change(function(){
                                  <tr>
                                     <th scope="row">Timezone:</th><td>${result[0].timezones}</td>
                                 </tr>
+                                <tr>
+                                <th scope="row">Languages:</th><td>${Object.values(result[0].languages)[0]}</td>
+                                </tr>
+                                <tr>
+                                <th scope="row">Currencies:</th><td>${result[0].currencies[Object.keys(result[0].currencies)[0]].name}<br><br><br><br></td>
+                                </tr>                      
                             </tbody>
                         </table>
                     <div class="coatOfArms" id='coatOfArms'>
                         <img src="${result[0].coatOfArms.png}"/>
-                    </div>
+                    </div>                       
                     </div>`
                 ));
+
+
+                $('#currency-header').html();
+                $('#countryCurrencyLabel').html(result[0].name.common + ' currency and rate');
 
             },
             complete: function () {
@@ -361,59 +371,6 @@ $("#select-country").change(function(){
             });
         }
     });  
-
-
-
-    //Country info 1
-
-    $.ajax({
-        url: "libs/php/getCountryInfo1.php",
-        type: 'POST',
-        dataType: 'json',
-        data: {
-            country: $('#select-country option:selected').val()
-        },
-
-        beforeSend: function () {
-            $("#loader").removeClass("hidden");
-        },
-
-        success: function(result) {
-           
-            console.log(result);
-
-            let countryInformation1 = $("#country-info1");
-
-            countryInformation1 .html("");
-            countryInformation1 .append($(
-                
-
-                    
-                        `<table class="table table-striped table-sm">
-                            <tbody>
-                                <tr>
-                                    <th scope="row">Languages:</th><td>${result.data[0].languages}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Currencies:</th><td>${result.data[0].currencyCode}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Country Code:</th><td>${result.data[0].countryCode}</td>
-                                </tr>
-                            </tbody>
-                        </table>`
-                ));       
-        },
-        complete: function () {
-            $("#loader").addClass("hidden")
-        },
-        error: function(jqXHR,textStatus, errorThrown) {
-            alert("Error: " + errorThrown);
-            console.log(jqXHR);
-        }
-    });  
-
-      
 
       //Location Images:
       $.ajax({
