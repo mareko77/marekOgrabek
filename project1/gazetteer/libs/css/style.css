@@ -147,11 +147,7 @@ body {
 }
 
 /* Weather Card */
-#weather-header {
-    background-image: linear-gradient(to right, rgba(255,255,255, 0.6) 0 100%), url("../../images/sky.jpg");
-}
-
-#pages1 {
+#weather-header, #pages1 {
     background-image: linear-gradient(to right, rgba(255,255,255, 0.6) 0 100%), url("../../images/sky.jpg");
 }
 
@@ -218,6 +214,12 @@ body {
     background-color: rgb(63, 167, 228);
 }
 
+/*News*/
+#news-header, #news-body {
+    background-image: linear-gradient(to right, rgba(255,255,255, 0.5) 0 100%), url("../../images/news.jpg");
+    background-size: contain;
+}
+
 /*Flag*/
 
 #flag-country {
@@ -235,31 +237,17 @@ body {
     padding: 10px;
 }
 
-#image-header {
+#image-header, #page5  {
     background-image: linear-gradient(to right, rgba(255,255,255, 0.5) 0 100%), url("../../images/photo-background.jpg");
    background-size: contain;
 }
-#page5 {
-   background-image: linear-gradient(to right, rgba(255,255,255, 0.5) 0 100%), url("../../images/photo-background.jpg");
-   background-size: contain;
-}
-
 
 /*Exchange*/
-#exchangeModalTitle {
-    text-align: center;
-}
-
-#exchange-header {
-   background-image: linear-gradient(to right, rgba(255,255,255, 0.6) 0 100%), url("../../images/money.jpg");
+#currency-body, #currency-header {
+   background-image: linear-gradient(to right, rgba(255,255,255, 0.7) 0 100%), url("../../images/money.jpg");
    background-size: contain;
 }
 
-#page4 {
-   background-image: linear-gradient(to right, rgba(255,255,255, 0.6) 0 100%), url("../../images/money.jpg");
-   background-size: contain;
-   
-}
 
 /* Loader */
 .lds-dual-ring.hidden {
