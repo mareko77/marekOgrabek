@@ -47,7 +47,6 @@
                     </div>
                         <div class="modal-body" id="country-body">                           
                             <div class="container-fluid country-info" id="country-info"></div>
-                            <div class="container-fluid country-info" id="country-info1"></div>
                             <div class="container-fluid country-info" id="wikipedia-info">
                                 <div id="wiki" class="col-12">
                                     <h2>Wikipedia: <span id="sumTitle"></span> </h2>
@@ -70,8 +69,9 @@
         <!--currency modal-->
         <div class="modal fade" id="exchangeModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                <div class="modal-content">
+                <div class="modal-content">                   
                     <div class="modal-header" id="currency-header">
+                        <h3 id="countryCurrencyLabel" ></h3>
                         <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
                     </div>
                         <div class="modal-body" id="currency-body">
@@ -227,7 +227,7 @@
 <!--News modal-->
     <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content" id="newsContent">
                 <div class="modal-header" id="news-header">
                     <h6 class="modal-title" id="modalTitle">News</h6>
                     <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
@@ -246,6 +246,7 @@
         </div>
     </div>
 
+    
           
         <div class="container-fluid map" id="map"></div>
         
