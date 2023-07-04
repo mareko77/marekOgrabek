@@ -303,48 +303,66 @@ $("#select-country").change(function(){
                     </div>`
                 ));
 
+            },
+            complete: function () {
+                $("#loader").addClass("hidden")
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+    }); 
+    
+    
+    $.ajax({
+        url: "libs/php/getRestCountries.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            country: $('#select-country option:selected').val()
+        },
+
+        beforeSend: function () {
+            $("#loader").removeClass("hidden");
+        },
+
+        success: function(result) {
                 currencyCode = Object.keys(result[0].currencies)[0];
                 currencySymbol = result[0].currencies[currencyCode].symbol;
                 currencyName = result[0].currencies[currencyCode].name; 
                 $('#nav-currency').html();
-                $('#currency').html('Currency: <strong>' + currencyName + '</strong><br>');
-                $('#currencyCode').html('Code: <strong>' + currencyCode + '</strong><br>');
-                $('#currencySymbol').html('Symbol: <strong>' + currencySymbol + '</strong><br>');
-                console.log(currencyCode);
-                console.log(currencySymbol);
-                console.log(currencyName);
-
-                // Exchange Rates
-                $.ajax({
-                    url: "libs/php/getExchangeRates.php",
-                    type: 'GET',
-                    dataType: 'json',
+                $('#currency').html(currencyName + '<br>');
+                $('#currencyCode').html(currencyCode + '<br>');
+                $('#currencySymbol').html(currencySymbol + '<br>');
+       
+              // Exchange Rates
+              $.ajax({
+                url: "libs/php/getExchangeRates.php",
+                type: 'GET',
+                dataType: 'json',
+                
+                beforeSend: function () {
+                    $("#loader").removeClass("hidden");
+                },
+                success: function(result) {
+                    console.log(result);
+                    if (result.status.name == "ok") {
                     
-                    beforeSend: function () {
-                        $("#loader").removeClass("hidden");
-                    },
-                    success: function(result) {
-                        console.log(result);
-                        if (result.status.name == "ok") {
-                        
-                        exchangeRate = result.exchangeRate.rates[currencyCode];
-                        $('#nav-currency').html();
-                        $('#exchangeRate').html('Exchange Rate: <strong>' + exchangeRate.toFixed(3) + '</strong> ' + currencyCode + ' = <strong>1</strong> USD. <br>');
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus, errorThrown);
+                    exchangeRate = result.exchangeRate.rates[currencyCode];
+                    $('#nav-currency').html();
+                    $('#exchangeRate').html(exchangeRate.toFixed(3) + currencyCode + ' = 1 USD. <br>');
                     }
-                });
-        },
-        complete: function () {
-            $("#loader").addClass("hidden")
-        },
-        error: function(jqXHR,textStatus, errorThrown) {
-            alert("Error: " + errorThrown);
-            console.log(jqXHR);
+                },
+                complete: function () {
+                    $("#loader").addClass("hidden")
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });
         }
     });  
+
+
 
     //Country info 1
 
