@@ -272,7 +272,7 @@ $("#select-country").change(function(){
                     <div class="card h-100 country">
                             <img src="${result[0].flags.png}" alt="${result[0].flags.alt}"/><br>
                     </div> 
-                        <table class="table table-striped table-sm" id='country-info-image'>
+                        <table class="table flex table-striped table-sm" id='country-info-image'>
                             <tbody>
                                 <tr>
                                     <th scope="row">Capital:</th><td>${result[0].capital}</td>
@@ -290,10 +290,7 @@ $("#select-country").change(function(){
                                     <th scope="row">Subregion:</th><td>${result[0].subregion}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Timezone:</th><td>${result[0].timezones}</td>
-                                </tr>
-                                 <tr>
-                                    <th scope="row">Timezone:</th><td>${result[0].timezones}</td>
+                                    <th scope="row">Demonyms:</th><td>${result[0].demonyms[Object.keys(result[0].demonyms)[0]].m}</td>
                                 </tr>
                                 <tr>
                                 <th scope="row">Languages:</th><td>${Object.values(result[0].languages)[0]}</td>
