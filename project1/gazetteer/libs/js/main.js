@@ -296,8 +296,11 @@ $("#select-country").change(function(){
                                 <th scope="row">Languages:</th><td>${Object.values(result[0].languages)[0]}</td>
                                 </tr>
                                 <tr>
-                                <th scope="row">Currencies:</th><td>${result[0].currencies[Object.keys(result[0].currencies)[0]].name}<br><br><br><br></td>
-                                </tr>                      
+                                <th scope="row">Currencies:</th><td>${result[0].currencies[Object.keys(result[0].currencies)[0]].name}</td>
+                                </tr>
+                                <tr>
+                                <th scope="row">Driving side:</th><td>${result[0].car.side}</td>
+                                </tr>                    
                             </tbody>
                         </table>
                     <div class="coatOfArms" id='coatOfArms'>
