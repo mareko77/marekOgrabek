@@ -360,6 +360,10 @@ $("#select-country").change(function(){
                     exchangeRate = result.exchangeRate.rates[currencyCode];
                     $('#nav-currency').html();
                     $('#exchangeRate').html(exchangeRate.toFixed(3) + currencyCode + ' = 1 USD. <br>');
+
+                    var inputValue = document.getElementById("inputValue").value;
+                    $('#exchangeResult').html(exchangeRate * inputValue + ' USD');
+
                     }
                 },
                 complete: function () {
@@ -430,9 +434,8 @@ $("#select-country").change(function(){
                 $("#sumTitle").append(result['data']['0']['title']);
                 $("#summary").html(result['data']['0']['summary']);
                 $("#wikipediaUrl").attr('href', result['data']['0']['wikipediaUrl']);
-                $("#wikipediaUrl").html(result['data']['0']['wikipediaUrl']);                
+                $("#wikipediaUrl").html(result['data']['0']['wikipediaUrl']);               
             }
-        
         },
         complete: function () {
             $("#loader").addClass("hidden")
@@ -493,8 +496,6 @@ $("#select-country").change(function(){
     });
      
  }); 
-                
-
 
 
 //earthquake 
