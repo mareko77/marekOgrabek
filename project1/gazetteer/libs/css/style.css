@@ -69,7 +69,8 @@ body {
 }
 
 .modal-header {
-    background: var(--blue);
+   /* background: var(--blue);*/
+   background-color: rgb(232, 233, 222);
 }
 
 .modal-header h6 {
@@ -155,6 +156,11 @@ body {
     background-image: linear-gradient(to right, rgba(255,255,255, 0.5) 0 100%), url("../../images/country.jpg");
     background-size: cover;
 }
+
+#country-padding {
+    padding-top: 50px;
+}
+
 
 /* Weather Card */
 #weather-header, #pages1 {
@@ -259,6 +265,10 @@ body {
    background-size: contain;
 }
 
+#exchangeBtn {
+    border: 2px black;
+    margin: 10px;
+}
 
 /* Loader */
 .lds-dual-ring.hidden {
