@@ -343,6 +343,7 @@ $("#select-country").change(function(){
                 $('#currency').html(currencyName + '<br>');
                 $('#currencyCode').html(currencyCode + '<br>');
                 $('#currencySymbol').html(currencySymbol + '<br>');
+                $('#from').html(currencyCode);
        
               // Exchange Rates
               $.ajax({
@@ -359,10 +360,7 @@ $("#select-country").change(function(){
                     
                     exchangeRate = result.exchangeRate.rates[currencyCode];
                     $('#nav-currency').html();
-                    $('#exchangeRate').html(exchangeRate.toFixed(3) + currencyCode + ' = 1 USD. <br>');
-
-                    var inputValue = document.getElementById("inputValue").value;
-                    $('#exchangeResult').html(exchangeRate * inputValue + ' USD');
+                    $('#exchangeRate').html(exchangeRate.toFixed(2) + currencyCode + ' = 1 USD. <br>');
 
                     }
                 },
@@ -496,6 +494,54 @@ $("#select-country").change(function(){
     });
      
  }); 
+
+
+//Exchange
+var currencies = ["AUD","BGN","BRL","CAD","CHF","CNY","CZK","DKK","EUR","GBP","HRK","HUF","IDR","ILS","INR","ISK","JPY","KRW","MXN","MYR","NOK","NZD","PHP","PLN","RON","RUB","SEK","SGD","THB","TRY","USD","ZAR"];
+    
+//Populate currencies -
+    $('#select').empty();
+    for (var i = 0; i <= currencies.length; i++) {
+        $('#to').append('<option value="' + currencies[i] + '">' + currencies[i] + '</option>');
+    }
+
+
+ $("#exchangeBtn").on('click', function(){
+    $.ajax({
+        url: "libs/php/getRestCountries.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            country: $('#select-country option:selected').val()
+        },
+        success: function(result) {
+                console.log(result);
+
+                currencyCode = Object.keys(result[0].currencies)[0];
+                $('#from').html(currencyCode);
+       
+              // Exchange Rates
+              $.ajax({
+                url: "libs/php/getExchangeRates.php",
+                type: 'GET',
+                dataType: 'json',
+                base: $('#from').text(),
+                success: function(result) {
+                    console.log(result);
+                    if (result.status.name == "ok") {
+
+                        var conversion = Number(result.exchangeRate.rates[$('#to option:selected').text()] * $('#value').val());
+                        $("#exchangeResult").html(conversion.toFixed(2) + "  " + $('#to option:selected').text());
+                    
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });
+        }
+    }); 
+});
 
 
 //earthquake 
