@@ -126,7 +126,7 @@
 
         <!--Weather Modal -->
   <div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
       <div class="modal-content">
         <div class="modal-header" id="weather-header">
                 <h1 class="modal-title txtCapitalWeatherName" id="weatherModalLabel" ></h1>
@@ -134,7 +134,10 @@
         </div>
         <div class="modal-body" id="pages1">
             <div class="container-fluid weather-info align-content-center">
-
+                    <div id="today">
+                        <p id="todaysDate"></p>
+                        <p id="todayDay"></p>
+                    </div>
                     <h1 id="txtCapitalWeatherName"></h1>
                     <div id="wrapper">
                        
@@ -155,7 +158,11 @@
                     
                     <table id="weatherTable" class="table">
                         <tbody>
-                              
+                        <tr>
+                            <td></td>
+                            <th class="feels_like_today" scope="row">Feels like </th>
+                            <td id="feels_like"></td>
+                        </tr>  
                         <tr>
                             <td id="capitalWindIcon"></td>
                             <th class="text-sm-left" scope="row">Windspeed:</th>
@@ -188,6 +195,8 @@
                         </tr>
                         </tbody>
                     </table>
+
+                   
 
                     <div id="wrapper1">
                        <p class="tomorrow">Weather forecast for tomorrow</p>
