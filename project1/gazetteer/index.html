@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="vendors/css/MarkerCluster.css"/>
         <link rel="stylesheet" href="vendors/css/MarkerCluster.Default.css"/>
         
-        <link rel="stylesheet" type="text/css" href="libs/css/style.css" >    
+        <link rel="stylesheet" type="text/css" href="libs/css/style.min.css" >    
     </head>
 
     <body>
@@ -80,22 +80,22 @@
                                 <tr>
                                     <td id="currencyData"><strong>Currency: </strong></td>
                                     <th class="text-sm-left" scope="row"></th>
-                                    <td id="currency"></td>
+                                    <td id="currency" style ="font-weight: bold"></td>
                                 </tr>
                                 <tr>
                                     <td id="currencySymbolData"><strong>Symbol: </strong></td>
                                     <th class="text-sm-left" scope="row"></th>
-                                    <td id="currencySymbol"></td>
+                                    <td id="currencySymbol" style ="font-weight: bold"></td>
                                 </tr>
                                 <tr>
                                     <td id="currencyCodeData"><strong>Code: </strong></td>
                                     <th class="text-sm-left" scope="row"></th>
-                                    <td id="currencyCode"></td>
+                                    <td id="currencyCode" style ="font-weight: bold"></td>
                                 </tr>
                                 <tr>
                                     <td id="exchangeRateData"><strong>Rate (base USD): </strong></td>
                                     <th class="text-sm-left" scope="row"></th>
-                                    <td id="exchangeRate"></td>
+                                    <td id="exchangeRate" style ="font-weight: bold"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -106,22 +106,17 @@
                                   <tbody>
                                     <tr>
                                         <th>Amount: </th>
-                                        <th><input class="exchangeInput" type="number" id="value" placeholder="0" style="width: 100px"></th>
+                                        <th><input class="exchangeInput" type="number" id="value" placeholder="0" style="max-width: 100px"></th>
                                       </tr>
                                     <tr>
-                                      <td>From: </td>
-                                      <td><p id="from" class="exchangeInput"></p></td>
-                                    </tr>
-                                    <tr>
-                                      <td>To: </td>
-                                      <td><select id="to" class="exchangeInput" class="row"></select></td>
-                                    </tr>
-                                    <tr>
-                                      <td><button class="row btn" id="exchangeBtn">Exchange</button></td>
-                                      <td><h5 class="row" id="exchangeResult"></h5></td>
+                                      <td><h6 style ="font-weight: bold">Exchange result: </h6></td>
+                                      <td><h6 class="row" id="exchangeResult" style ="font-weight: bold"></h6></td>
                                     </tr>
                                   </tbody>
                                 </table>
+                                <div id="buttonCont">
+                                    <button onclick="clearContent()" class="clearButton">CLEAR EXCHANGE RESULT</button>
+                                </div>                               
                             </div>
                         </div>
                 </div>
@@ -250,7 +245,7 @@
 
 <!--News modal-->
     <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content" id="newsContent">
                 <div class="modal-header" id="news-header">
                     <h6 class="modal-title" id="modalTitle"><strong>News</strong></h6>
@@ -269,7 +264,6 @@
             </div>
         </div>
     </div>
-
     
           
         <div class="container-fluid map" id="map"></div>
@@ -288,7 +282,7 @@
         <script src="vendors/js/easy-button.js"></script>
         <script src="vendors/js/leaflet.markercluster.js"></script>
 
-        <script type="application/javascript" src="libs/js/main.js"></script>
+        <script type="application/javascript" src="libs/js/main.min.js"></script>
     </body>
 
 </html>
