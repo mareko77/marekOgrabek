@@ -283,14 +283,6 @@ html, body {
         display: none;
     }    
 
-    #coatOfArms img {
-        
-        position: absolute;
-        left: 25%;
-        max-width: 150px;
-        max-height: 150px;
-    }
-
     .float-child {
         width: 50%;
         float: right;
