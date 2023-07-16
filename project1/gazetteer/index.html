@@ -7,41 +7,32 @@
         <meta name="description" content="Gazetteer">
         <meta name="author" content="MarekOgrabek">
 
-        <link rel="icon" href="images/favicon.png">
-
+        <link rel="icon" href="images/favicon.ico">
+        
         <link rel="stylesheet" href="vendors/css/leaflet.css"/>
         <link rel="stylesheet" href="vendors/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="vendors/css/all.min.css"/>
         <link rel="stylesheet" href="vendors/css/easy-button.css"/>
         <link rel="stylesheet" href="vendors/css/MarkerCluster.css"/>
         <link rel="stylesheet" href="vendors/css/MarkerCluster.Default.css"/>
-        
-        <link rel="stylesheet" type="text/css" href="libs/css/style.min.css" >    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+        <link rel="stylesheet" href="vendors\css\leaflet.extra-markers.min.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+        <link rel="stylesheet" type="text/css" href="libs/css/style.css" >    
     </head>
 
-    <body>
-         <nav class="navbar fixed-top"> 
-            <div class=" nav-wrapper container-fluid justify-content-center"> 
-                <div class="nav-logo">
-                    <div class="logo-image">
-                        <h4 id="logo">Gazetteer</h4>
-                    </div>
-                    
-                    <div class="search-select-box">
-                        <select class="form-select form-select-sm" id="select-country">
-                           <option selected disabled hidden>Search for a country...</option>
-                        </select>
-                    </div>       
-                </div>
-            </div>
-        </nav>
+    <body>    
+        <span id="search-select-box">
+            <select class="form-select shadow-sm" id="select-country">
+                <option selected disabled hidden>Search for a country...</option>
+            </select>
+        </span>      
 
         <!--country info modal-->
         <div class="modal fade" id="countryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="modalTitle"></h6>
+                        <h6 class="modal-title" id="modalTitle">Summary</h6>
                         <h3 id="countryName" class="countryClass"></h3>
                         <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
                     </div>
@@ -63,183 +54,177 @@
                                   </div>
                             </div>
                         </div>
-                </div>
-            </div>
-        </div>   
-        
-        <!--currency modal-->
-        <div class="modal fade" id="exchangeModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                <div class="modal-content">                   
-                    <div class="modal-header" id="currency-header">
-                        <h3 id="countryCurrencyLabel" ></h3>
-                        <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
-                    </div>
-                        <div class="modal-body" id="currency-body">
-                            <table id="nav-currency" class="table">
-                                <tbody>                                     
-                                <tr>
-                                    <td id="currencyData"><strong>Currency: </strong></td>
-                                    <th class="text-sm-left" scope="row"></th>
-                                    <td id="currency" style ="font-weight: bold"></td>
-                                </tr>
-                                <tr>
-                                    <td id="currencySymbolData"><strong>Symbol: </strong></td>
-                                    <th class="text-sm-left" scope="row"></th>
-                                    <td id="currencySymbol" style ="font-weight: bold"></td>
-                                </tr>
-                                <tr>
-                                    <td id="currencyCodeData"><strong>Code: </strong></td>
-                                    <th class="text-sm-left" scope="row"></th>
-                                    <td id="currencyCode" style ="font-weight: bold"></td>
-                                </tr>
-                                <tr>
-                                    <td id="exchangeRateData"><strong>Rate (base USD): </strong></td>
-                                    <th class="text-sm-left" scope="row"></th>
-                                    <td id="exchangeRate" style ="font-weight: bold"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            
-                            <!-- Converter -->
-                            <div class="row infoPanel p-0 m-0" aria-labelledby="headingFour">
-                                <table id='converter' class="table table-striped col-12 m-0">        
-                                  <tbody>
-                                    <tr>
-                                        <th>Amount: </th>
-                                        <th><input class="exchangeInput" type="number" id="value" placeholder="0" style="max-width: 100px"></th>
-                                      </tr>
-                                    <tr>
-                                      <td><h6 style ="font-weight: bold">Exchange result: </h6></td>
-                                      <td><h6 class="row" id="exchangeResult" style ="font-weight: bold"></h6></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                                <div id="buttonCont">
-                                    <button onclick="clearContent()" class="clearButton">CLEAR EXCHANGE RESULT</button>
-                                </div>                               
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
                         </div>
                 </div>
             </div>
         </div>  
+
+        <!--currency modal-->
+        <div class="modal fade" id="exchangeModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+              <div class="modal-content">                   
+                <div class="modal-header bg-secondary bg-gradient text-white">
+                  <h5>Currency calculator</h5>
+                 
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                      <div class="currency-modal-body">
+
+                        <h5 class="modal-title" id="currencyCode" style="display: none;"></h5>
+                          
+                          <form>
+
+                            <div class="form-floating mb-3">
+                  
+                              <input id="exchangeInput" type="number" class="form-control" value="0" min="1" step="1">
+                              <label id="exchangeInputLabel" for="exchangeInput"></label>
+                  
+                            </div>
+
+                            <div class="form-floating">                             
+                              <textarea id ='toAmount' cols=30 rows="1" disabled></textarea>                            
+                            </div>
+                  
+                          </form>
+                      </div>
+                      <div class="modal-footer">
+                        <div id="buttonCont">
+                          <button onclick="clearContent()" class="btn btn-outline-secondary btn-sm">Clear</button>
+                        </div>   
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    </div>
+              </div>
+          </div>
+      </div>  
         
 
         <!--Weather Modal -->
-  <div class="modal fade" id="weatherModal" tabindex="-1" aria-labelledby="weatherModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header" id="weather-header">
-                <h1 class="modal-title txtCapitalWeatherName" id="weatherModalLabel" ></h1>
-                <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
-        </div>
-        <div class="modal-body" id="pages1">
-            <div class="container-fluid weather-info align-content-center">
-                    <div id="today">
-                        <p id="todaysDate"></p>
-                        <p id="todayDay"></p>
-                    </div>
-                    <h1 id="txtCapitalWeatherName"></h1>
-                    <div id="wrapper">
-                       
-                        <div class="float-container">
-                            <div class="float-child">
-                                <div id="capitalWeatherIcon"></div>
-                            </div>
-                            <div class="float-child">
-                                <div id="txtCapitalWeatherCurrent"></div>
-                                <div id="desc">
-                                    <strong><p id="txtCapitalWeatherDescription"></p></strong>
-                                </div>
-                            </div>                           
-                        </div>
-                        
-                        
-                    </div>
+<div id="weatherModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="weatherModalLabel" aria-hidden="true">             
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">              
+        <div class="modal-content shadow"> 
+
+        <div class="modal-header bg-primary bg-gradient text-white" id="weather-header">         
+            <h5 class="modal-title" id="weatherCountry"></h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>   
+          </div>
+        <div class="weather-modal-body" id="pages1">
+            <div id="weather-info">
                     
-                    <table id="weatherTable" class="table">
-                        <tbody>
-                        <tr>
-                            <td></td>
-                            <th class="feels_like_today" scope="row">Feels like </th>
-                            <td id="feels_like"></td>
-                        </tr>  
-                        <tr>
-                            <td id="capitalWindIcon"></td>
-                            <th class="text-sm-left" scope="row">Windspeed:</th>
-                            <td id="txtCapitalWeatherWindspeed"></td>
-                        </tr>
-                        <tr>
-                            <td id="capitalHumidityIcon"></td>
-                            <th scope="row">Humidity:</th>
-                            <td id="txtCapitalWeatherHumidity"></td>
-                        </tr>
-                        <tr>
-                            <td class="capitalHiTempIcon"></td>
-                            <th scope="row">Highest temperature:</th>
-                            <td id="txtCapitalWeatherHi"></td>
-                        </tr>
-                        <tr>
-                            <td class="capitalLoTempIcon"></td>
-                            <th scope="row">Lowest temperature:</th>
-                            <td id="txtCapitalWeatherLo"></td>
-                        </tr>  
-                        <tr>
-                            <td class="capitalSunriseIcon"></td>
-                            <th scope="row">Sunrise:</th>
-                            <td id="txtCapitalSunrise"></td>
-                        </tr>  
-                        <tr>
-                            <td class="capitalSunsetIcon"></td>
-                            <th scope="row">Sunset:</th>
-                            <td id="txtCapitalSunset"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="row">
+          
+                        <div class="col border m-2">
+              
+                          <p class="fw-bold fs-5 text-center mt-1">TODAY</p>
+                          
+                          <div class="row">
+                            
+                            <div class="col text-center m-3">
 
-                   
-
-                    <div id="wrapper1">
-                       <p class="tomorrow">Weather forecast for tomorrow</p>
-                        <div class="float-container">
-                            <div class="float-child">
-                                <div id="capitalWeatherIconTomorrow"></div>
-                                <div>
-                                    <p id="txtCapitalWeatherDescriptionTomorrow"></p>
-                                </div>                                   
+                                <div id="txtCapitalWeatherDescription" class="fw-bold fs-6"></div>
+                                
                             </div>
-                            <div class="float-child">
-                                <table >
-                                    <tbody>
-                                        <tr>
-                                            <td class="capitalHiTempIcon"></td>
-                                            <th scope="row">Tomorrow's High:</th>
-                                            <td id="txtCapitalTomorrowsWeatherHi"></td>
-                                        </tr>
-                                        <tr>
-                                          <td class="capitalLoTempIcon"></td>
-                                            <th scope="row">Tomorrow's Low:</th>
-                                            <td id="txtCapitalTomorrowsWeatherLo"></td>
-                                        </tr>                                               
-                                    </tbody>
-                                </table>                            
-                            </div>                           
-                        </div>                       
-                    </div>                     
+                            
+                            <div class="col text-center">
+                              
+                                <div id="capitalWeatherIcon" class="img-fluid mt-0"></div>
+                                
+                            </div>              
+              
+                            <div class="col text-center">
+                              
+                              <p class="fw-bold fs-4 mb-0"><span id="txtCapitalWeatherHi"></span></p>
+                              <p class="fs-5 mt-0 text-secondary"><span id="txtCapitalWeatherLo"></span></p>
+                                
+                            </div>              
+                            
+                          </div>
+              
+                        </div>   
+              
+                    </div>
+
+                    <div class="row">
+          
+                        <div class="col border m-2">
+                          
+                          <div class="row">
+                            
+                            <div class="col text-center">
+              
+                              <p id="day1Date" class="fw-bold fs-6 mt-3"></p>
+                              
+                            </div>
+                            
+                          </div>
+                          
+                          <div class="row">
+                            
+                            <div class="col text-center">
+                              
+                              <p class="fw-bold fs-4 mb-0"><span id="txtCapitalTomorrowsWeatherHi"></span></p>
+                              <p class="fs-5 mt-0 text-secondary"><span id="txtCapitalTomorrowsWeatherLo"></span></p>
+                              
+                            </div>
+                            
+                            <div class="col text-center">
+                              
+                                <div id="capitalWeatherIconTomorrow" class="img-fluid mt-0"></div>
+                              
+                            </div>    
+                            
+                          </div>
+                          
+                        </div>   
+              
+                        <div class="col border m-2">
+              
+                          <div class="row">
+                            
+                            <div class="col text-center">
+              
+                              <p id="day2Date" class="fw-bold fs-6 mt-3">Fri 16th</p>
+                              
+                            </div>
+                            
+                          </div>
+                          
+                          <div class="row">
+                            
+                            <div class="col text-center">
+                              
+                              <p class="fw-bold fs-4 mb-0"><span id="txtCapital2ndDayWeatherHi"></span></p>
+                              <p class="fs-5 mt-0 text-secondary"><span id="txtCapital2ndDayWeatherLo"></span></p>
+                              
+                            </div>
+                            
+                            <div class="col text-center">
+                              
+                                <div id="capitalWeatherIcon2ndDay"></div>
+                              
+                            </div>    
+                            
+                          </div>
+                          
+                        </div>         
+              
+                     </div>                  
             </div>
         </div>
+        <div class="weather-modal-footer">
+            <p class="fs-6 fw-light">Powered by <a href="https://openweathermap.org/" target="_blank" title="Free Weather API">Openweathermap.org</a></p>
+          </div>
       </div>
     </div>
-  </div>
-
-
+  </div>-
 
     <!-- Images -->
     <div class="modal fade" id="imagesModalScrollable" tabindex="-1" role="dialog" aria-labelledby="imagesModalScrollableTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" role="document">
           <div class="modal-content">
             <div class="modal-header" id="image-header">
-              <h4 class="modal-title col-10" id="imagesModalScrollableTitle" data-dismiss="modal"><strong>Images</strong></h4>
+              <h4 class="modal-title col-10" id="imagesModalCountry" data-dismiss="modal" style="text-align:center; font-weight:bold"></h4>
               <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
             </div>
             <div class="modal-body" id="page5"> 
@@ -249,33 +234,30 @@
                 </div>
               </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
           </div>
         </div>
       </div>
 
 <!--News modal-->
-    <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content" id="newsContent">
-                <div class="modal-header" id="news-header">
-                    <h6 class="modal-title" id="modalTitle"><strong>News</strong></h6>
-                    <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close">
-                </div>
-                    <div class="modal-body" id="news-body">
-                        
-                        <div class="container-fluid news-info p-1">
-                            <div card="row row-cols-1" id="news-info-card">
 
-                            </div>  
-                                                                                                    
-                        </div>
-                    
-                    </div>
+<div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">      
+        <div class="modal-content shadow">       
+          <div class="modal-header bg-danger bg-gradient text-white">
+                <h6 class="modal-title" id="newsModalTitle"></h6>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close">
+            </div>
+            <div class="modal-body" id="news-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-    
-          
+</div>
+       
         <div class="container-fluid map" id="map"></div>
         
         <div class="loader-wrapper">
@@ -287,11 +269,12 @@
         <script src="vendors/js/jquery-3.7.0.js"></script>
         <script src="vendors/js/leaflet.js"></script>
         <script src="vendors/js/bootstrap.min.js"></script>
-        <script src="vendors/js/all.min.js"></script>
         <script src="vendors/js/moment.min.js"></script>
         <script src="vendors/js/easy-button.js"></script>
         <script src="vendors/js/leaflet.markercluster.js"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+        <script src="vendors\js\leaflet.extra-markers.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
         <script type="application/javascript" src="libs/js/main.js"></script>
     </body>
 
