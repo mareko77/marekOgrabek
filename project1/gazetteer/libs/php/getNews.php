@@ -1,6 +1,6 @@
 <?php
 
-	$url='https://newsapi.org/v2/everything?q=' . $_REQUEST['country'] . '&pageSize=10&sortBy=relevancy&apiKey=527711db59f84ad99164680f94a74fe5';
+	$url='https://newsapi.org/v2/top-headlines?q=' . $_REQUEST['country'] . '&pageSize=10&sortBy=relevancy&apiKey=527711db59f84ad99164680f94a74fe5';
 	
 	
 	$ch = curl_init();
