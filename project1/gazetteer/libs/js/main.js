@@ -17,18 +17,17 @@ const wsm = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Wo
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 });
 
+wsm.addTo(map); 
 
 // Satellite
 const SatelliteMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
 });
 
-SatelliteMap.addTo(map); 
-
 //Esri_NatGeoWorldMap
 var Esri_NatGeoWorldMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; National Geographic. Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> and <a href="https://smashicons.com/" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>', maxZoom: 12});
-    
+
 getCountries();
     
 // L.easyButtons
@@ -81,6 +80,7 @@ function userLocation() {
             },
             success: function(result) {
                 $("#select-country").val(result.isoA2).change();
+
             },
             error: function(err) {
                 alert("Error: " + err);
@@ -110,13 +110,14 @@ function getCountries() {
             const countries = result.data;
             countries.forEach(country => {
             
-                if (country.iso2 != "-99") {
+                if (country.iso2 != "-100") {
                     selectSearchBar.append($(
                         `<option value="${country.iso2}">
                             ${country.name}
                         </option>`
                     ));
                 }   
+               
             });
         },
         complete: function () {
@@ -142,7 +143,7 @@ $("#select-country").change(function(){
         },
         
         success: function(result) {
-            console.log(result);
+            //console.log(result);
             const countryBorders = result.data;
 
             if(border){
@@ -162,20 +163,21 @@ $("#select-country").change(function(){
             const south = bounds.getSouth();
             const east = bounds.getEast();
             const west = bounds.getWest();
-           
+
             getCities(north, south, east, west);
             getEarthquakes(north, south, east, west);
+            addAirport(north, south, east, west);
+            addMuseum(north, south, east, west);
+            addUniversity(north, south, east, west);
         },
 
         error: function(jqXHR,textStatus, errorThrown) {
-            console.error(jqXHR);
+           // console.error(jqXHR);
         }
     });  
     
 
     //Weather
-
-
     $.ajax({
         url: "libs/php/getOpencage.php",
         type: 'POST',
@@ -184,7 +186,7 @@ $("#select-country").change(function(){
             country: encodeURI($('#select-country option:selected').text())
         }, 
         success: function(result) {
-            console.log(result);
+           // console.log(result);
             if (result.status.name == "ok") {
                 $.ajax({
                     url: "libs/php/getWeather.php",
@@ -200,52 +202,40 @@ $("#select-country").change(function(){
                         $("#loader").removeClass("hidden");
                     },
                     success: function(result1) {
-                        console.log(result1);
-                        let t = new Date().toString("dS, MMMM H:m");
-                        let a = new Date().toString("dddd");
+                        //console.log(result1);
 
                         $("#weatherTable tbody tr td").html("&nbsp;"); 
                         let weatherIconCurrent = result1.data.weather.current.weather[0].icon;
                         let weatherIconTomorrow = result1.data.weather.daily[0].weather[0].icon;
-                        $("#todaysDate").html(t),
-                        $("#todaysDay").html(a),
-                        $('#capitalWeatherIcon').html( `<img src="https://openweathermap.org/img/wn/${weatherIconCurrent}@2x.png" width="120px">`);
-                        $('#capitalWeatherIconTomorrow').html( `<img src="https://openweathermap.org/img/wn/${weatherIconTomorrow}@2x.png" width="120px">`);
-                        $('#txtCapitalWeatherName').html(result1.data.weather.timezone);
+                        let weatherIcon2ndDay = result1.data.weather.daily[1].weather[0].icon;
+                        $('#capitalWeatherIcon').html( `<img src="https://openweathermap.org/img/wn/${weatherIconCurrent}@2x.png" width="60px">`);
+                        $('#capitalWeatherIconTomorrow').html( `<img src="https://openweathermap.org/img/wn/${weatherIconTomorrow}@2x.png" width="60px">`);
+                        $('#capitalWeatherIcon2ndDay').html( `<img src="https://openweathermap.org/img/wn/${weatherIcon2ndDay}@2x.png" width="60px">`);
                         $('#txtCapitalWeatherCurrent').html( Math.round(result1.data.weather.current.temp) +'&#8451<br>');
                         $('#txtCapitalWeatherDescription').html( result1.data.weather.current.weather[0].description);
                         $('#txtCapitalWeatherDescriptionTomorrow').html( result1.data.weather.daily[0].weather[0].description);
-                        $('#txtCapitalWeatherWindspeed').html(result1.data.weather.current.wind_speed + ' km/h');
-                        $('#txtCapitalWeatherHumidity').html( Math.round(result1.data.weather.current.humidity) +'&#37');
                         $('#txtCapitalWeatherLo').html( Math.round(result1.data.weather.daily[0].temp.min) +'&#8451<br>');
                         $('#txtCapitalWeatherHi').html( Math.round(result1.data.weather.daily[0].temp.max) +'&#8451<br>');
-
-                        var sunrise = moment( result1.data.weather.current.sunrise*1000).format("HH:mm");
-                        $('#txtCapitalSunrise').html(sunrise);
-                        var sunset = moment( result1.data.weather.current.sunset*1000).format("HH:mm");
-                        $('#txtCapitalSunset').html(sunset);
-                        $('.capitalSunriseIcon').html('<img src="images/icons/sunrise.png" width="24px">');
-                        $('.capitalSunsetIcon').html('<img src="images/icons/sunset.png" width="24px">');
                         $('#txtCapitalTomorrowsWeatherLo').html( Math.round(result1.data.weather.daily[1].temp.min) +'&#8451<br>');
                         $('#txtCapitalTomorrowsWeatherHi').html( Math.round(result1.data.weather.daily[1].temp.max) +'&#8451<br>');
-                        $('#weatherIcon').html('<img src="images/icons/weather.svg" width="24px">');
-                        $('#capitalHumidityIcon').html('<img src="images/icons/humidity.svg" width="24px">');
-                        $('#capitalWindIcon').html('<img src="images/icons/007-windy.svg" width="24px">');
-                        $('.capitalHiTempIcon').html('<img src="images/icons/thermometer.svg" width="24px">');
-                        $('.capitalLoTempIcon').html('<img src="images/icons/thermometer-colder.svg" width="24px">');
+                        $('#txtCapital2ndDayWeatherLo').html( Math.round(result1.data.weather.daily[2].temp.min) +'&#8451<br>');
+                        $('#txtCapital2ndDayWeatherHi').html( Math.round(result1.data.weather.daily[2].temp.max) +'&#8451<br>');
 
-            
+                        let day1Date  = moment().add(1,'days').format('ddd Do').toLocaleString();
+                        let day2Date = moment().add(2,'days').format('ddd Do').toLocaleString();
+                        $('#day1Date').html(day1Date );
+                        $('#day2Date').html(day2Date );
                     },
                     complete: function () {
                         $("#loader").addClass("hidden")
                     },
                     error: function(jqXHR,textStatus, errorThrown) {
-                        console.error(jqXHR);
+                     //   console.error(jqXHR);
                     }
                 });        
             } 
         }
-    });    
+    });  
 
     //Country Info
 
@@ -262,8 +252,8 @@ $("#select-country").change(function(){
         },
 
         success: function(result) {
-           
-            console.log(result);
+   
+          //  console.log(result);
             let countryInformation = $("#country-info");
 
             countryInformation .html("");
@@ -271,12 +261,17 @@ $("#select-country").change(function(){
                 
 
                     `<div class='country-body'>
-                    <div class="card-body country">
-                        <h3 id='flag-country'><strong>${result[0].name.common}</strong></h3>
+                    <div id = 'countryContainer' style='display:flex'> 
+                        <div class="card h-100 country" id='coatOfArms' style='float:left; max-width: 100px'>
+                            <img src="${result[0].coatOfArms.png}"/>
+                        </div> 
+                        <div class="card-body country" style='float:left'>
+                            <h3 id='flag-country'><strong>${result[0].name.common}</strong></h3>
+                        </div>
+                        <div class="card h-100 country" id='countryFlag' style='float:left; max-width: 100px'>
+                                <img src="${result[0].flags.png}" alt="${result[0].flags.alt}"/><br>
+                        </div> 
                     </div>
-                    <div class="card h-100 country">
-                            <img src="${result[0].flags.png}" alt="${result[0].flags.alt}"/><br>
-                    </div> 
                         <table class="table flex table-striped table-sm" id='country-info-image'>
                             <tbody>
                                 <tr>
@@ -301,16 +296,13 @@ $("#select-country").change(function(){
                                 <th scope="row">Languages:</th><td>${Object.values(result[0].languages)[0]}</td>
                                 </tr>
                                 <tr>
-                                <th scope="row">Currencies:</th><td>${result[0].currencies[Object.keys(result[0].currencies)[0]].name}</td>
+                                <th scope="row">Currencies:</th><td>${result[0].currencies[Object.keys(result[0].currencies)[0]].name + ' ' + result[0].currencies[Object.keys(result[0].currencies)[0]].symbol}</td>
                                 </tr>
                                 <tr>
                                 <th scope="row">Driving side:</th><td>${result[0].car.side}</td>
                                 </tr>                    
                             </tbody>
-                        </table>
-                    <div class="coatOfArms" id='coatOfArms'>
-                        <img src="${result[0].coatOfArms.png}"/>
-                    </div>                       
+                        </table>                     
                     </div>`
                 ));
 
@@ -318,12 +310,18 @@ $("#select-country").change(function(){
                 $('#currency-header').html();
                 $('#countryCurrencyLabel').html(result[0].name.common + ' currency and rate');
 
+                $('#newsModalTitle').html(' News - ' + result[0].name.common);
+                $('#weatherCountry').html(result[0].capital + ', ' + result[0].name.common);
+                $('#imagesModalCountry').html('Images of ' + result[0].name.common);
+
+                
+                
             },
             complete: function () {
                 $("#loader").addClass("hidden")
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus, errorThrown);
+               // console.log(textStatus, errorThrown);
             }
     }); 
     
@@ -344,11 +342,8 @@ $("#select-country").change(function(){
                 currencyCode = Object.keys(result[0].currencies)[0];
                 currencySymbol = result[0].currencies[currencyCode].symbol;
                 currencyName = result[0].currencies[currencyCode].name; 
-                $('#nav-currency').html();
-                $('#currency').html(currencyName + '<br>');
-                $('#currencyCode').html(currencyCode + '<br>');
-                $('#currencySymbol').html(currencySymbol + '<br>');
-                $('#from').html(currencyCode);
+                $('#currencyCode').html(currencyCode);
+                $('#exchangeInputLabel').html('Convert from ' + currencyCode + ' to USD');
        
               // Exchange Rates
               $.ajax({
@@ -360,7 +355,7 @@ $("#select-country").change(function(){
                     $("#loader").removeClass("hidden");
                 },
                 success: function(result) {
-                    console.log(result);
+                   // console.log(result);
                     if (result.status.name == "ok") {
                     
                     exchangeRate = result.exchangeRate.rates[currencyCode];
@@ -372,7 +367,7 @@ $("#select-country").change(function(){
                     $("#loader").addClass("hidden")
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(textStatus, errorThrown);
+                  //  console.log(textStatus, errorThrown);
                 }
             });
         }
@@ -391,14 +386,16 @@ $("#select-country").change(function(){
         },
         success: function(result) {
 
-            console.log(result);
+           // console.log(result);
             $("#countryImages").empty();
             
             if (result.status.name == "ok") {
+                
+
                 for(var i = 0; i < result['data']['results'].length; i++){
-                    
-                    $("#countryImages").append("<p style='color:black' id='description" + i +"'class='countryDescription'>")
+                     
                     $("#countryImages").append("<img src='' alt='' id='image" + i +"'class='countryImages'><br><br>")
+                    $("#countryImages").append("<p style='text-align: center; padding-bottom: 40px; font-weight: bold' id='description" + i +"'class='countryDescription'>")
                     $("#image" + i).attr('src', result['data']['results'][i]['urls']['regular']);
                     $("#image" + i).attr('alt', result['data']['results'][i]['alt_description']);
                     $("#description" + i).append(result['data']['results'][i]['alt_description']);
@@ -413,7 +410,7 @@ $("#select-country").change(function(){
 
         error: function(jqXHR,textStatus, errorThrown) {
             alert("Error: " + errorThrown);
-            console.log(jqXHR);
+          //  console.log(jqXHR);
         }
     });
 
@@ -429,7 +426,7 @@ $("#select-country").change(function(){
             $("#loader").removeClass("hidden");
         },
         success: function(result) {            
-            console.log(result);
+          //  console.log(result);
 
             if (result.status.name == "ok") {
                 $("#sumTitle").empty();
@@ -446,7 +443,7 @@ $("#select-country").change(function(){
 
         error: function(jqXHR,textStatus, errorThrown) {
             alert("Error: " + errorThrown);
-            console.log(jqXHR);
+          //  console.log(jqXHR);
         }
     }); 
 
@@ -465,28 +462,30 @@ $("#select-country").change(function(){
             $("#loader").removeClass("hidden");
         },
         success: function(result) {
-            console.log(result);
+           // console.log(result);
 
-        let newsInfo = $("#news-info-card");
+        let newsInfo = $("#news-body");
 
             newsInfo.html("");
 
         for (var i=0; i<result.articles.length; i++) {
                 newsInfo.append($(
-                   `<div class='newsContener'>
-                        <div id="card-news">
-                            <img class="card-img" src="${result.articles[i].urlToImage}" alt="News Image">
-                        </div>
-                        <div class="d-flex flex-column justify-content-end">                      
-                            <br><a href="${result.articles[i].url}" target="_blank">${result.articles[i].title}</a><br>                               
-                        </div>
-                        <div class="row infoPanel p-0 m-0" aria-labelledby="headingThree">
-                            <strong><p>Author: <span id="articleAuthor">${result.articles[i].author}</span></p></strong>
-                        </div>
-                        <div class="row infoPanel p-0 m-0" aria-labelledby="headingThree">
-                            <strong><p>Published at: <span id="published">${window.moment(result.articles[i].publishedAt).format('MMMM Do YYYY, h:mm:ss A')}</span></p></strong>
-                        </div>
-                    </div>`                   
+                    `<table class="table table-borderless">
+                    <tr>
+                        <td rowspan="2" width="50%">
+                          <img class="img-fluid rounded" src="${result.articles[i].urlToImage}" alt="News Image">
+                        </td>                       
+                        <td>
+                          <a href="${result.articles[i].url}" class="fw-bold fs-6 text-black" target="_blank">${result.articles[i].title}</a>
+                        </td>                       
+                    </tr>  
+                    <tr>                      
+                    <td class="align-bottom pb-0">                     
+                      <p class="fw-light fs-6 mb-1">${result.articles[i].source.Name}</p>                     
+                    </td>                               
+                    </tr>
+                    </table>
+                    <hr>`               
                 ));
                 }
     },
@@ -496,43 +495,45 @@ $("#select-country").change(function(){
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
-            console.log(jqXHR);
+          //  console.log(jqXHR);
         }
     });
+
  }); 
+
 
 // Currency Exchange
 
- $("#value").on('keyup', function(){   
-              $.ajax({
-                url: "libs/php/getExchangeRates.php",
-                type: 'GET',
-                dataType: 'json',
-                base: $('#currencyCode').text(),
-                beforeSend: function () {
-                    $("#loader").removeClass("hidden");
-                },
-                success: function(result) {
-                    console.log(result);
-                    if (result.status.name == "ok") {
+$("#exchangeInput").on('keyup', function(){   
+    $.ajax({
+      url: "libs/php/getExchangeRates.php",
+      type: 'GET',
+      dataType: 'json',
+      base: $('#currencyCode').text(),
+      beforeSend: function () {
+          $("#loader").removeClass("hidden");
+      },
+      success: function(result) {
+         // console.log(result);
+          if (result.status.name == "ok") {
 
-                        var conversion = Number($('#value').val() / result.exchangeRate.rates[$('#currencyCode').text()]);
-                        $("#exchangeResult").html($('#value').val() +  "  " + $('#currencySymbol').text() + " = " + conversion.toFixed(2) + " $");
-                    }
-                },
-                complete: function () {
-                    $("#loader").addClass("hidden")
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(textStatus, errorThrown);
-                }
-            });
+              var conversion = Number($('#exchangeInput').val() / result.exchangeRate.rates[$('#currencyCode').text()]);
+              $("#toAmount").html(conversion.toFixed(2) + " $");
+          }
+      },
+      complete: function () {
+          $("#loader").addClass("hidden")
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+         // console.log(textStatus, errorThrown);
+      }
+  });
 });
 
 //function to clear currency exchange result button
 
 function clearContent(){
-    document.getElementById('exchangeResult').innerHTML = '';
+document.getElementById('toAmount').innerHTML = '';
 }
 
 //earthquake 
@@ -543,9 +544,9 @@ map.addLayer(earthquakesM);
 
 const earthquakeIcon = L.icon({
     iconUrl: 'images/earthquakeIcon.png',
-    iconSize: [50, 50],
-    iconAnchor: [25, 45],
-    popupAnchor: [0, -40]
+    iconSize: [30, 30],
+    iconAnchor: [15, 25],
+    popupAnchor: [0, -20]
 });
 
 function getEarthquakes(north, south, east, west) {
@@ -561,7 +562,7 @@ function getEarthquakes(north, south, east, west) {
             west: west
         },
         success: function(result) { 
-            console.log(result);  
+           // console.log(result);  
             const earthquakes = result.data;
             
             earthquakes.forEach(earthquake => {
@@ -594,7 +595,7 @@ function getEarthquakes(north, south, east, west) {
         error: function(jqXHR, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
 
-            console.log(jqXHR);
+           // console.log(jqXHR);
         }
     });    
 }
@@ -606,10 +607,10 @@ citiesM = L.markerClusterGroup();
 map.addLayer(citiesM);
 
 const cityIcon = L.icon({
-    iconUrl: 'images/cityIcon.png',
-    iconSize: [50, 50],
-    iconAnchor: [25, 45],
-    popupAnchor: [0, -40]
+    iconUrl: 'images/icons/cityIcon.png',
+    iconSize: [25, 25],
+    iconAnchor: [15, 25],
+    popupAnchor: [0, -20]
 });
 
 function getCities(north, south, east, west) {
@@ -625,7 +626,7 @@ function getCities(north, south, east, west) {
             west: west
         },
         success: function(result) {   
-            console.log(result)
+           // console.log(result)
             const nearByCities = result.data;
             nearByCities.forEach(city => {
                 const cityMarker = L.marker([`${city.lat}`, `${city.lng}`], {icon: cityIcon})
@@ -654,10 +655,189 @@ function getCities(north, south, east, west) {
         error: function(jqXHR, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
 
-            console.log(jqXHR);
+           // console.log(jqXHR);
         }
     });    
 }
+
+
+// Universities
+let universitiesM;
+universitiesM = L.markerClusterGroup();
+map.addLayer(universitiesM);
+
+const universityIcon = L.icon({
+    iconUrl: 'images/icons/universityIcon.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 25],
+    popupAnchor: [0, -20]
+});
+
+function addUniversity(north, south, east, west) {
+    universitiesM.clearLayers();
+    $.ajax({
+        url: "libs/php/getUniversities.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            north: north,
+            south: south,
+            east: east,
+            west: west
+        },
+        success: function(result) {   
+            //console.log(result)
+            const universities = result.data.geonames;
+            universities.forEach(university => {
+                const universityMarker = L.marker([`${university.lat}`, `${university.lng}`], {icon: universityIcon})
+                    .bindPopup(`
+                            <div class="container card h-100">
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">University: </th> <td class="text-end"> <strong>${university.name}</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            `);
+                     universitiesM.addLayer(universityMarker);
+            });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert("Error: " + errorThrown);
+
+            //console.log(jqXHR);
+        }
+    });    
+}
+
+
+
+//Airports
+var airports = L.markerClusterGroup({
+    polygonOptions: {
+      fillColor: '#fff',
+      color: '#000',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.5
+    }}).addTo(map);
+
+var airportIcon = L.ExtraMarkers.icon({
+    prefix: 'fa',
+    icon: 'fa-plane',
+    iconColor: 'black',
+    markerColor: 'white',
+    shape: 'square'
+    });
+
+    function addAirport(north, south, east, west) {
+                         
+        $.ajax({
+          url: "libs/php/getAirports.php",
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            north: north,
+            south: south,
+            east: east,
+            west: west
+          },
+          success: function (result) {
+           // console.log(result);
+              
+              result.data.geonames.forEach(function(items) {
+                
+                L.marker([items.lat, items.lng], {icon: airportIcon})
+                  .bindTooltip(items.name, {direction: 'top', sticky: true})
+                  .addTo(airports);
+                
+              })
+      
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert("Error: " + errorThrown);
+
+            // console.log(jqXHR);
+          }
+        });      
+    };
+
+
+//Museums
+var museums = L.markerClusterGroup({
+    polygonOptions: {
+      fillColor: '#fff',
+      color: '#000',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.5
+    }}).addTo(map);
+
+var museumIcon = L.ExtraMarkers.icon({
+    prefix: 'fa',
+    icon: 'fa-landmark',
+    iconColor: 'white',
+    markerColor: 'white',
+    shape: 'square'
+    });
+
+    function addMuseum(north, south, east, west) {
+
+        showToast("Getting museums, cities, earthquakes, universities and airports", 3500, false);
+                         
+        $.ajax({
+          url: "libs/php/getMuseums.php",
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            north: north,
+            south: south,
+            east: east,
+            west: west
+          },
+          success: function (result) {
+           // console.log(result);
+              
+              result.data.geonames.forEach(function(items) {
+                
+                L.marker([items.lat, items.lng], {icon: museumIcon})
+                  .bindTooltip(items.name, {direction: 'top', sticky: true})
+                  .addTo(museums);
+                
+              })
+      
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            showToast("Airports - server error", 4000, false);
+
+            // console.log(jqXHR);
+          }
+        });      
+    };
+
+    // functions
+
+function showToast(message, duration, close) {
+
+    Toastify({
+      text: message,
+      duration: duration,
+      newWindow: true,
+      close: close,
+      gravity: "top", // `top` or `bottom`
+      position: "center", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background: "#004687"
+      },
+      onClick: function () {} // Callback after click
+    }).showToast();
+    
+    }
+
+
 
 // Layer Controller
 const baseMaps = {
@@ -667,7 +847,10 @@ const baseMaps = {
 };
 
 const markerLayers = {
+    "Airports": airports,
+    "Museums": museums,
     "Cities": citiesM,
+    "Universities": universitiesM,
     "Earthquakes": earthquakesM
 };
 
