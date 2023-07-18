@@ -538,6 +538,11 @@ function clearContent(){
 document.getElementById('toAmount').innerHTML = '';
 }
 
+//function to prevent modal closing when pressing enter key
+
+$('#exchangeModal').keypress(function (e) {
+    return e.keyCode !== 13;
+});
 
 //earthquake 
 var earthquakesM = L.markerClusterGroup({
