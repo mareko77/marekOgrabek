@@ -110,7 +110,7 @@ function getCountries() {
             const countries = result.data;
             countries.forEach(country => {
             
-                if (country.iso2 != "-100") {
+                if (country.iso2 != "-99") {
                     selectSearchBar.append($(
                         `<option value="${country.iso2}">
                             ${country.name}
@@ -169,6 +169,7 @@ $("#select-country").change(function(){
             addAirport(north, south, east, west);
             addMuseum(north, south, east, west);
             addUniversity(north, south, east, west);
+            addFerry(north, south, east, west);
         },
 
         error: function(jqXHR,textStatus, errorThrown) {
@@ -187,6 +188,7 @@ $("#select-country").change(function(){
         }, 
         success: function(result) {
            // console.log(result);
+
             if (result.status.name == "ok") {
                 $.ajax({
                     url: "libs/php/getWeather.php",
@@ -262,13 +264,13 @@ $("#select-country").change(function(){
 
                     `<div class='country-body'>
                     <div id = 'countryContainer' style='display:flex'> 
-                        <div class="card h-100 country" id='coatOfArms' style='float:left; max-width: 100px'>
+                        <div class="card h-100 pe-3 country" id='coatOfArms' style='float:left; max-width: 100px'>
                             <img src="${result[0].coatOfArms.png}"/>
                         </div> 
-                        <div class="card-body country" style='float:left'>
+                        <div class="card-body country" style='float:center'>
                             <h3 id='flag-country'><strong>${result[0].name.common}</strong></h3>
                         </div>
-                        <div class="card h-100 country" id='countryFlag' style='float:left; max-width: 100px'>
+                        <div class="card h-100 country" id='countryFlag' style='float:right; max-width: 100px'>
                                 <img src="${result[0].flags.png}" alt="${result[0].flags.alt}"/><br>
                         </div> 
                     </div>
@@ -481,7 +483,7 @@ $("#select-country").change(function(){
                     </tr>  
                     <tr>                      
                     <td class="align-bottom pb-0">                     
-                      <p class="fw-light fs-6 mb-1">${result.articles[i].source.Name}</p>                     
+                      <p class="fw-light fs-6 mb-1">${result.articles[i].source.name}</p>                     
                     </td>                               
                     </tr>
                     </table>
@@ -536,18 +538,26 @@ function clearContent(){
 document.getElementById('toAmount').innerHTML = '';
 }
 
+
 //earthquake 
+var earthquakesM = L.markerClusterGroup({
+    polygonOptions: {
+      fillColor: '#fff',
+      color: '#000',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.5
+    }}).addTo(map);
 
-let earthquakesM;
-earthquakesM = L.markerClusterGroup();
+var earthquakeIcon = L.ExtraMarkers.icon({
+    prefix: 'fa',
+    icon: 'fa-house-crack',
+    iconColor: 'black',
+    markerColor: 'red',
+    shape: 'star'
+    });
+
 map.addLayer(earthquakesM);
-
-const earthquakeIcon = L.icon({
-    iconUrl: 'images/earthquakeIcon.png',
-    iconSize: [30, 30],
-    iconAnchor: [15, 25],
-    popupAnchor: [0, -20]
-});
 
 function getEarthquakes(north, south, east, west) {
     earthquakesM.clearLayers();
@@ -600,18 +610,26 @@ function getEarthquakes(north, south, east, west) {
     });    
 }
 
+
 //Cities
+var citiesM = L.markerClusterGroup({
+    polygonOptions: {
+      fillColor: '#fff',
+      color: '#000',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.5
+    }}).addTo(map);
 
-let citiesM;
-citiesM = L.markerClusterGroup();
+var cityIcon = L.ExtraMarkers.icon({
+    prefix: 'fa',
+    icon: 'fa-city',
+    iconColor: 'black',
+    markerColor: 'pink',
+    shape: 'square'
+    });
+
 map.addLayer(citiesM);
-
-const cityIcon = L.icon({
-    iconUrl: 'images/icons/cityIcon.png',
-    iconSize: [25, 25],
-    iconAnchor: [15, 25],
-    popupAnchor: [0, -20]
-});
 
 function getCities(north, south, east, west) {
     citiesM.clearLayers();
@@ -661,57 +679,106 @@ function getCities(north, south, east, west) {
 }
 
 
-// Universities
-let universitiesM;
-universitiesM = L.markerClusterGroup();
-map.addLayer(universitiesM);
+//Universities
+var universities = L.markerClusterGroup({
+    polygonOptions: {
+      fillColor: '#fff',
+      color: '#000',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.5
+    }}).addTo(map);
 
-const universityIcon = L.icon({
-    iconUrl: 'images/icons/universityIcon.png',
-    iconSize: [30, 30],
-    iconAnchor: [15, 25],
-    popupAnchor: [0, -20]
-});
+var universityIcon = L.ExtraMarkers.icon({
+    prefix: 'fa',
+    icon: 'fa-building-columns',
+    iconColor: 'black',
+    markerColor: 'yellow',
+    shape: 'star'
+    });
 
-function addUniversity(north, south, east, west) {
-    universitiesM.clearLayers();
-    $.ajax({
-        url: "libs/php/getUniversities.php",
-        type: 'POST',
-        dataType: 'json',
-        data: {
+    function addUniversity(north, south, east, west) {
+                         
+        $.ajax({
+          url: "libs/php/getUniversities.php",
+          type: 'POST',
+          dataType: 'json',
+          data: {
             north: north,
             south: south,
             east: east,
             west: west
-        },
-        success: function(result) {   
-            //console.log(result)
-            const universities = result.data.geonames;
-            universities.forEach(university => {
-                const universityMarker = L.marker([`${university.lat}`, `${university.lng}`], {icon: universityIcon})
-                    .bindPopup(`
-                            <div class="container card h-100">
-                                <table class="table table-sm">
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">University: </th> <td class="text-end"> <strong>${university.name}</strong></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            `);
-                     universitiesM.addLayer(universityMarker);
-            });
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
+          },
+          success: function (result) {
+           // console.log(result);
+              
+              result.data.geonames.forEach(function(items) {
+                
+                L.marker([items.lat, items.lng], {icon: universityIcon})
+                  .bindTooltip(items.name, {direction: 'top', sticky: true})
+                  .addTo(universities);
+                
+              })
+      
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
             alert("Error: " + errorThrown);
 
-            //console.log(jqXHR);
-        }
-    });    
-}
+            // console.log(jqXHR);
+          }
+        });      
+    };
+    
 
+//Ferries
+var ferries = L.markerClusterGroup({
+    polygonOptions: {
+      fillColor: '#fff',
+      color: '#000',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.5
+    }}).addTo(map);
+
+var ferryIcon = L.ExtraMarkers.icon({
+    prefix: 'fa',
+    icon: 'fa-ferry',
+    iconColor: 'black',
+    markerColor: 'green',
+    shape: 'penta'
+    });
+
+    function addFerry(north, south, east, west) {
+                         
+        $.ajax({
+          url: "libs/php/getFerry.php",
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            north: north,
+            south: south,
+            east: east,
+            west: west
+          },
+          success: function (result) {
+           // console.log(result);
+              
+              result.data.geonames.forEach(function(items) {
+                
+                L.marker([items.lat, items.lng], {icon: ferryIcon})
+                  .bindTooltip(items.name, {direction: 'top', sticky: true})
+                  .addTo(ferries);
+                
+              })
+      
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert("Error: " + errorThrown);
+
+            // console.log(jqXHR);
+          }
+        });      
+    };
 
 
 //Airports
@@ -728,8 +795,8 @@ var airportIcon = L.ExtraMarkers.icon({
     prefix: 'fa',
     icon: 'fa-plane',
     iconColor: 'black',
-    markerColor: 'white',
-    shape: 'square'
+    markerColor: 'blue',
+    shape: 'circle'
     });
 
     function addAirport(north, south, east, west) {
@@ -778,7 +845,7 @@ var museums = L.markerClusterGroup({
 var museumIcon = L.ExtraMarkers.icon({
     prefix: 'fa',
     icon: 'fa-landmark',
-    iconColor: 'white',
+    iconColor: 'black',
     markerColor: 'white',
     shape: 'square'
     });
@@ -850,7 +917,7 @@ const markerLayers = {
     "Airports": airports,
     "Museums": museums,
     "Cities": citiesM,
-    "Universities": universitiesM,
+    "Universities": universities,
     "Earthquakes": earthquakesM
 };
 
