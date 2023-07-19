@@ -205,6 +205,20 @@ html, body {
     padding: 10px;
 }
 
+.currency-modal-body {
+    background-color: #959aa0;
+}
+
+.exchangeIcon {
+    position:relative;
+    padding-bottom: 40px;
+}
+
+#iconArrow {
+        position:absolute;
+        top:45%;
+        left:45%;
+}
 
 /* Loader */
 .lds-dual-ring.hidden {
