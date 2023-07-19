@@ -76,11 +76,13 @@
                           
                           <form>
 
-                            <div class="form-floating mb-3" id="currencyForm">
-                  
+                            <div class="form-floating mb-3" id="currencyForm">                  
                               <input id="exchangeInput" type="number" class="form-control" value="1" min="1" step="1">
-                              <label id="exchangeInputLabel" for="exchangeInput"></label>
-                  
+                              <label id="exchangeInputLabel" for="exchangeInput"></label>                  
+                            </div>
+
+                            <div class="exchangeIcon">
+                              <i class="fa-solid fa-arrow-down-long" id="iconArrow"></i>
                             </div>
 
                             <div class="form-floating">                             
@@ -89,12 +91,6 @@
                   
                           </form>
                       </div>
-                      <div class="modal-footer">
-                        <div id="buttonCont">
-                          <button onclick="clearContent()" class="btn btn-outline-secondary btn-sm">Clear</button>
-                        </div>   
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                    </div>
               </div>
           </div>
       </div>  
