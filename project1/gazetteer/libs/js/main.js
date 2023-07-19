@@ -361,8 +361,12 @@ $("#select-country").change(function(){
                     if (result.status.name == "ok") {
                     
                     exchangeRate = result.exchangeRate.rates[currencyCode];
+                
+                    $('#exchangeRate').html(exchangeRate.toFixed(2));
                     $('#nav-currency').html();
-                    $('#exchangeRate').html(exchangeRate.toFixed(2) + ' '+  currencyCode + ' = 1 USD. <br>');                  
+
+                    calcResult();
+                                    
                     }
                 },
                 complete: function () {
@@ -519,8 +523,7 @@ $("#exchangeInput").on('keyup', function(){
          // console.log(result);
           if (result.status.name == "ok") {
 
-              var conversion = Number($('#exchangeInput').val() / result.exchangeRate.rates[$('#currencyCode').text()]);
-              $("#toAmount").html(conversion.toFixed(2) + " $");
+            calcResult();
           }
       },
       complete: function () {
@@ -532,11 +535,23 @@ $("#exchangeInput").on('keyup', function(){
   });
 });
 
-//function to clear currency exchange result button
 
-function clearContent(){
-document.getElementById('toAmount').innerHTML = '';
-}
+$('#exchangeInput').on('change', function () { 
+    calcResult(); 
+  });
+
+
+$('#exchangeRate').on('change', function () {  
+    calcResult();  
+  });
+
+  
+//function to calculate currency exchange result 
+
+function calcResult() {    
+    $('#toAmount').val(Number.parseFloat($('#exchangeInput').val() / exchangeRate).toFixed(2));    
+  }
+
 
 //function to prevent modal closing when pressing enter key
 
