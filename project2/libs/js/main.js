@@ -5,12 +5,6 @@ $(window).on("load", function() {
     getLocations();
 });
 
-// Resets Modal
-function resetModal(e) {
-    e.on("hidden.bs.modal", function () {
-        $(this).find("form").trigger("reset");
-    })
-}
 
 $("#btn-employees").on("click", function() {
     $(this).addClass("itsLive");
@@ -42,6 +36,13 @@ $("#btn-locations").on("click", function() {
     $("#all-employees").addClass("d-none");
     $(".navbar-collapse.show").collapse("hide");
 });
+
+// Resets Modal
+function resetModal(e) {
+    e.on("hidden.bs.modal", function () {
+        $(this).find("form").trigger("reset");
+    })
+}
 
 // Get All Employees, Departments, Locations
 function getEmployees() {
@@ -721,7 +722,7 @@ $("#addLocationBtn").on("click", function(e) {
         success: function(result) {
             
             if (result.status.name == "ok") {
-                addLocationModal.modal("hide");  
+                $("#addLocationModal").modal("hide");  
                 getLocations();  
             }
         },
