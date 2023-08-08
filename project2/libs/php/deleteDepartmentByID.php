@@ -33,38 +33,59 @@
 
 	}	
 
-	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
-	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
-	$query = $conn->prepare('DELETE FROM department WHERE id = ?');
+	$queryCheck = 'SELECT count(id) as countId FROM personnel WHERE departmentID = ' . $_POST['id'];
+	$resultCheck = $conn->query($queryCheck);
 	
-	$query->bind_param("i", $_REQUEST['id']);
+	$data = [];
 
-	$query->execute();
+	while ($row = mysqli_fetch_assoc($resultCheck)) {
+
+		array_push($data, $row);
+
+	}
 	
-	if (false === $query) {
+	$personnel = $data[0]['countId'];
+	
+	if ($personnel == 0) {
+		$query = 'DELETE FROM department WHERE id = ' . $_POST['id'];
+		$result = $conn->query($query);
 
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";	
-		$output['data'] = [];
+		$output['status']['code'] = "200";
+		$output['status']['name'] = "ok";
+		$output['status']['description'] = "Success";
+		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+		$output['data'] = $personnel;
 
-		mysqli_close($conn);
+		if (!$result) {
 
-		echo json_encode($output); 
+			$output['status']['code'] = "400";
+			$output['status']['name'] = "executed";
+			$output['status']['description'] = "query failed";	
+			$output['data'] = [];
+	
+			mysqli_close($conn);
+	
+			echo json_encode($output); 
+	
+			exit;
+	
+		}
+		
+	} else {
 
-		exit;
+		$output['status']['code'] = "403";
+		$output['status']['name'] = "forbidden";
+		$output['status']['description'] = "Forbidden action!";	
+		$output['data'] = $personnel;
 
 	}
 
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
-	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['data'] = [];
-	
 	mysqli_close($conn);
 
 	echo json_encode($output); 
+
+
+
 
 ?>
