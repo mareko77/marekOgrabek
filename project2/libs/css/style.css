@@ -694,6 +694,43 @@ color: rgb(161, 161, 161);
 color:  #f56957;
 }
 
+/*Edit Location Modal */
+#editLocationModal .modal-header {
+  background: blue;
+  color: #fff;
+  }
+  
+  #editul-left-arrow {
+  margin: 0 !important;
+  font-size: 2rem;
+  padding: 0;
+  color: #fff;
+  }
+  
+  #xeditul-left{
+  margin-right: 65px;
+  font-size: 2.5rem;
+  padding: 0 30px;
+  color: #df2c14;
+  }
+  
+  #updateLocationBtn {
+  margin-left: 65px;
+  font-size: 2.5rem;
+  padding: 0 30px;
+  color: blue;
+  }
+  
+  #editLocationModal label {
+  font-size: 0.8rem;
+  color: rgb(161, 161, 161);
+  }
+  
+  #editLocationForm .error {
+  color:  #f56957;
+  }
+
+
 /*Delete Location Modal*/
 #deleteLocationModal .modal-dialog {
 margin-top: 60vh;
