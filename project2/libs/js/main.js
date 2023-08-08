@@ -95,79 +95,89 @@ $(".table").on("click", "tr[role='button']", function() {
 
                 $("#ed-content").html("");
                 $("#ed-content").html($(`<div class="modal-header">
-                                        <h4 class="modal-title" id="viewEmployeeModalLabel">Personal info</h4>
-                                        <button type="button" id="ed-left-arrow" class="btn" title="Back" data-bs-dismiss="modal" aria-label="Close"><i class="fa-regular fa-circle-xmark"></i></button>                                        
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="container-details container justify-content-center" >
-                                            <div class="employee-details-card card p-2">
-                                                <div class="card-body d-flex justify-content-center" id="ed-name">
-                                                    <h4 class="card-title p-2 "><strong>${result.data[0].firstName}</strong></h4>
-                                                    <h4 class="card-title p-2"><strong>${result.data[0].lastName}</strong></h4>
+                                            <h4 class="modal-title" id="viewEmployeeModalLabel">Personal info</h4>
+                                            <button type="button" id="ed-left-arrow" class="btn" title="Back" data-bs-dismiss="modal" aria-label="Close"><i class="fa-regular fa-circle-xmark"></i></button>                                        
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container-details container justify-content-center" >
+                                                <div class="employee-details-card card p-2">
+                                                   
+                                                    <div class="d-flex justify-content-center mt-3">
+                                                        <table id='myTable' class="ed-table table justify-content-center table-responsive">
+                                                            <tbody id="ed-tbody">
+                                                                    <tr> 
+                                                                        <td scope='name'>Name: </td>                                                          
+                                                                    </tr>
+                                                                    <tr>                                                        
+                                                                        <th class='personnel'>${result.data[0].firstName + ' '}${result.data[0].lastName}</th>                                            
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td scope='email'>Email: </td>
+                                                                    <tr>                                                                        
+                                                                        <th class='personnel'>${result.data[0].email}</th>    
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td scope='department'>Department: </td>
+                                                                    </tr>
+                                                                    <tr>                                                                       
+                                                                        <th class='personnel'>${result.data[0].department}</th>    
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td scope='location'>Location: </td>
+                                                                    </tr>
+                                                                    <tr>                                                                       
+                                                                        <th class='personnel'>${result.data[0].location}</th>    
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td scope='jobTilte'>Job Title: </td> 
+                                                                    </tr>
+                                                                    <tr>                                                                                                                                 
+                                                                        <th class='personnel'>${result.data[0].jobTitle}</th>
+                                                                    </tr>
+                                                            </tbody>
+                                                        </table>   
+                                                    </div>  
                                                 </div>
-                                                <div class="d-flex justify-content-center mt-3">
-                                                    <table id='myTable' class="ed-table table justify-content-between table-responsive">
-                                                        <tbody id="ed-tbody">
-                                                                <tr>
-                                                                    <td>Job Title: </td>
-                                                                    <td class="align-middle text-end">${result.data[0].jobTitle}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><a href="mailto:${result.data[0].email}">Email: </a></td>
-                                                                    <td class="align-middle text-end">${result.data[0].email}</td>    
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Department: </td>
-                                                                    <td class="align-middle text-end">${result.data[0].department}</td>    
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Location: </td>
-                                                                    <td class="align-middle text-end">${result.data[0].location}</td>    
-                                                                </tr>
-                                                        </tbody>
-                                                    </table>   
-                                                </div>  
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer justify-content-center">
-                                        <button id="ed-pencil-edit" class="btn editE" type="button"
-                                                data-id="${result.data[0].id}"
-                                                data-firstName="${result.data[0].firstName}" 
-                                                data-lastName="${result.data[0].lastName}"
-                                                data-jobTitle="${result.data[0].jobTitle}" 
-                                                data-email="${result.data[0].email}" 
-                                                data-department="${result.data[0].department}"
-                                                data-departmentid="${result.data[0].departmentID}"
-                                                data-location="${result.data[0].location}"
-                                                data-locationID="${result.data[0].locationID}">
-                                                <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                        <button id="ed-bin-delete" class="btn deleteE" type="button" data-id="${result.data[0].id}">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </div>`));
-                                    $(".editE").on("click", function() {                                                 
-                                        $("#id_u").val($(this).attr("data-id"));
-                                        $("#firstName_u").val($(this).attr("data-firstName"));
-                                        $("#lastName_u").val($(this).attr("data-lastName"));
-                                        $("#jobTitle_u").val($(this).attr("data-jobTitle"));
-                                        $("#email_u").val($(this).attr("data-email"));
-                                       
-                                        $("#editEmployeeDepartmentSelect option:first").replaceWith($(`<option selected disabled data-departmentid="${$(this).attr("data-departmentid")}" value="${$(this).attr("data-locationID")}">${$(this).attr("data-department")}</option>`));
-                                        $("#editEmployeeLocationSelect option:first").replaceWith(($(`<option selected value="${$(this).attr("data-locationID")}">${$(this).attr("data-location")}</option>`))); 
+                                        <div class="modal-footer justify-content-center">
+                                            <button id="ed-pencil-edit" class="btn editE" type="button"
+                                                    data-id="${result.data[0].id}"
+                                                    data-firstName="${result.data[0].firstName}" 
+                                                    data-lastName="${result.data[0].lastName}"
+                                                    data-jobTitle="${result.data[0].jobTitle}" 
+                                                    data-email="${result.data[0].email}" 
+                                                    data-department="${result.data[0].department}"
+                                                    data-departmentid="${result.data[0].departmentID}"
+                                                    data-location="${result.data[0].location}"
+                                                    data-locationID="${result.data[0].locationID}">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                            <button id="ed-bin-delete" class="btn deleteE" type="button" data-id="${result.data[0].id}">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </div>`));
+                                        $(".editE").on("click", function() {                                                 
+                                            $("#id_u").val($(this).attr("data-id"));
+                                            $("#firstName_u").val($(this).attr("data-firstName"));
+                                            $("#lastName_u").val($(this).attr("data-lastName"));
+                                            $("#jobTitle_u").val($(this).attr("data-jobTitle"));
+                                            $("#email_u").val($(this).attr("data-email"));
                                         
-                                        $("#editEmployeeModal").modal("show");
-                                        $("#viewEmployeeModal").modal("hide");
-                                        $("#editEmployeeForm").validate().resetForm();
-                                        $("#updateEmployeeBtn").attr("disabled", true);
-                                        $("#checkConfirmEditEmployee").prop("checked", false);
-                                    });
-                                    $(".deleteE").on("click", function() {
-                                        $("#id_d").val($(this).attr("data-id"));
-                                        $("#deleteEmployeeModal").modal("show");
-                                        $("#viewEmployeeModal").addClass("dm-overlay");
-                                    }); 
+                                            $("#editEmployeeDepartmentSelect option:first").replaceWith($(`<option selected disabled data-departmentid="${$(this).attr("data-departmentid")}" value="${$(this).attr("data-locationID")}">${$(this).attr("data-department")}</option>`));
+                                            $("#editEmployeeLocationSelect option:first").replaceWith(($(`<option selected value="${$(this).attr("data-locationID")}">${$(this).attr("data-location")}</option>`))); 
+                                            
+                                            $("#editEmployeeModal").modal("show");
+                                            $("#viewEmployeeModal").modal("hide");
+                                            $("#editEmployeeForm").validate().resetForm();
+                                            $("#updateEmployeeBtn").attr("disabled", true);
+                                            $("#checkConfirmEditEmployee").prop("checked", false);
+                                        });
+                                        $(".deleteE").on("click", function() {
+                                            $("#id_d").val($(this).attr("data-id"));
+                                            $("#deleteEmployeeModal").modal("show");
+                                            $("#viewEmployeeModal").addClass("dm-overlay");
+                                        }); 
                 }                       
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -303,7 +313,7 @@ $("#updateEmployeeBtn").on("click", function(e) {
     e.preventDefault();
    
     $.ajax({
-        url: "libs/php/updatePersonnel.php",
+        url: "libs/php/updatePersonnelByID.php",
         type: 'POST',
         dataType: 'json',
         data: {
@@ -509,7 +519,7 @@ $("#addDepartmentBtn").on("click", function(e) {
         success: function(result) {
             
             if (result.status.name == "ok") {
-                addDepartmentModal.modal("hide");
+                $('#addDepartmentModal').modal("hide");
                 getDepartments(); 
             }
         },
