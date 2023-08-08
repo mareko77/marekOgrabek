@@ -53,7 +53,9 @@
                 <div id="search-and-select" class="container-fluid">
 
                     <div class="row g-3 justify-content-center align-items-center">
-                       
+                        <div class="col-md-1">
+                            <button id="reset" type="button" class="btn" title="Reset"><a href="index.html"><i class="fa-solid fa-arrows-rotate"></i></a></button>
+                        </div>
                         <div class="col-md-3">
                             <div class="search"><input type="text" id="search-input" class="form-control" placeholder="Search"><button type="submit"><i class='bx bx-search'></i></button></div>
                         </div>
@@ -64,9 +66,6 @@
                         <div class="col-md-2">
                             <select class="select form-select" id="select-locations">   
                             </select>
-                        </div>
-                        <div class="col-md-1">
-                            <button id="reset" type="button" class="btn" title="Reset"><a href="index.html"><i class="fa-solid fa-arrows-rotate"></i></a></button>
                         </div>
                         <div class="col-md-2 add-button-department">
                             <button id="add-employee" type="button" class="btn" title="Add Employee"><i class="fa-solid fa-user-plus"></i> Add Employee</button>
@@ -108,7 +107,7 @@
 
                 <!-- View Details of Employee Modal -->
                 <div id="viewEmployeeModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="viewEmployeeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="employeeModalId">
+                    <div class="modal-dialog modal-dialog-scrollable" id="employeeModalId">
                         <div class="modal-content" id="ed-content">
                             <!-- RESULTS WILL BE INSERTED HERE -->
                         </div>
@@ -234,7 +233,7 @@
 
                          <!-- Edit Employee Modal -->
                          <div id="editEmployeeModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h4>
