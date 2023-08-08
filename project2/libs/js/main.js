@@ -616,6 +616,10 @@ $("#deleteDepartmentBtn").on("click", function(e) {
                 $("#deleteDepartmentModal").modal("hide");
                 getDepartments();
             }
+            if (result.status.name == "forbidden") {
+                $("#deleteDepartmentModal").modal("hide");
+                $("#forbiddenDepartmentModal").modal("show");
+            }
         },
         complete: function() {
             $("#loader").addClass("hidden");
@@ -652,17 +656,34 @@ function getLocations() {
                 addDepartmentLocationSelect.html("");
                 locations.forEach(location => {
                     selectLocation.append($(`<option value="${location.id}">${location.name}</option>`));
-                    locationDetailCard.append($(`  
-                    <div id="location-details-card" class="location-details-card d-flex justify-content-center bg-primary">
-                            <p><strong>${location.name}</strong> <button id="loc-bin-delete" class="btn deleteLocationIcon" type="button" data-id="${location.id}">
-                            <i class="fa-solid fa-trash-can" title="Delete"></i>
-                            </button></p>                                               
-                    </div>                   
-                   `));
+                    locationDetailCard.append($(` <div id="location-details-card" class="location-details-card d-flex justify-content-center bg-primary">
+                                                        <p><strong>${location.name}</strong> 
+                                                        <button id="loc-pencil-edit" class="btn updateLocationIcon" type="button"
+                                                            data-locationID="${location.id}"
+                                                            data-name="${location.name}">
+                                                            <i class="fa-solid fa-pen-to-square text-dark" title="Edit"></i>
+                                                        </button>
+                                                        <button id="loc-bin-delete" class="btn deleteLocationIcon" type="button" data-id="${location.id}">
+                                                            <i class="fa-solid fa-trash-can" title="Delete"></i>
+                                                        </button> </p>                                               
+                                                  </div>                                                                
+                                                `));
+
                     addEmployeeLocationSelect.append($(`<option value="${location.id}">${location.name}</option>`));
                     editEmployeeLocationSelect.append($(`<option value="${location.id}">${location.name}</option>`));
                     editDepartmentLocationSelect.append($(`<option value="${location.id}">${location.name}</option>`));
                     addDepartmentLocationSelect.append($(`<option value="${location.id}">${location.name}</option>`));                           
+                });
+                $(".updateLocationIcon").on("click", function() {
+                    let id = $(this).attr("data-locationID");
+                    let name = $(this).attr("data-name");
+  
+                    $("#id_ul").val(id);
+                    $("#locationName_ul").val(name);
+                    $("#editLocationModal").modal("show");
+                    $("#editLocationForm").validate().resetForm();
+                    $("#updateLocationBtn").attr("disabled", true);
+                    $("#checkConfirmEditLocation").prop("checked", false);    
                 });
                 addEmployeeLocationSelect.prepend($(`<option selected disabled value="0"></option>`));
                 editEmployeeLocationSelect.prepend($(`<option value="0"></option>`));
@@ -682,8 +703,8 @@ function getLocations() {
     });
 }
 
-// Validation Add Location
-$("#addLocationForm").validate({
+// Validation Add & Edit Location
+$("#addLocationForm, #editLocationForm").validate({
     rules: {
         locationName: "required"
       },
@@ -708,7 +729,7 @@ $("#checkConfirmAddLocation").click(function() {
     })
 });
 
-// ADD Location
+// Add Location
 $("#add-location").click(function() {
     $("#addLocationModal").modal("show");
     resetModal($("#addLocationModal"));
@@ -745,6 +766,58 @@ $("#addLocationBtn").on("click", function(e) {
     });
 })
 
+
+
+// Check Form Edit Location
+$("#checkConfirmEditLocation").click(function() {
+    if ($("#editLocationForm").valid() && $(this).is(":checked")) {
+        $("#updateLocationBtn").attr("disabled", false);
+    } else {
+        $("#updateLocationBtn").attr("disabled", true);
+        $("#checkConfirmEditLocation").prop("checked", false);
+    }
+    $("#locationName_ul").keyup(function() {
+       if ($(this).val() === "") {
+            $("#updateLocationBtn").attr("disabled", true);
+            $("#checkConfirmEditLocation").prop("checked", false);
+             }
+    });
+});
+
+
+// EDIT - UPDATE Location
+$("#updateLocationBtn").on("click", function(e) {
+    e.preventDefault();
+   
+    $.ajax({
+        url: "libs/php/updateLocation.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            name: ($("#locationName_ul").val()),
+            id: $("#id_ul").val()
+        },
+        beforeSend: function() {
+            $("#loader").removeClass("hidden");
+        },
+        success: function(result) {
+            
+            if (result.status.name == "ok") {
+                $("#editLocationModal").modal("hide");
+                getLocations();
+            }
+        },
+        complete: function() {
+            $("#loader").addClass("hidden");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+    });
+    
+});
+
+
 // DELETE Location
 $("#checkConfirmDeleteLocation").click(function() {
     if ($(this).is(":checked")) {
@@ -773,6 +846,10 @@ $("#deleteLocationBtn").on("click", function(e) {
             if (result.status.name == "ok") {
                 $("#deleteLocationModal").modal("hide");
                 getLocations();
+            }
+            if (result.status.name == "forbidden") {
+                $("#deleteLocationModal").modal("hide");
+                $("#forbiddenLocationModal").modal("show");
             }
         },
         complete: function() {
