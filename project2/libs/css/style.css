@@ -236,7 +236,9 @@ background: lightskyblue;
 background: #9fdaeb;
 }
 
-
+.personnel {
+  color:rgb(40, 10, 161)
+}
 
 
 /* View Details Employee Modal */
@@ -480,30 +482,30 @@ margin-right: 5px;
 /* Departments*/
 
 #addDepartmentTable th {
-padding: 15px 8px;
-font-size: 1.1rem;
-letter-spacing: 0.5px;
-font-weight: bold;
-text-transform: uppercase;
-}
-
-
-#addDepartmentTable tbody tr:hover {
-background: lightskyblue;
-}
-
-#departments-cards {
-background-color: #9fdaeb;
-}
-
-
-#dept-pencil-edit {
-color: #61b4f8;
-}
-
-#dept-bin-delete {
-color: #df2c14;
-}
+  padding: 15px 8px;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  font-weight: bold;
+  text-transform: uppercase;
+  }
+  
+  
+  #addDepartmentTable tbody tr:hover {
+  background: lightskyblue;
+  }
+  
+  #departments-cards {
+  background-color: #9fdaeb;
+  }
+  
+  
+  #dept-pencil-edit {
+  color: #61b4f8;
+  }
+  
+  #dept-bin-delete {
+  color: #df2c14;
+  }
 
 
 /*Add Department Button */
