@@ -51,7 +51,7 @@ function getEmployees() {
                       ${employee.email}
                     </td>
                     <td class="text-end text-nowrap">
-                      <button type="button" class="btn btn-primary btn-sm editE" data-bs-toggle="modal" 
+                      <button type="button" class="btn btn-primary btn-sm editE" 
                                                   data-id="${employee.id}"
                                                   data-firstName="${employee.firstName}" 
                                                   data-lastName="${employee.lastName}"
@@ -158,12 +158,30 @@ $("#checkConfirmAddEmployee").click(function() {
 });
 
 // Add Employee 
-$("#add-employee").click(function() {
+
+
+$("#addBtn").click(function() {
   $("#addEmployeeModal").modal("show");
+  $("#addDepartmentModal").on('shown', function (e) {
+    $("#addDepartmentModal").modal('hide');
+    e.stopPropagation();
+})
+$("#addLocationModal").on('shown', function (e) {
+    $("#addLocationModal").modal('hide');
+    e.stopPropagation();
+})
+
   resetModal($("#addEmployeeModal"));
   $("#addEmployeeForm").validate().resetForm();
   $("#employeeConfirmAddBtn").attr("disabled", true);
 });
+
+
+
+
+
+
+
 
 $("#employeeConfirmAddBtn").click(function(e) {
   e.preventDefault();
@@ -197,6 +215,8 @@ $("#employeeConfirmAddBtn").click(function(e) {
       }
   });
 });
+
+
 
 
 $("#editEmployeeDepartmentSelect").change(function() {
@@ -342,7 +362,7 @@ function getDepartments() {
                                                   ${department.location}
                                                 </td>
                                                 <td class="align-middle text-end text-nowrap">
-                                                  <button type="button" class="btn btn-primary btn-sm updateDepartmentIcon" id="dept-pencil-edit" data-bs-toggle="modal" data-bs-target="#updateDepartmentModal"
+                                                  <button type="button" class="btn btn-primary btn-sm updateDepartmentIcon" id="dept-pencil-edit" data-bs-target="#updateDepartmentModal"
                                                           data-departmentid="${department.id}"
                                                           data-name="${department.name}"
                                                           data-location="${department.location}"
@@ -418,12 +438,26 @@ $("#checkConfirmAddDepartment").click(function() {
 });
 
 // ADD Department
-$("#add-department").click(function() {
+
+
+
+$("#addBtn").click(function() {
   $("#addDepartmentModal").modal("show");
+  $('#addEmployeeModal').on('shown', function (e) {
+    $('##addEmployeeModal').modal('hide');
+    e.stopPropagation();
+})
+$("#addLocationModal").on('shown', function (e) {
+    $("#addLocationModal").modal('hide');
+    e.stopPropagation();
+})
+
   resetModal($("#addDepartmentModal"));
   $("#addDepartmentForm").validate().resetForm();
   $("#addDepartmentBtn").attr("disabled", true);
 });
+
+
 
 $("#addDepartmentBtn").on("click", function(e) {
   e.preventDefault();
@@ -658,8 +692,25 @@ $("#checkConfirmAddLocation").click(function() {
 });
 
 // Add Location
-$("#add-location").click(function() {
+
+var tabEl = document.querySelector('button[data-bs-toggle="tab"]')
+tabEl.addEventListener('shown.bs.tab', function (event) {
+  event.target // newly activated tab
+  event.relatedTarget // previous active tab
+})
+
+
+$("#addBtn").click(function() {
   $("#addLocationModal").modal("show");
+  $('#addEmployeeModal').on('shown', function (e) {
+    $('##addEmployeeModal').modal('hide');
+    e.stopPropagation();
+})
+$("#addDepartmentModal").on('shown', function (e) {
+    $("#addDepartmentModal").modal('hide');
+    e.stopPropagation();
+})
+  
   resetModal($("#addLocationModal"));
   $("#addLocationForm").validate().resetForm();
   $("#addLocationBtn").attr("disabled", true);
@@ -856,5 +907,3 @@ $("#select-locations").on("change", function() {
   }
 });
 
-
-  
