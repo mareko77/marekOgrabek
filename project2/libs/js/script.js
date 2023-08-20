@@ -7,9 +7,30 @@ $(window).on("load", function() {
 });
 
   
+// Refresh page
 function refreshPage(){
     window.location.reload();
 } 
+
+// Search Input 
+$(document).ready(function(){
+    $("#searchInp").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      if ($('#personnelBtn').hasClass('active')){
+      $("#employeeTbody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+        } else if ($('#departmentsBtn').hasClass('active')){
+            $("#departments-cards tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+        } else if ($('#locationsBtn').hasClass('active')){
+            $("#locations-cards tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              });
+        }
+    });
+  });
 
 // Resets Modal
 function resetModal(e) {
@@ -31,7 +52,6 @@ function getEmployees() {
                 const employees = result.data;
                 let employeeTable = $("#employeeTbody");
                 employeeTable.html("");
-                let totalEntries = $("#total-entries");
                 employees.forEach(employee => {
                     employeeTable.append($(`
                     <tr role="button" data-id="${employee.id}">
@@ -68,6 +88,7 @@ function getEmployees() {
                       </button>
                     </td>
                   </tr>`));
+                }); 
                   $(".editE").on("click", function() { 
                     let department=$(this).attr("data-department");
                     let departmentID=$(this).attr("data-departmentid");
@@ -84,7 +105,7 @@ function getEmployees() {
                     $("#editEmployeeLocationSelect option:first").replaceWith(($(`<option selected value="${locationID}">${location}</option>`))); 
                     
                     $("#editEmployeeModal").modal("show");
-                    $("#editEmployeeForm").validate().resetForm();
+                    $("#editEmployeeForm").validate();
                     $("#updateEmployeeBtn").attr("disabled", true);
                     $("#checkConfirmEditEmployee").prop("checked", false);
                 });
@@ -93,9 +114,7 @@ function getEmployees() {
                     $("#deleteEmployeeModal").modal("show");
                 }); 
                     
-                });   
-                const total = $("#employeeTbody tr:visible").length;
-                totalEntries.html($(`<strong><h5 class="entries">${total} employees</h5></strong>`));
+                
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -104,29 +123,6 @@ function getEmployees() {
     });
 }
 
-
-
-
-// Validation Add & Edit Employee Form
-$("#addEmployeeForm, #editEmployeeForm").each(function() {
-  $(this).validate({
-      rules: {
-          firstName: "required",
-          lastName: "required",
-          email: {
-          required: true,
-          email: true
-          },
-          jobTitle: "required",
-      },
-      messages: {
-          firstName: "This field is required!",
-          lastName: "This field is required!",
-          email: "No valid email address entered",
-          jobTitle: "This field is required!",
-      }
-  });
-});
 
 // Routine for dependent select options of Add Employee Form
 $("#addEmployeeDepartmentSelect").change(function() {
@@ -141,46 +137,25 @@ $("#addEmployeeDepartmentSelect").change(function() {
   }
 });
 
-// check Form Add Employee
-$("#checkConfirmAddEmployee").click(function() {
-  if ($("#addEmployeeForm").valid() && $(this).is(":checked")) {
-      $("#employeeConfirmAddBtn").attr("disabled", false);
-  } else {
-      $("#employeeConfirmAddBtn").attr("disabled", true);
-      $("#checkConfirmAddEmployee").prop("checked", false);
-  }
-  $("#firstNameInput, #lastNameInput, #jobTitleInput, #emailInput").keyup(function() {
-      if ($("#firstNameInput").val() === "" || $("#lastNameInput").val() === "" || $("#jobTitleInput").val() === "" || $("#emailInput").val() === "") {
-          $("#employeeConfirmAddBtn").attr("disabled", true);
-          $("#checkConfirmAddEmployee").prop("checked", false);
-      }
-  });   
-});
 
-// Add Employee 
-
+// Add Personnel, Department, Location onclick button
 
 $("#addBtn").click(function() {
-  $("#addEmployeeModal").modal("show");
-  $("#addDepartmentModal").on('shown', function (e) {
-    $("#addDepartmentModal").modal('hide');
-    e.stopPropagation();
-})
-$("#addLocationModal").on('shown', function (e) {
-    $("#addLocationModal").modal('hide');
-    e.stopPropagation();
-})
-
-  resetModal($("#addEmployeeModal"));
-  $("#addEmployeeForm").validate().resetForm();
-  $("#employeeConfirmAddBtn").attr("disabled", true);
+    if($('#personnelBtn').hasClass('active')){
+        $("#addEmployeeModal").modal("show");
+        resetModal($("#addEmployeeModal"));
+    } else if ($('#departmentsBtn').hasClass('active')){
+        $("#addDepartmentModal").modal("show");
+        resetModal($("#addDepartmentModal"));
+        $("#addDepartmentForm").validate();
+        $("#addDepartmentBtn").attr("disabled", true);
+    } else if ($('#locationsBtn').hasClass('active')) {
+        $("#addLocationModal").modal("show"); 
+        resetModal($("#addLocationModal"));
+        $("#addLocationForm").validate();
+        $("#addLocationBtn").attr("disabled", true);
+    } 
 });
-
-
-
-
-
-
 
 
 $("#employeeConfirmAddBtn").click(function(e) {
@@ -211,7 +186,9 @@ $("#employeeConfirmAddBtn").click(function(e) {
           $("#loader").addClass("hidden");
       },
       error: function(jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR, textStatus, errorThrown);
+        $("#addEmployeeModal .modal-title").replaceWith(
+            "Error retrieving data"
+          );
       }
   });
 });
@@ -297,7 +274,7 @@ $("#deleteEmployeeModal").on("hidden.bs.modal", function() {
       $("#deleteEmployeeBtn").attr("disabled", true);
       $(this).find("form").trigger("reset");
   }
-  $("#viewEmployeeModal").removeClass("dm-overlay");
+
 });
 
 $("#deleteEmployeeBtn").on("click", function(e) {
@@ -317,7 +294,6 @@ $("#deleteEmployeeBtn").on("click", function(e) {
           
           if (result.status.name == "ok") {
               $('#deleteEmployeeModal').modal("hide");
-             // $("#viewEmployeeModal").modal("hide");
               getEmployees();
           }
       },
@@ -369,45 +345,45 @@ function getDepartments() {
                                                           data-locationID="${department.locationID}">
                                                     <i class="fa-solid fa-pencil fa-fw"></i>
                                                   </button>
-                                                  <button type="button" class="btn btn-danger btn-sm deleteDepartmentIcon" id="dept-bin-delete" data-id="${department.id}">
+                                                  <button type="button" class="btn btn-danger btn-sm deleteDepartmentIcon" id="dept-bin-delete" data-departmentid="${department.id}">
                                                     <i class="fa-solid fa-trash fa-fw"></i>
                                                   </button>
                                                 </td>
                                                 </tr> 
                                                 `));
 
-                  addEmployeeDepartmentSelect.append($(`<option data-departmentid="${department.id}" value="${department.locationID}">${department.name}</option>`));
-                  editEmployeeDepartmentSelect.append($(`<option data-departmentid="${department.id}" value="${department.locationID}">${department.name}</option>`));
-              });
-              addEmployeeDepartmentSelect.prepend($(`<option selected disabled value="0">Select a Department</option>`));
-              editEmployeeDepartmentSelect.prepend($(`<option value="0"></option>`));
-              $(".updateDepartmentIcon").on("click", function() {
-                  let id = $(this).attr("data-departmentid");
-                  let name = $(this).attr("data-name");
-                  let location = $(this).attr("data-location");
-                  let locationID = $(this).attr("data-locationID");
-                  
-                  $("#id_ud").val(id);
-                  $("#departmentName_ud").val(name);
-                  $("#editDepartmentLocationSelect option:first").replaceWith(($(`<option selected disabled value="${locationID}">${location}</option>`))); 
-                  
-                  $("#editDepartmentModal").modal("show");
-                  $("#editDepartmentForm").validate().resetForm();
-                  $("#updateDepartmentBtn").attr("disabled", true);
-                  $("#checkConfirmEditDepartment").prop("checked", false);    
-              });
-              $(".deleteDepartmentIcon").on("click", function() {
-                  let id = $(this).attr("data-departmentid");
-                  $("#id_dd").val(id);
-                  $("#deleteDepartmentModal").modal("show");
-              });   
-          }
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR, textStatus, errorThrown);
-      }
-  });
-}
+                                                addEmployeeDepartmentSelect.append($(`<option data-departmentid="${department.id}" value="${department.locationID}">${department.name}</option>`));
+                                                editEmployeeDepartmentSelect.append($(`<option data-departmentid="${department.id}" value="${department.locationID}">${department.name}</option>`));
+                                            });
+                                            addEmployeeDepartmentSelect.prepend($(`<option selected disabled value="0">Select a Department</option>`));
+                                            editEmployeeDepartmentSelect.prepend($(`<option value="0"></option>`));
+                                            $(".updateDepartmentIcon").on("click", function() {
+                                                let id = $(this).attr("data-departmentid");
+                                                let name = $(this).attr("data-name");
+                                                let location = $(this).attr("data-location");
+                                                let locationID = $(this).attr("data-locationID");
+                                                
+                                                $("#id_ud").val(id);
+                                                $("#departmentName_ud").val(name);
+                                                $("#editDepartmentLocationSelect option:first").replaceWith(($(`<option selected disabled value="${locationID}">${location}</option>`))); 
+                                                
+                                                $("#editDepartmentModal").modal("show");
+                                                $("#editDepartmentForm").validate().resetForm();
+                                                $("#updateDepartmentBtn").attr("disabled", true);
+                                                $("#checkConfirmEditDepartment").prop("checked", false);    
+                                            });
+                                            $(".deleteDepartmentIcon").on("click", function() {
+                                                let id = $(this).attr("data-departmentid");
+                                                $("#id_dd").val(id);
+                                                $("#deleteDepartmentModal").modal("show");
+                                            });   
+                                        }
+                                    },
+                                    error: function(jqXHR, textStatus, errorThrown) {
+                                        console.log(jqXHR, textStatus, errorThrown);
+                                    }
+                                });
+                            }
 
 // Validation Add & Edit Department Form
 $("#addDepartmentForm, #editDepartmentForm ").each(function() {
@@ -436,27 +412,6 @@ $("#checkConfirmAddDepartment").click(function() {
       }
   });
 });
-
-// ADD Department
-
-
-
-$("#addBtn").click(function() {
-  $("#addDepartmentModal").modal("show");
-  $('#addEmployeeModal').on('shown', function (e) {
-    $('##addEmployeeModal').modal('hide');
-    e.stopPropagation();
-})
-$("#addLocationModal").on('shown', function (e) {
-    $("#addLocationModal").modal('hide');
-    e.stopPropagation();
-})
-
-  resetModal($("#addDepartmentModal"));
-  $("#addDepartmentForm").validate().resetForm();
-  $("#addDepartmentBtn").attr("disabled", true);
-});
-
 
 
 $("#addDepartmentBtn").on("click", function(e) {
@@ -540,51 +495,51 @@ $("#updateDepartmentBtn").on("click", function(e) {
 
 // DELETE Department
 $("#checkConfirmDeleteDepartment").click(function() {
-  if ($(this).is(":checked")) {
-      $("#deleteDepartmentBtn").attr("disabled", false);
-  } else {
-      $("#deleteDepartmentBtn").prop("disabled", true);
-  }   
+    if ($(this).is(":checked")) {
+        $("#deleteDepartmentBtn").attr("disabled", false);
+    } else {
+        $("#deleteDepartmentBtn").prop("disabled", true);
+    }   
 });
 
 $("#deleteDepartmentModal").on("hidden.bs.modal", function() {
-  if($("#checkConfirmDeleteDepartment").is(":checked")) {
-      $("#deleteDepartmentBtn").attr("disabled", true);
-      $(this).find("form").trigger("reset");
-  }
+    if($("#checkConfirmDeleteDepartment").is(":checked")) {
+        $("#deleteDepartmentBtn").attr("disabled", true);
+        $(this).find("form").trigger("reset");
+    }
 });
 
 $("#deleteDepartmentBtn").on("click", function(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  $.ajax({
-      url: "libs/php/deleteDepartmentByID.php",
-      type: 'POST',
-      dataType: 'json',
-      data: { 
-          id: $("#id_dd").val()
-      },
-      beforeSend: function() {
-          $("#loader").removeClass("hidden");
-      },
-      success: function(result) {
-          
-          if (result.status.name == "ok") {
-              $("#deleteDepartmentModal").modal("hide");
-              getDepartments();
-          }
-          if (result.status.name == "forbidden") {
-              $("#deleteDepartmentModal").modal("hide");
-              $("#forbiddenDepartmentModal").modal("show");
-          }
-      },
-      complete: function() {
-          $("#loader").addClass("hidden");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR, textStatus, errorThrown);
-      }
-  });
+    $.ajax({
+        url: "libs/php/deleteDepartmentByID.php",
+        type: 'POST',
+        dataType: 'json',
+        data: { 
+            id: $("#id_dd").val()
+        },
+        beforeSend: function() {
+            $("#loader").removeClass("hidden");
+        },
+        success: function(result) {
+            
+            if (result.status.name == "ok") {
+                $("#deleteDepartmentModal").modal("hide");
+                getDepartments();
+            }
+            if (result.status.name == "forbidden") {
+                $("#deleteDepartmentModal").modal("hide");
+                $("#forbiddenDepartmentModal").modal("show");
+            }
+        },
+        complete: function() {
+            $("#loader").addClass("hidden");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+    });
 });
 
 
@@ -691,30 +646,6 @@ $("#checkConfirmAddLocation").click(function() {
   })
 });
 
-// Add Location
-
-var tabEl = document.querySelector('button[data-bs-toggle="tab"]')
-tabEl.addEventListener('shown.bs.tab', function (event) {
-  event.target // newly activated tab
-  event.relatedTarget // previous active tab
-})
-
-
-$("#addBtn").click(function() {
-  $("#addLocationModal").modal("show");
-  $('#addEmployeeModal').on('shown', function (e) {
-    $('##addEmployeeModal').modal('hide');
-    e.stopPropagation();
-})
-$("#addDepartmentModal").on('shown', function (e) {
-    $("#addDepartmentModal").modal('hide');
-    e.stopPropagation();
-})
-  
-  resetModal($("#addLocationModal"));
-  $("#addLocationForm").validate().resetForm();
-  $("#addLocationBtn").attr("disabled", true);
-});
 
 $("#addLocationBtn").on("click", function(e) {
   e.preventDefault();
@@ -840,70 +771,77 @@ $("#deleteLocationBtn").on("click", function(e) {
   });
 });
 
+// Filter by departments, locations
 
+$("#filterBtn").on("click", function() {
+    $.ajax({
+        url: "libs/php/getAllDepartments.php",
+        type: 'GET',
+        dataType: 'json',
+        success: function(result) {
+            console.log(result);
+            if (result.status.name == "ok") {
+                const departments = result.data;
+                let filtersDepartments = $("#filtersDept");
+                departments.forEach(department => {
+                filtersDepartments.append($(`
+                <li>
+                <input class="form-check-input" type="checkbox" value="filterDepartment" id="filterDepartment" />${department.name}
+                </li>
 
-// Search Input - Employees Page
-$("#searchInp").on("keyup", function() {
-  let rows = $("#employeeTbody tr");
-  let val = $.trim($(this).val()).replace(/ +/g, " ").toLowerCase();
-
-  rows.show().filter(function() {
-      var text = $(this).text().replace(/\s+/g, " ").toLowerCase();
-      return !~text.indexOf(val);
-  }).hide();
-  let totalEntries = $("#total-entries");
-  let totalRows = $("#employeeTbody tr:visible").length;
-  if (totalRows == 1) {
-      totalEntries.html($(`<h5>${totalRows} employee</h5>`));
-  } else {
-      totalEntries.html($(`<h5>${totalRows} employees</h5>`));
-  }
-});
-
-// Filter By Departments
-$("#select-departments").on("change", function() {
-  $("#select-locations option").each(function () {
-      if (this.defaultSelected) {
-          this.selected = true;
-          return false;
-      }
-  });
-  let totalEntries = $("#total-entries");
-  let totalRows = $("#employeeTbody tr").length;
-  totalEntries.html($(`<h5>${totalRows} employees</h5>`));
-  let selection = $("#select-departments :selected").text();
-  $("table")[selection ? "show" : "hide"]();
-
-  if (selection) { 
-      $.each($("#employeeTable tbody tr"), function(index, item) {
-          $(item)[$(item).is(":contains("+ selection  +")")? "show" : "hide"]();
-          let activeRows = $("#employeeTbody tr:visible").length;
-          totalEntries.html($(`<h5>${activeRows} employees / ${totalRows}</h5>`));
-      });    
-  }
-});
-
-
-//Filter By Locations
-$("#select-locations").on("change", function() {
-  $("#select-departments option").each(function () {
-      if (this.defaultSelected) {
-          this.selected = true;
-          return false;
-      }
-  });
-  let totalEntries = $("#total-entries");
-  let totalRows = $("#employeeTbody tr").length;
-  totalEntries.html($(`<h5>${totalRows} employees</h5>`));
-  let selection = $("#select-locations :selected").text();;
-  $("table")[selection ? "show" : "hide"]();
-
-  if (selection) { 
-    $.each($("#employeeTable tbody tr"), function(index, item) {
-      $(item)[$(item).is(":contains("+ selection  +")")? "show" : "hide"]();
-      let activeRows = $("#employeeTbody tr:visible").length;
-      totalEntries.html($(`<h5>${activeRows} employees / ${totalRows}</h5>`));
+                `));
+                   
+            });                                       
+            }
+            $.ajax({
+                url: "libs/php/getAllLocations.php",
+                type: 'GET',
+                dataType: 'json',
+                success: function(result) {
+                    console.log(result);
+                    if (result.status.name == "ok") {
+                        const locations = result.data;
+                        let filtersLocations = $("#filtersLoc");
+                        locations.forEach(location => {
+                        filtersLocations.append($(`
+                        <li>
+                        <input class="form-check-input" type="checkbox" value="filterLocation" id="filterLocation" />${location.name}
+                        </li>
+        
+                        `));
+                           
+                    });                                       
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR, textStatus, errorThrown);
+                }
+             
+            });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+     
     });
-  }
+
+    $("#filterModal").modal("show"); 
 });
+
+
+
+$("#saveFilterBtn").on("click", function(e) {
+    e.preventDefault();
+   
+                $('#filtersDept').is(":checked");
+                $('#filtersLoc').is(":checked");
+                $("#filterModal").modal("hide");
+                getDepartments();
+                getLocations();                       
+  }); 
+
+
+
+
+
 
