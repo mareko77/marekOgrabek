@@ -1,56 +1,72 @@
 <?php
 
-	$executionStartTime = microtime(true);
+$executionStartTime = microtime(true);
 
-	include("config.php");
+include("config.php");
 
-	header('Content-Type: application/json; charset=UTF-8');
+header('Content-Type: application/json; charset=UTF-8');
 
-	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
+$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
 
-	if (mysqli_connect_errno()) {
-		
-		$output['status']['code'] = "300";
-		$output['status']['name'] = "failure";
-		$output['status']['description'] = "database unavailable";
-		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-		$output['data'] = [];
+if (mysqli_connect_errno()) {
+    $output['status']['code'] = "300";
+    $output['status']['name'] = "failure";
+    $output['status']['description'] = "database unavailable";
+    $output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+    $output['data'] = [];
 
-		mysqli_close($conn);
+    mysqli_close($conn);
 
-		echo json_encode($output);
+    echo json_encode($output);
 
-		exit;
+    exit;
+}
 
-	}	
+$id = $_POST['id'];
+$firstName = $_POST['firstName'];
+$lastName = $_POST['lastName'];
+$email = $_POST['email'];
+$jobTitle = $_POST['jobTitle'];
+$departmentID = $_POST['departmentID'];
+$locationID = $_POST['locationID'];
 
-	$query = 'UPDATE personnel SET firstName = ' . '"' . $_POST['firstName'] . '"' . ', lastName =' . '"' . $_POST['lastName'] . '"' . ', email =' . '"' . $_POST['email'] . '"' . ', jobTitle =' . '"' . $_POST['jobTitle'] . '"' . ', departmentID =' . $_POST['departmentID'] . ' WHERE id =' . $_POST['id'];
+$query = "UPDATE personnel SET firstName = ?, lastName = ?, email = ?, jobTitle = ?, departmentID = ? WHERE id = ?";
+$stmt = $conn->prepare($query);
 
-	$result = $conn->query($query);
-	
-	if (!$result) {
+if ($stmt) {
+    $stmt->bind_param("ssssii", $firstName, $lastName, $email, $jobTitle, $departmentID, $id);
 
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";	
-		$output['data'] = [];
+    // Execute the query
+    $result = $stmt->execute();
 
-		mysqli_close($conn);
+    if ($result) {
+        $output['status']['code'] = "200";
+        $output['status']['name'] = "ok";
+        $output['status']['description'] = "success";
+    } else {
+        $output['status']['code'] = "400";
+        $output['status']['name'] = "executed";
+        $output['status']['description'] = "query failed";
+    }
 
-		echo json_encode($output); 
+    $stmt->close();
+} else {
+    $output['status']['code'] = "400";
+    $output['status']['name'] = "preparation";
+    $output['status']['description'] = "prepare query failed";
+}
 
-		exit;
+$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+$output['data'] = [];
 
-	}
+error_log(json_encode($output));
 
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
-	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['data'] = [];
-	
-	mysqli_close($conn);
 
-	echo json_encode($output); 
+mysqli_close($conn);
+
+echo json_encode($output);
+
+
 
 ?>
+
