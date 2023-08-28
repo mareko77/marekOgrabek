@@ -586,12 +586,12 @@ function getLocations() {
               });  
 
                 // Populate location checkboxes in filter modal
-               /* const locationCheckboxes = $("#location-checkboxes");
+                const locationCheckboxes = $("#location-checkboxes");
                 locations.forEach(location => {
                     locationCheckboxes.append($(
                         `<label><input type="checkbox" class="filter-checkbox" value="location${location.id}"> ${location.name}</label><br>`
                     ));
-                });*/
+                });
           }          
               
       },
@@ -775,7 +775,9 @@ document.addEventListener("DOMContentLoaded", function () {
     filterBtn.addEventListener("click", function () {
         $("#filter-modal").modal("show");
     });
+
     applyFilterBtn.addEventListener("click", function () {
+        
         const selectedDepartments = Array.from(document.querySelectorAll(".filter-checkbox[value^='department']:checked")).map(checkbox => checkbox.value);
         const selectedLocations = Array.from(document.querySelectorAll(".filter-checkbox[value^='location']:checked")).map(checkbox => checkbox.value);
     
@@ -787,58 +789,54 @@ document.addEventListener("DOMContentLoaded", function () {
                 locations: selectedLocations
             },
             success: function (data) {
-                console.log("Received data:", data);
+                console.log("Received data:", data); 
                 console.log("Selected departments:", selectedDepartments);
                 console.log("Selected locations:", selectedLocations);
-            
-                // Log the constructed SQL query
-                console.log("Constructed SQL query:", data.debugQuery);
-            
-                const filteredResults = data.data;
+                const filteredResults = data.data; 
                 const resultsContainer = document.getElementById("employeeTbody");
-            
+    
                 // Clear existing results
-                while (resultsContainer.firstChild) {
-                    resultsContainer.removeChild(resultsContainer.firstChild);
-                }
-            
-                // Populate the results container with new data
+                resultsContainer.innerHTML = "";
+    
+                // Iterate through the filtered results and populate the results container
                 filteredResults.forEach(result => {
                     const row = document.createElement("tr");
                     row.innerHTML = `
-                    <td class="align-middle text-nowrap">${result.firstName}</td>
-                    <td class="align-middle text-nowrap">${result.lastName}</td>
-                    <td class="align-middle text-nowrap d-none d-md-table-cell">${result.department}</td>
-                    <td class="align-middle text-nowrap d-none d-md-table-cell">${result.location}</td>
-                    <td class="align-middle text-nowrap d-none d-md-table-cell">${result.email}</td>
-                    <td class="text-end text-nowrap">
-                    <button type="button" class="btn btn-primary btn-sm editE 
-                                      data-id="${result.id}"
-                                      data-firstName="${result.firstName}" 
-                                      data-lastName="${result.lastName}"
-                                      data-jobTitle="${result.jobTitle}" 
-                                      data-email="${result.email}" 
-                                      data-department="${result.department}"
-                                      data-departmentid="${result.departmentID}"
-                                      data-location="${result.location}"
-                                      data-locationID="${result.locationID}">
-                      <i class="fa-solid fa-pencil fa-fw"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm deleteE" data-id="${result.id}">
-                      <i class="fa-solid fa-trash fa-fw"></i>
-                    </button>
-                  </td>
+                        <td class="align-middle text-nowrap">${result.firstName}</td>
+                        <td class="align-middle text-nowrap">${result.lastName}</td>
+                        <td class="align-middle text-nowrap d-none d-md-table-cell">${result.department}</td>
+                        <td class="align-middle text-nowrap d-none d-md-table-cell">${result.location}</td>
+                        <td class="align-middle text-nowrap d-none d-md-table-cell">${result.email}</td>
+                        <td class="text-end text-nowrap">
+                        <button type="button" class="btn btn-primary btn-sm editE  
+                                          data-id="${result.id}"
+                                          data-firstName="${result.firstName}" 
+                                          data-lastName="${result.lastName}"
+                                          data-jobTitle="${result.jobTitle}" 
+                                          data-email="${result.email}" 
+                                          data-department="${result.department}"
+                                          data-departmentid="${result.departmentID}"
+                                          data-location="${result.location}"
+                                          data-locationID="${result.locationID}">
+                          <i class="fa-solid fa-pencil fa-fw"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm deleteE" data-id="${result.id}">
+                          <i class="fa-solid fa-trash fa-fw"></i>
+                        </button>
+                        </td>
                     `;
                     resultsContainer.appendChild(row);
                 });
-            
+    
                 $("#filter-modal").modal("hide");
             },
             error: function (error) {
-                console.error("Error retrieving data:", error);
-                $("#filter-modal .modal-title").replaceWith("Error retrieving data");
+                $("#filter-modal .modal-title").replaceWith(
+                    "Error retrieving data"
+                );
             }
         });
+    
     });
     
 });
