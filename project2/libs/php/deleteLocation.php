@@ -61,14 +61,14 @@
 	
 		}
 		
-	} /*else {
+	} else {
 
 		$output['status']['code'] = "403";
 		$output['status']['name'] = "forbidden";
 		$output['status']['description'] = "Department(s) assigned to this Location";	
 		$output['data'] = $department;
 
-	}*/
+	}
 
 	mysqli_close($conn);
 
