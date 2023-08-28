@@ -504,11 +504,8 @@ $("#deleteDepartmentBtn").click(function(e) {
                 getDepartments();
             }
             if (result.status.name == "forbidden") {
-                if ($("#id_d").val() === 0) {
-                    $("#deleteLocationModal").modal("show");
-                } else {
-                    $("#forbiddenLocationModal").modal("show");
-                }
+                $("#deleteDepartmentModal").modal("hide");
+                $("#forbiddenDepartmentModal").modal("show");
             }
         },
         complete: function() {
@@ -589,12 +586,12 @@ function getLocations() {
               });  
 
                 // Populate location checkboxes in filter modal
-                const locationCheckboxes = $("#location-checkboxes");
+               /* const locationCheckboxes = $("#location-checkboxes");
                 locations.forEach(location => {
                     locationCheckboxes.append($(
                         `<label><input type="checkbox" class="filter-checkbox" value="location${location.id}"> ${location.name}</label><br>`
                     ));
-                });
+                });*/
           }          
               
       },
@@ -705,11 +702,8 @@ $("#deleteLocationBtn").on("click", function(e) {
           }
           if (result.status.name == "forbidden") {
             
-            if ($("#id_d").val() === 0) {
-                $("#deleteLocationModal").modal("show");
-            } else {
-                $("#forbiddenLocationModal").modal("show");
-            }
+            $("#deleteLocationModal").modal("hide");
+            $("#forbiddenLocationModal").modal("show");
 
           }
       },
@@ -725,10 +719,6 @@ $("#deleteLocationBtn").on("click", function(e) {
 
 
 // Filter by departments, locations
-
-/*$("#filterBtn").on("click", function() {
-    $("#filterModal").modal("show"); 
-});*/
 
 $("#select-departments").on("change", function() {
     $("#select-locations option").each(function () {
