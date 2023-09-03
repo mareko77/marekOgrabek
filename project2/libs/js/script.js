@@ -66,6 +66,7 @@ function getEmployees() {
                     <td class="align-middle text-nowrap d-none d-md-table-cell">
                       ${employee.department}
                     </td>
+
                     <td class="align-middle text-nowrap d-none d-md-table-cell">
                       ${employee.location}
                     </td>
@@ -97,8 +98,7 @@ function getEmployees() {
                     const lastName = $(this).data("lastname");
                     const jobTitle = $(this).data("jobtitle");
                     const email = $(this).data("email");
-                    const departmentID = $(this).data("departmentID");
-                    const locationID = $(this).data("locationID");
+                    const departmentID = $(this).data("departmentid");
                 
                     // Populate the modal inputs with the retrieved data
                     $("#id_u").val(employeeId);
@@ -107,8 +107,7 @@ function getEmployees() {
                     $("#jobTitle_u").val(jobTitle);
                     $("#email_u").val(email);
                 
-                    $("#editEmployeeDepartmentSelect option[value='" + departmentID + "']").prop("selected", true);
-                    $("#editEmployeeLocationSelect option[value='" + locationID + "']").prop("selected", true);              
+                    $("#editEmployeeDepartmentSelect option[value='" + departmentID + "']").prop("selected", true);            
                     // Show the edit modal
                     $("#editEmployeeModal").modal("show");
                 });
@@ -128,20 +127,6 @@ function getEmployees() {
         }
     });
 }
-
-
-// Routine for dependent select options of Add Employee Form
-$("#addEmployeeDepartmentSelect").change(function() {
-  $("#addEmployeeLocationSelect option").hide();
-  $("#addEmployeeLocationSelect option[value='" + $(this).val() + "']").show();
-  
-  if ($("#addEmployeeLocationSelect option[value='" + $(this).val() + "']").length) {
-      $("#addEmployeeLocationSelect option[value='" + $(this).val() + "']").first().prop("selected", true);
-  }
-  else {
-    $("#addEmployeeLocationSelect").val("");
-  }
-});
 
 
 // Add Personnel, Department, Location onclick button
@@ -173,13 +158,12 @@ $(document).ready(function(){
                 lastName: ($("#lastNameInput").val()),
                 jobTitle: ($("#jobTitleInput").val()),
                 email: $("#emailInput").val(),
-                departmentID: $("#addEmployeeDepartmentSelect :selected").val("departmentID")
+                departmentID: $("#addEmployeeDepartmentSelect").val()
             },
             beforeSend: function() {
                 $("#loader").removeClass("hidden");
             },
             success: function(result) {
-
                 console.log(result);
                 
                 if (result.status.name == "ok") {
@@ -199,20 +183,6 @@ $(document).ready(function(){
     });
 });
 
-
-
-
-$("#editEmployeeDepartmentSelect").change(function() {
-    $("#editEmployeeLocationSelect option").hide();
-    $("#editEmployeeLocationSelect option[value='" + $(this).val() + "']").show();
-    
-    if ($("#editEmployeeLocationSelect option[value='" + $(this).val() + "']").length) {
-        $("#editEmployeeLocationSelect option[value='" + $(this).val() + "']").first().prop("selected", true);
-    }
-    else {
-      $("#editEmployeeLocationSelect").val("");
-    }
-  });
   
   
   // EDIT - UPDATE Employee 
@@ -226,8 +196,10 @@ $("#editEmployeeDepartmentSelect").change(function() {
     var email = $("#email_u").val();
     var jobTitle = $("#jobTitle_u").val();
     var departmentID = $("#editEmployeeDepartmentSelect").val(); 
-    var locationID = $("#editEmployeeLocationSelect").val(); 
-  
+
+    
+    console.log("departmentID:", departmentID);
+
   $.ajax({
       url: "libs/php/updatePersonnelByID.php",
       type: 'POST',
@@ -239,15 +211,12 @@ $("#editEmployeeDepartmentSelect").change(function() {
         email: email,
         jobTitle: jobTitle,
         departmentID: departmentID,
-        locationID: locationID
     },
         beforeSend: function() {
             $("#loader").removeClass("hidden");
         },
         success: function(result) {
             console.log("Department ID:", departmentID);
-            console.log("Location ID:", locationID);
-
             
             if (result.status.name == "ok") {
                 $("#editEmployeeModal").modal("hide"); 
@@ -357,8 +326,8 @@ function getDepartments() {
                                                 </tr> 
                                                 `));
 
-                                                addEmployeeDepartmentSelect.append($(`<option data-departmentid="${department.id}" value="${department.locationID}">${department.name}</option>`));
-                                                editEmployeeDepartmentSelect.append($(`<option data-departmentid="${department.id}" value="${department.locationID}">${department.name}</option>`));
+                                                addEmployeeDepartmentSelect.append($(`<option data-locationid="${department.locationID}" value="${department.id}">${department.name}</option>`));
+                                                editEmployeeDepartmentSelect.append($(`<option data-departmentid="${department.id}" value="${department.id}">${department.name}</option>`));
                                             });
                                             addEmployeeDepartmentSelect.prepend($(`<option selected disabled value="0">Select a Department</option>`));
                                             editEmployeeDepartmentSelect.prepend($(`<option value="0"></option>`));
@@ -380,12 +349,6 @@ function getDepartments() {
                                                 $("#deleteDepartmentModal").modal("show");
                                             });
                                             
-                                            const departmentCheckboxes = $("#department-checkboxes");
-                                            departments.forEach(department => {
-                                                departmentCheckboxes.append($(
-                                                    `<label><input type="checkbox" class="filter-checkbox" value="department${department.id}"> ${department.name}</label><br>`
-                                                ));
-                                            });
                                         }
                                     },
                                     error: function(jqXHR, textStatus, errorThrown) {
@@ -585,13 +548,6 @@ function getLocations() {
                   $("#deleteLocationModal").modal("show");
               });  
 
-                // Populate location checkboxes in filter modal
-                const locationCheckboxes = $("#location-checkboxes");
-                locations.forEach(location => {
-                    locationCheckboxes.append($(
-                        `<label><input type="checkbox" class="filter-checkbox" value="location${location.id}"> ${location.name}</label><br>`
-                    ));
-                });
           }          
               
       },
@@ -718,8 +674,7 @@ $("#deleteLocationBtn").on("click", function(e) {
 
 
 
-// Filter by departments, locations
-
+// Filter by departments
 $("#select-departments").on("change", function() {
     $("#select-locations option").each(function () {
         if (this.defaultSelected) {
@@ -767,79 +722,6 @@ $("#select-locations").on("change", function() {
 });
 
 
-// Checkbox filter
-document.addEventListener("DOMContentLoaded", function () {
-    const filterBtn = document.getElementById("filter-btn");
-    const applyFilterBtn = document.getElementById("apply-filter-btn");
-
-    filterBtn.addEventListener("click", function () {
-        $("#filter-modal").modal("show");
-    });
-
-    applyFilterBtn.addEventListener("click", function () {
-        
-        const selectedDepartments = Array.from(document.querySelectorAll(".filter-checkbox[value^='department']:checked")).map(checkbox => checkbox.value);
-        const selectedLocations = Array.from(document.querySelectorAll(".filter-checkbox[value^='location']:checked")).map(checkbox => checkbox.value);
-    
-        $.ajax({
-            url: "libs/php/getAll.php", 
-            type: "GET",
-            data: {
-                departments: selectedDepartments,
-                locations: selectedLocations
-            },
-            success: function (data) {
-                console.log("Received data:", data); 
-                console.log("Selected departments:", selectedDepartments);
-                console.log("Selected locations:", selectedLocations);
-                const filteredResults = data.data; 
-                const resultsContainer = document.getElementById("employeeTbody");
-    
-                // Clear existing results
-                resultsContainer.innerHTML = "";
-    
-                // Iterate through the filtered results and populate the results container
-                filteredResults.forEach(result => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td class="align-middle text-nowrap">${result.firstName}</td>
-                        <td class="align-middle text-nowrap">${result.lastName}</td>
-                        <td class="align-middle text-nowrap d-none d-md-table-cell">${result.department}</td>
-                        <td class="align-middle text-nowrap d-none d-md-table-cell">${result.location}</td>
-                        <td class="align-middle text-nowrap d-none d-md-table-cell">${result.email}</td>
-                        <td class="text-end text-nowrap">
-                        <button type="button" class="btn btn-primary btn-sm editE  
-                                          data-id="${result.id}"
-                                          data-firstName="${result.firstName}" 
-                                          data-lastName="${result.lastName}"
-                                          data-jobTitle="${result.jobTitle}" 
-                                          data-email="${result.email}" 
-                                          data-department="${result.department}"
-                                          data-departmentid="${result.departmentID}"
-                                          data-location="${result.location}"
-                                          data-locationID="${result.locationID}">
-                          <i class="fa-solid fa-pencil fa-fw"></i>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm deleteE" data-id="${result.id}">
-                          <i class="fa-solid fa-trash fa-fw"></i>
-                        </button>
-                        </td>
-                    `;
-                    resultsContainer.appendChild(row);
-                });
-    
-                $("#filter-modal").modal("hide");
-            },
-            error: function (error) {
-                $("#filter-modal .modal-title").replaceWith(
-                    "Error retrieving data"
-                );
-            }
-        });
-    
-    });
-    
-});
 
 
 
