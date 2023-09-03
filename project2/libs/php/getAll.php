@@ -37,7 +37,7 @@ $selectedDepartments = $_GET['departments'] ?? [];
 $selectedLocations = $_GET['locations'] ?? [];
 
 // Construct the SQL query with filter parameters
-$query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, d.name as department, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID)';
+$query = 'SELECT p.id, p.lastName, p.firstName, p.jobTitle, p.email, p.departmentID, d.name as department, d.locationID, l.name as location FROM personnel p LEFT JOIN department d ON (d.id = p.departmentID) LEFT JOIN location l ON (l.id = d.locationID)';
 
 if (!empty($selectedDepartments)) {
     // Convert department IDs to integers
@@ -59,7 +59,7 @@ if (!empty($selectedLocations)) {
 
 $query .= ' ORDER BY p.lastName, p.firstName, d.name, l.name';
 
-$output['debugQuery'] = $query;
+// $output['debugQuery'] = $query;
 
 $result = $conn->query($query);
 

@@ -28,7 +28,6 @@ $lastName = $_POST['lastName'];
 $email = $_POST['email'];
 $jobTitle = $_POST['jobTitle'];
 $departmentID = $_POST['departmentID'];
-$locationID = $_POST['locationID'];
 
 $query = "UPDATE personnel SET firstName = ?, lastName = ?, email = ?, jobTitle = ?, departmentID = ? WHERE id = ?";
 $stmt = $conn->prepare($query);

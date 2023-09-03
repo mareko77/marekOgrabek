@@ -22,8 +22,7 @@
 
 		exit;
 
-	}	
-
+	}
 
     $query = 'INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES("' . $_POST['firstName'] . '","' . $_POST["lastName"] . '","' . $_POST["jobTitle"] . '","' . $_POST["email"] . '",' . $_POST["departmentID"] .')';
 
