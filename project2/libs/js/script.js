@@ -47,7 +47,7 @@ function getEmployees() {
         type: 'GET',
         dataType: 'json',
         success: function(result) {
-          console.log(result);
+          //console.log(result);
             if (result.status.name == "ok") {    
 
                 const employees = result.data;
@@ -216,7 +216,7 @@ $(document).ready(function(){
             $("#loader").removeClass("hidden");
         },
         success: function(result) {
-            console.log("Department ID:", departmentID);
+            //console.log("Department ID:", departmentID);
             
             if (result.status.name == "ok") {
                 $("#editEmployeeModal").modal("hide"); 
@@ -490,7 +490,7 @@ function getLocations() {
       type: 'GET',
       dataType: 'json',
       success: function(result) {
-          console.log(result);
+         // console.log(result);
           if (result.status.name == "ok") {
               const locations = result.data;
               let selectLocation = $("#select-locations");
