@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="keyword" content="Company Directory">
         <meta name="author" content="Marek Ograbek">
-        <link rel="icon" href="img/favicon.png"/>
+        <link href="ico/favicon.ico" rel="icon">
 
         <title>Company Directory</title>
       
@@ -34,7 +34,7 @@
             
                 <div class="col-md-4 col-12 pb-3 px-4">
                   <select class="form-select" id="select-departments">
-                  </select>
+                  </select>                 
                 </div>
             
                 <div class="col-md-4 col-12 pb-3 px-4">
@@ -390,7 +390,7 @@
            </div>
 
               <!-- Delete Department Modal -->
-              <div id="deleteDepartmentModal" class="modal fade" tabindex="-1" role="dialog"  data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+              <!--<div id="deleteDepartmentModal" class="modal fade" tabindex="-1" role="dialog"  data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
                   <div class="modal-dialog">
                       <div class="modal-content">
                           <div class="modal-header alert-danger bg-danger">
@@ -419,10 +419,101 @@
                           </div>
                       </div>
                   </div>
+              </div>-->
+
+             
+              <!-- Delete Department Modal -->
+              <div id="cantDeleteDepartmentModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  
+                <!--   the last two classes centre the modal and, if the content is too long, ensures  -->
+                <!--   that the header and footer are always on display by making the body scroll -->
+                
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  
+                  <!-- As the backdrop is disabled we can use the Bootstrap shadow class to add definition to the dialog -->
+                  
+                  <div class="modal-content shadow"> 
+                           
+                    <div class="modal-header">
+                      <h5 class="modal-title">Cannot remove department ...</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+              
+                    <div class="modal-body">
+              
+                      You cannot remove the entry for <span id="cantDeleteDeptName" class="fw-bold"></span> because it has <span id="pc" class="fw-bold"></span> employees assigned to it.
+              
+                    </div>
+              
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                    
+                  </div>
+                  
+                </div>
+                
+              </div>
+              
+              <div id="areYouSureDeleteDepartmentModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                
+                <!--   the last two classes centre the modal and, if the content is too long, ensures  -->
+                <!--   that the header and footer are always on display by making the body scroll -->
+                
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  
+                  <!-- As the backdrop is disabled we can use the Bootstrap shadow class to add definition to the dialog -->
+                  
+                  <div class="modal-content shadow"> 
+                           
+                    <div class="modal-header">
+                      <h5 class="modal-title">Remove department?</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+              
+                    <div class="modal-body">
+              
+                      Are you sure that you want to remove the entry for <span id="areYouSureDeptName" class="fw-bold"></span>?
+              
+                    </div>
+
+                    <form>
+                      <input type="hidden" id="id_dd" name="id" class="form-control">					
+                    </form>
+              
+                    <div class="modal-footer" id="confirmDeleteDepartment">
+                      <!--<button type="button" class="btn btn-outline-secondary myBtn" id="delDepartmentYes">Yes</button>
+                      <button type="button" class="btn btn-outline-secondary myBtn" data-bs-dismiss="modal">No</button>-->
+                    </div>
+                    
+                  </div>
+                  
+                </div>
+                
+              </div>
+
+              <!--Successful Delete Modal -->
+              <div id="successDelete" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Department successfuly deleted.</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+
+                </div>
               </div>
    
                    <!-- Forbidden Department Modal -->
-                   <div id="forbiddenDepartmentModal" class="modal fade" tabindex="-1" role="dialog"  data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+                  <!--<div id="forbiddenDepartmentModal" class="modal fade" tabindex="-1" role="dialog"  data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header bg-danger text-white justify-content-center">
@@ -436,7 +527,7 @@
                             </div>
                         </div>
                     </div>
-                </div>   
+                </div>  -->  
                         
               <!-- LOCATIONS -->
               <div id="all-locations" class="all-locations d-none">
