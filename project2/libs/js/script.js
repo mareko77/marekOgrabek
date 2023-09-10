@@ -1,3 +1,8 @@
+let selectedDepartmentID = null;
+let selectedLocationId = null;
+let selectedEmployeeId = null;
+
+//$("#employeeTable").tableHeadFixer();
 
 $(window).on("load", function() {
   $("#preloader").fadeOut("slow");
@@ -41,57 +46,52 @@ function resetModal(e) {
 }
 
 
+// Get employees function
 function getEmployees() {
     $.ajax({
         url: "libs/php/getAll.php",
-        type: 'GET',
-        dataType: 'json',
-        success: function(result) {
-          //console.log(result);
-            if (result.status.name == "ok") {    
-
+        type: "GET",
+        dataType: "json",
+        success: function (result) {
+            if (result.status.name == "ok") {
                 const employees = result.data;
                 let employeeTable = $("#employeeTbody");
                 let totalEntries = $("#total-entries");
                 employeeTable.html("");
-                employees.forEach(employee => {
-                    employeeTable.append($(`
-                    <tr role="button" data-id="${employee.id}">
-                    <td class="align-middle text-nowrap">
-                      ${employee.firstName}
-                    </td>
-                    <td class="align-middle text-nowrap">
-                      ${employee.lastName}
-                    </td>
-                    <td class="align-middle text-nowrap d-none d-md-table-cell">
-                      ${employee.department}
-                    </td>
 
-                    <td class="align-middle text-nowrap d-none d-md-table-cell">
-                      ${employee.location}
-                    </td>
-                    <td class="align-middle text-nowrap d-none d-md-table-cell">
-                      ${employee.email}
-                    </td>
-                    <td class="text-end text-nowrap">
-                    <button type="button" class="btn btn-primary btn-sm editE" 
-                            data-id="${employee.id}"            
-                            data-firstname="${employee.firstName}" 
-                            data-lastname="${employee.lastName}" 
-                            data-jobtitle="${employee.jobTitle}" 
-                            data-email="${employee.email}" 
-                            data-department="${employee.department}" 
-                            data-departmentID="${employee.departmentID}" 
-                            data-location="${employee.location}" 
-                            data-locationID="${employee.locationID}">
-                        <i class="fa-solid fa-pencil fa-fw"></i>
-                    </button>
-                      <button type="button" class="btn btn-danger btn-sm deleteE" data-id="${employee.id}">
-                        <i class="fa-solid fa-trash fa-fw"></i>
-                      </button>
-                    </td>
-                  </tr>`));
-                }); 
+                employees.forEach((employee) => {
+                    employeeTable.append(
+                        $(
+                            `
+                            <tr role="button" data-id="${employee.id}">
+                                <td class="align-middle text-nowrap">${employee.firstName}</td>
+                                <td class="align-middle text-nowrap">${employee.lastName}</td>
+                                <td class="align-middle text-nowrap d-none d-md-table-cell">${employee.department}</td>
+                                <td class="align-middle text-nowrap d-none d-md-table-cell">${employee.location}</td>
+                                <td class="align-middle text-nowrap d-none d-md-table-cell">${employee.email}</td>
+                                <td class="text-end text-nowrap">
+                                    <button type="button" class="btn btn-primary btn-sm editE"
+                                        data-id="${employee.id}"
+                                        data-firstname="${employee.firstName}"
+                                        data-lastname="${employee.lastName}"
+                                        data-jobtitle="${employee.jobTitle}"
+                                        data-email="${employee.email}"
+                                        data-department="${employee.department}"
+                                        data-departmentID="${employee.departmentID}"
+                                        data-location="${employee.location}"
+                                        data-locationID="${employee.locationID}">
+                                        <i class="fa-solid fa-pencil fa-fw"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm deleteE" data-id="${employee.id}">
+                                        <i class="fa-solid fa-trash fa-fw"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            `
+                        )
+                    );
+                });
+
                 $(".editE").on("click", function() {
                     const employeeId = $(this).data("id");
                     const firstName = $(this).data("firstname");
@@ -99,34 +99,79 @@ function getEmployees() {
                     const jobTitle = $(this).data("jobtitle");
                     const email = $(this).data("email");
                     const departmentID = $(this).data("departmentid");
-                
+
                     // Populate the modal inputs with the retrieved data
                     $("#id_u").val(employeeId);
                     $("#firstName_u").val(firstName);
                     $("#lastName_u").val(lastName);
                     $("#jobTitle_u").val(jobTitle);
                     $("#email_u").val(email);
-                
+
                     $("#editEmployeeDepartmentSelect option[value='" + departmentID + "']").prop("selected", true);            
                     // Show the edit modal
                     $("#editEmployeeModal").modal("show");
                 });
-                
-                
 
-                $(".deleteE").on("click", function() {
+                // Event handler for when the .deleteE button is clicked
+                $(".deleteE").click(function () {
                     $("#id_d").val($(this).attr("data-id"));
+                   // selectedEmployeeId = $(this).data("id");
+                    const employeeFirstName = $(this).closest("tr").find(".align-middle.text-nowrap").eq(0).text();
+                    const employeeLastName = $(this).closest("tr").find(".align-middle.text-nowrap").eq(1).text();
+                    const employeeName = employeeFirstName + " " + employeeLastName;
+
+                    $("#areYouSureEmployeeName").text(employeeName);
                     $("#deleteEmployeeModal").modal("show");
-                }); 
+                });
+
                 const total = $("#employeeTbody tr:visible").length;
-                totalEntries.html($(`<strong><h5 class="entries">${total} employees</h5></strong>`));   
+                totalEntries.html(
+                    $(
+                        `<strong><h5 class="entries">${total} employees</h5></strong>`
+                    )
+                );
             }
         },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR, textStatus, errorThrown);
-        }
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error(jqXHR, textStatus, errorThrown);
+        },
     });
 }
+
+// Event handler for when the #confirmDeleteEmployee button is clicked
+$("#confirmDeleteEmployee").on("click", function (e) {
+    e.preventDefault();
+
+    $.ajax({
+        url: "libs/php/deletePersonnel.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+            id: $("#id_d").val(),
+        },
+        beforeSend: function () {
+            $("#loader").removeClass("hidden");
+        },
+        success: function (result) {
+            if (result.status.name == "ok") {
+                $("#deleteEmployeeModal").modal("hide");
+                $("#successDeletePersonnel").modal("show");
+
+                getEmployees();
+            }
+        },
+        complete: function () {
+            $("#loader").addClass("hidden");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR, textStatus, errorThrown);
+        },
+    });
+});
+
+
+
+
 
 
 // Add Personnel, Department, Location onclick button
@@ -168,6 +213,7 @@ $(document).ready(function(){
                 
                 if (result.status.name == "ok") {
                     $("#addEmployeeModal").modal("hide");
+                    $("#successAddPersonnel").modal("show");
                     getEmployees();
                 }
             },
@@ -220,6 +266,7 @@ $(document).ready(function(){
             
             if (result.status.name == "ok") {
                 $("#editEmployeeModal").modal("hide"); 
+                $("#successUpdatePersonnel").modal("show");
                 getEmployees();
             }
         },
@@ -232,53 +279,6 @@ $(document).ready(function(){
     }); 
   });
   });
-
-
-// DELETE Employee
-$("#checkConfirmDeleteEmployee").click(function() {
-  if ($(this).is(":checked")) {
-      $("#deleteEmployeeBtn").attr("disabled", false);
-  } else {
-      $("#deleteEmployeeBtn").prop("disabled", true);
-  }   
-});
-
-$("#deleteEmployeeModal").on("hidden.bs.modal", function() {
-  if($("#checkConfirmDeleteEmployee").is(":checked")) {
-      $("#deleteEmployeeBtn").attr("disabled", true);
-      $(this).find("form").trigger("reset");
-  }
-
-});
-
-$("#deleteEmployeeBtn").on("click", function(e) {
-  e.preventDefault();
-
-  $.ajax({
-      url: "libs/php/deletePersonnel.php",
-      type: 'POST',
-      dataType: 'json',
-      data: { 
-          id: $("#id_d").val()
-      },
-      beforeSend: function() {
-          $("#loader").removeClass("hidden");
-      },
-      success: function(result) {
-          
-          if (result.status.name == "ok") {
-              $('#deleteEmployeeModal').modal("hide");
-              getEmployees();
-          }
-      },
-      complete: function() {
-          $("#loader").addClass("hidden");
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR, textStatus, errorThrown);
-      }
-  });
-});
 
 
 // Departments
@@ -333,8 +333,8 @@ function getDepartments() {
                                             });
 
                                             confirmDeleteDepartment.append($(`
-                                            <button type="button" class="btn btn-outline-secondary myBtn" id="delDepartmentYes" data-bs-target=""#successDelete" data-deptID="${result.data.id}">Yes</button>
-                                            <button type="button" class="btn btn-outline-secondary myBtn" data-bs-dismiss="modal">No</button>
+                                            <button type="button" class="btn btn-secondary myBtn" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-danger myBtn" id="delDepartmentYes" data-bs-target="#successDelete">Delete</button>
                                             `));
 
                                             addEmployeeDepartmentSelect.prepend($(`<option selected disabled value="0">Select a Department</option>`));
@@ -353,89 +353,82 @@ function getDepartments() {
                                                 $("#editDepartmentModal").modal("show"); 
                                             });
 
+                                                let selectedDepartmentId = null;
+
+                                            // Event handler for when the .deleteDepartmentIcon is clicked
                                             $(".deleteDepartmentIcon").click(function() {
+                                                // Store the department ID in the global variable
+                                                selectedDepartmentId = $(this).data("departmentid");
 
+                                                // Make an AJAX request to check if the department has dependencies
                                                 $.ajax({
-                                                  url: "libs/php/checkDepartment.php",
-                                                  type: 'POST',
-                                                  dataType: 'json',
-                                                  data: {
-                                                    id: $(this).attr("data-departmentid")// Retrieves the data-departmentid attribute from the calling button
-                                                  },
-                                                  success: function (result) {
-                                            
-                                                    console.log(result);
-                                                               
-                                                    if (result.status.code == 200) {
-                                              
-                                                      if (result.data[0].personnelCount == 0) {
-                                                        
-                                                        $("#areYouSureDeptName").text(result.data[0].departmentName);
-                                              
-                                                        $('#areYouSureDeleteDepartmentModal').modal("show");
-                                                        
-                                                      } else {
-                                                                          
-                                                        $("#cantDeleteDeptName").text(result.data[0].departmentName);
-                                                        $("#pc").text(result.data[0].departmentCount);
-                                                        
-                                                        $('#cantDeleteDepartmentModal').modal("show");          
-                                                        
-                                                      }
-                                                      
-                                                    } else {
-                                              
-                                                      $('#exampleModal .modal-title').replaceWith("Error retrieving data");
-                                              
-                                                    } 
-                                              
-                                                  },
-                                                  error: function (jqXHR, textStatus, errorThrown) {
-                                                    $('#exampleModal .modal-title').replaceWith("Error retrieving data");
-                                                  }
-                                                });                       
-                                              });
-                                              
-                                              
+                                                    url: "libs/php/checkDepartment.php",
+                                                    type: "POST",
+                                                    dataType: "json",
+                                                    data: {
+                                                        id: selectedDepartmentId
+                                                    },
+                                                    success: function(result) {
+                                                        if (result.status.code == 200) {
+                                                            if (result.data[0].personnelCount == 0) {
+                                                                $("#areYouSureDeptName").text(result.data[0].departmentName);
+                                                                $('#areYouSureDeleteDepartmentModal').modal("show");
+                                                            } else {
+                                                                // Show the modal indicating that the department has dependencies
+                                                                $("#cantDeleteDeptName").text(result.data[0].departmentName);
+                                                                $("#pc").text(result.data[0].personnelCount);
+                                                                $('#cantDeleteDepartmentModal').modal("show");
+                                                            }
+                                                        } else {
+                                                            // Handle the error response
+                                                            $('#exampleModal .modal-title').replaceWith("Error retrieving data");
+                                                        }
+                                                    },
+                                                    error: function(jqXHR, textStatus, errorThrown) {
+                                                        // Handle the AJAX error
+                                                        $('#exampleModal .modal-title').replaceWith("Error retrieving data");
+                                                    }
+                                                });
+                                            });
 
-                                               /* $("#delDepartmentYes").click(function() {
+                                            // Event handler for when the #delDepartmentYes button is clicked
+                                            $("#delDepartmentYes").click(function() {
+                                                if (selectedDepartmentId !== null) {
 
-                                                  let id = $(this).attr("data-departmentid");
-                                                  $("#id_dd").val(id);
-                                                 
-                                                  $.ajax({
-                                                      url: "libs/php/deleteDepartmentByID.php",
-                                                      type: 'POST',
-                                                      dataType: 'json',
-                                                      data: {
-                                                        id: $("#id_dd").val()
-                                                      },
-                                                      beforeSend: function() {
-                                                          $("#loader").removeClass("hidden");
-                                                      },
-                                                      success: function(result) {
-                                            
-                                                        console.log(result);
+                                                    $.ajax({
+                                                        url: "libs/php/deleteDepartmentByID.php",
+                                                        type: "POST",
+                                                        dataType: "json",
+                                                        data: { id: selectedDepartmentId },
+                                                        success: function(result) {
+                                                            if (result.status.name === "ok") {
+                                                                console.log("Department deleted successfully.");
+                                                                $("#areYouSureDeleteDepartmentModal").modal("hide");
+                                                                $("#successDelete").modal("show");
+                                                                getDepartments(); 
+                                                            } else {
+                                                                // Department deletion failed
+                                                                console.error("Error deleting department:", result.status.description);
+                                                            }
+                                                        },
+                                                        error: function(jqXHR, textStatus, errorThrown) {
+                                                            // Handle the AJAX error
+                                                            console.error("AJAX Error:", textStatus, errorThrown);
+                                                        }
+                                                    });
 
-                                                          
-                                                          if (result.status.name == "ok") {
-                                                            $("#areYouSureDeleteDepartmentModal").modal("hide");
-                                                            getDepartments();
-                                                          }
-                                                      },
-                                                      complete: function() {
-                                                          $("#loader").addClass("hidden");
-                                                      },
-                                                      error: function(jqXHR, textStatus, errorThrown) {
-                                                          console.log(jqXHR, textStatus, errorThrown);
-                                                      }
-                                                  });
-                                                });*/
-                                            
-                                            
+                                                    // Clear the selectedDepartmentId after use
+                                                    selectedDepartmentId = null;
+                                                } else {
+                                                    // Handle the case where no department is selected
+                                                    console.log("No department selected.");
+                                                }
+                                            });
+                                                                                                                                    
+                                                                                        
                                         }
                                     },
-        error: function(jqXHR, textStatus, errorThrown) {
+         error: function(jqXHR, textStatus, errorThrown) {
             console.log(jqXHR, textStatus, errorThrown);
         }
     });
@@ -443,127 +436,6 @@ function getDepartments() {
 
 
 
-function deleteDepartment() 
-{
-	$(document).delegate("#delDepartmentYes", "click", function() {
-
-		    var departmentId = $(this).attr('data-deptID'); //get the employee ID
-             console.log(departmentId);           
-
-		    // Ajax config
-			$.ajax({
-		        type: "GET", //we are using GET method to get data from server side
-                url: "libs/php/deleteDepartmentByID.php", // get the route value
-		        data: {id:departmentId}, //set data
-                beforeSend: function() {
-                    $("#loader").removeClass("hidden");
-                },
-		        success: function (response) {//once the request successfully process to the server side it will return result here
-		            // Reload lists of departments
-	            	getDepartments();
-                    $("#areYouSureDeleteDepartmentModal").modal("hide");
-                    $("#successDelete").modal("show");
-		            //alert(JSON.stringify(response))
-                    
-		        },
-                complete: function() {
-                    $("#loader").addClass("hidden");
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR, textStatus, errorThrown);
-                }
-		    });
-	});
-}
-
-$(document).ready(function() {
-	// Delete record via ajax
-	deleteDepartment();
-});
-
-
-/*$(document).on('click', '#delDepartmentYes', function(){
-    var id = $(this).attr('data-departmentid');
-    $.ajax({
-        url: "libs/php/deleteDepartmentByID.php",
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          id: id,
-        },
-        success:function(response){
-            alert(response);
-        }
-       });
-    });*/
-
-
-/*$("#delDepartmentYes").click(function() {
-
-    let id = $(this).attr("data-departmentid");
-    $("#id_dd").val(id);
-   
-    $.ajax({
-        url: "libs/php/deleteDepartmentByID.php",
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          id: $("#id_dd").val()
-        },
-        beforeSend: function() {
-            $("#loader").removeClass("hidden");
-        },
-        success: function(result) {
-
-          console.log(result);
-
-            
-            if (result.status.name == "ok") {
-              $("#areYouSureDeleteDepartmentModal").modal("hide");
-              getDepartments();
-            }
-        },
-        complete: function() {
-            $("#loader").addClass("hidden");
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR, textStatus, errorThrown);
-        }
-    });
-  });*/
-
-
-
-/*$("#delDepartmentYes").click(function(e) {
-    e.preventDefault();
-
-    $.ajax({
-        url: "libs/php/deleteDepartmentByID.php",
-        type: 'POST',
-        dataType: 'json',
-        data: { 
-            id: $("#id_dd").val()
-        },
-        beforeSend: function() {
-            $("#loader").removeClass("hidden");
-        },
-        success: function(result) {
-            
-            if (result.status.name == "ok") {
-                $("#deleteDepartmentModal").modal("hide");
-                getDepartments();
-            }
-            if (result.status.name == "forbidden") {
-                $("#deleteDepartmentModal").modal("hide");
-        },
-        complete: function() {
-            $("#loader").addClass("hidden");
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR, textStatus, errorThrown);
-        }
-    });
-});*/
 
 
 //Add department
@@ -587,6 +459,7 @@ $(document).ready(function(){
                 
                 if (result.status.name == "ok") {
                     $('#addDepartmentModal').modal("hide");
+                    $("#successAddDepartment").modal("show");
                     getDepartments(); 
                 }
             },
@@ -624,6 +497,7 @@ $("#editDepartmentForm").submit(function(e) {
           
           if (result.status.name == "ok") {
               $("#editDepartmentModal").modal("hide");
+              $("#successUpdateDepartment").modal("show");
               getDepartments();
           }
       },
@@ -698,11 +572,78 @@ function getLocations() {
               editEmployeeLocationSelect.prepend($(`<option value="0"></option>`));
               editDepartmentLocationSelect.prepend($(`<option value="0"></option>`));
               addDepartmentLocationSelect.prepend($(`<option selected disabled value="0">Select Location</option>`));
-              $(".deleteLocationIcon").on("click", function() {
+              /*$(".deleteLocationIcon").on("click", function() {
                   let id = $(this).attr("data-id");
                   $("#id_dl").val(id);
                   $("#deleteLocationModal").modal("show");
-              });  
+              });  */
+
+              // Event handler for when the .deleteLocationIcon is clicked
+                $(".deleteLocationIcon").click(function() {
+
+                    selectedLocationId = $(this).data("id");
+
+                    // Make an AJAX request to check if the location has dependencies
+                    $.ajax({
+                        url: "libs/php/checkLocation.php",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            id: selectedLocationId
+                        },
+                        success: function(result) {
+                            if (result.status.code == 200) {
+                                if (result.data[0].departmentCount == 0) {
+                                    $("#areYouSureLocationName").text(result.data[0].locationName);
+                                    $('#areYouSureDeleteLocationModal').modal("show");
+                                } else {
+
+                                    $("#cantDeleteLocationName").text(result.data[0].locationName); 
+                                    $("#lc").text(result.data[0].departmentCount);
+                                    $('#cantDeleteLocationModal').modal("show");
+                                }
+                            } else {
+                                // Handle the error response
+                                $('#areYouSureLocationName').text('');
+                                $('#exampleModal .modal-title').replaceWith("Error retrieving data");
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            // Handle the AJAX error
+                            $('#areYouSureLocationName').text(''); 
+                            $('#exampleModal .modal-title').replaceWith("Error retrieving data");
+                        }
+                    });
+                });
+
+                // Event handler for when the #delLocationYes button is clicked
+                $("#delLocationYes").click(function() {
+
+                    if (selectedLocationId !== null) {
+                        $.ajax({
+                            url: "libs/php/deleteLocation.php",
+                            type: "POST",
+                            dataType: "json",
+                            data: { id: selectedLocationId },
+                            success: function(result) {
+                                if (result.status.name === "ok") {
+                                    console.log("Location deleted successfully.");
+                                    $("#areYouSureDeleteLocationModal").modal("hide");
+                                    $("#successDeleteLocation").modal("show");
+                                    getLocations();
+                                } else {
+                                    console.error("Error deleting location:", result.status.description);
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                // Handle the AJAX error
+                                console.error("AJAX Error:", textStatus, errorThrown);
+                            }
+                        });
+
+                        selectedLocationId = null;
+                    }
+                });
 
           }          
               
@@ -733,7 +674,8 @@ $(document).ready(function(){
             success: function(result) {
                 
                 if (result.status.name == "ok") {
-                    $("#addLocationModal").modal("hide");  
+                    $("#addLocationModal").modal("hide");
+                    $("#successAddLocation").modal("show");  
                     getLocations();  
                 }
             },
@@ -769,6 +711,7 @@ $("#editLocationForm").submit(function(e) {
           
           if (result.status.name == "ok") {
               $("#editLocationModal").modal("hide");
+              $("#successUpdateLocation").modal("show"); 
               getLocations();
           }
       },
