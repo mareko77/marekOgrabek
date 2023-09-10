@@ -3,14 +3,14 @@
 
 	// connection details for MySQL database
 
-	$cd_host = 'db5013961341.hosting-data.io';
+	$cd_host = "127.0.0.1";
 	$cd_port = 3306;
 	$cd_socket = "";
 
 	// database name, username and password
 
-	$cd_dbname = 'dbs11672941';
-	$cd_user = 'dbu1608148';
-	$cd_password = '@Olisek987';
+	$cd_dbname = "companydirectory3";
+	$cd_user = "root";
+	$cd_password = "";
 
 ?>

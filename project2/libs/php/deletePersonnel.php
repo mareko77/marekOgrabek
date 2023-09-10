@@ -27,6 +27,7 @@
 
 	$query = 'DELETE FROM personnel WHERE id = ' . $_POST['id'];
 
+
 	$result = $conn->query($query);
 	
 	if (!$result) {

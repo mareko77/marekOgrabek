@@ -1,77 +1,60 @@
 <?php
+// Include the database configuration file
+include("config.php");
 
-	$executionStartTime = microtime(true);
+// Check if the location ID is provided in the POST request
+if (isset($_POST['id'])) {
+    $locationID = $_POST['id'];
 
-	include("config.php");
+    // Create a connection to the database
+    $conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
 
-	header('Content-Type: application/json; charset=UTF-8');
+    if (mysqli_connect_errno()) {
+        // Handle database connection error
+        $output['status']['code'] = "300";
+        $output['status']['name'] = "failure";
+        $output['status']['description'] = "Database unavailable";
+        $output['status']['returnedIn'] = 0 . " ms";
+        $output['data'] = [];
+        mysqli_close($conn);
+        echo json_encode($output);
+        exit;
+    }
 
-	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
+    // Prepare and execute a SQL query to delete the location
+    $query = $conn->prepare('DELETE FROM location WHERE id = ?');
+    $query->bind_param("i", $locationID);
+    $query->execute();
 
-	if (mysqli_connect_errno()) {
-		
-		$output['status']['code'] = "300";
-		$output['status']['name'] = "failure";
-		$output['status']['description'] = "database unavailable";
-		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-		$output['data'] = [];
+    if ($query === false) {
+        // Handle query execution error
+        $output['status']['code'] = "400";
+        $output['status']['name'] = "executed";
+        $output['status']['description'] = "Query failed";
+        $output['data'] = [];
+        mysqli_close($conn);
+        echo json_encode($output);
+        exit;
+    }
 
-		mysqli_close($conn);
+    // Prepare the response
+    $output['status']['code'] = "200";
+    $output['status']['name'] = "ok";
+    $output['status']['description'] = "Location deleted successfully";
+    $output['status']['returnedIn'] = 0 . " ms";
+    $output['data'] = [];
 
-		echo json_encode($output);
+    // Return the JSON response
+    echo json_encode($output);
 
-		exit;
-
-	}	
-
-	$queryCheck = 'SELECT count(id) as dc FROM department WHERE locationID = ' . $_POST['id'];
-	$resultCheck = $conn->query($queryCheck);
-	$data = [];
-
-	while ($row = mysqli_fetch_assoc($resultCheck)) {
-
-		array_push($data, $row);
-
-	}
-	
-	$department = $data[0]['dc'];
-
-	if ($department == 0) {
-		$query = 'DELETE FROM location WHERE id = ' . $_POST['id'];
-		$result = $conn->query($query);
-
-		$output['status']['code'] = "200";
-		$output['status']['name'] = "ok";
-		$output['status']['description'] = "Location successfully deleted";
-		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-		$output['data'] = $department;
-
-		if (!$result) {
-
-			$output['status']['code'] = "400";
-			$output['status']['name'] = "executed";
-			$output['status']['description'] = "query failed";	
-			$output['data'] = [];
-	
-			mysqli_close($conn);
-	
-			echo json_encode($output); 
-	
-			exit;
-	
-		}
-		
-	} else {
-
-		$output['status']['code'] = "403";
-		$output['status']['name'] = "forbidden";
-		$output['status']['description'] = "Department(s) assigned to this Location";	
-		$output['data'] = $department;
-
-	}
-
-	mysqli_close($conn);
-
-	echo json_encode($output); 
-
+    // Close the database connection
+    mysqli_close($conn);
+} else {
+    // Handle missing location ID in the POST request
+    $output['status']['code'] = "400";
+    $output['status']['name'] = "bad request";
+    $output['status']['description'] = "Location ID not provided";
+    $output['data'] = [];
+    echo json_encode($output);
+}
 ?>
