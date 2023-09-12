@@ -1,5 +1,5 @@
 Company-Directory
-Portflio Web Application #2. Project Specification from 'IT Career Switch'.
+Portfolio Web Application #2. Project Specification from 'IT Career Switch'.
 
 Client Specification: “Create a desktop website that can also run on a mobile that allows for the maintenance of a company personnel database to see who’s who, which department they are in and where they are”.
 
