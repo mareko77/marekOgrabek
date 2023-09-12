@@ -727,14 +727,6 @@ $("#editLocationForm").submit(function(e) {
 
 
 // DELETE Location
-$("#checkConfirmDeleteLocation").click(function() {
-  if ($(this).is(":checked")) {
-      $("#deleteLocationBtn").attr("disabled", false);
-  } else {
-      $("#deleteLocationBtn").prop("disabled", true);
-  }   
-});
-
 
 $("#deleteLocationBtn").on("click", function(e) {
   e.preventDefault();
