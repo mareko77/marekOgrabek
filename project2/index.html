@@ -21,65 +21,56 @@
 
         <section>
 
-
-
-
-          <div class="appHeader">
-            <div class="row">
-              <div class="col-md-4 col-12 mb-3 px-4">
-                <!-- Input and select fields -->
-                <div class="col-md-4 col-12 mb-3 px-4">
-                  <input id="searchInp" class="form-control" placeholder="search">
-                </div>
-            
-                <div class="col-md-4 col-12 pb-3 px-4">
-                  <select class="form-select" id="select-departments">
-                  </select>                 
-                </div>
-            
-                <div class="col-md-4 col-12 pb-3 px-4">
-                  <select class="form-select" id="select-locations">
-                  </select>
-                </div>
-              </div>
+            <div class="appHeader">
           
-              <div class="col-md-8 col-12 d-flex justify-content-between align-items-center">
+              <div class="row">
+          
+                <div class="col">
+                  <input id="searchInp" class="form-control mb-3" placeholder="search">
+                </div>
+          
+                <div class="col-6 text-end me-2">
+
+                  <!-- Buttons -->
+          
+                  <div class="btn-group" role="group" aria-label="buttons">
+          
+                    <button id="refreshBtn" type="button" class="btn btn-primary">
+                      <i class="fa-solid fa-refresh fa-fw"></i>
+                    </button>
+                    <button id="filterBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                      <i class="fa-solid fa-filter fa-fw"></i>
+                    </button>          
+                    <button id="addBtn" type="button" class="btn btn-primary">
+                      <i class="fa-solid fa-plus fa-fw"></i>
+                    </button>
+          
+                  </div>
+          
+                </div>
+                
+              </div>
+         
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
-                  <!-- Tab buttons -->
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="personnelBtn" data-bs-toggle="tab" data-bs-target="#personnel-tab-pane" type="button" role="tab" aria-controls="personnel-tab-pane" aria-selected="true">
-                      <i class="fa-solid fa-person fa-lg fa-fw"></i><span class="d-none d-sm-inline">Personnel</span>
+                    <button class="nav-link active" id="personnelBtn" data-bs-toggle="tab" data-bs-target="#personnel-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
+                      <i class="fa-solid fa-person fa-lg fa-fw"></i><span class="d-none d-sm-block">Personnel</span>
                     </button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="departmentsBtn" data-bs-toggle="tab" data-bs-target="#departments-tab-pane" type="button" role="tab" aria-controls="departments-tab-pane" aria-selected="false">
-                      <i class="fa-solid fa-building fa-lg fa-fw"></i><span class="d-none d-sm-inline">Departments</span>
+                    <button class="nav-link" id="departmentsBtn" data-bs-toggle="tab" data-bs-target="#departments-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+                      <i class="fa-solid fa-building fa-lg fa-fw"></i><span class="d-none d-sm-block">Departments</span>
                     </button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="locationsBtn" data-bs-toggle="tab" data-bs-target="#locations-tab-pane" type="button" role="tab" aria-controls="locations-tab-pane" aria-selected="false">
-                      <i class="fa-solid fa-map-location-dot fa-lg fa-fw"></i><span class="d-none d-sm-inline">Locations</span>
+                    <button class="nav-link" id="locationsBtn" data-bs-toggle="tab" data-bs-target="#locations-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
+                      <i class="fa-solid fa-map-location-dot fa-lg fa-fw"></i><span class="d-none d-sm-block">Locations</span>
                     </button>
-                  </li>
+                  </li>          
                 </ul>
-          
-                <!-- Buttons -->
-                <div class="buttons10 px-2">
-                  <div class="btn-group" role="group" aria-label="buttons">
-                    <!-- Buttons here -->
-                    <button id="refreshBtn" type="button" onClick="refreshPage()" class="btn btn-primary">
-                      <i class="fa-solid fa-refresh fa-fw text-white"></i>
-                    </button>
-                    <button id="addBtn" type="button" class="btn btn-primary">
-                      <i class="fa-solid fa-plus fa-fw text-white"></i>
-                    </button>
-                  </div>
-                </div>
 
-              </div>
             </div>
-          </div>
 
 
 
@@ -93,9 +84,9 @@
             <div class="tab-content bg-white">
              
             <!-- Employees -->
-            <div class="container tab-pane show active content-area" id="personnel-tab-pane" role="tabpanel" aria-labelledby="home-tab">
+           <!-- <div class="container tab-pane show active content-area" id="personnel-tab-pane" role="tabpanel" aria-labelledby="home-tab">
               <div class="table-area">
-                <table id="employeeTable" class="employeeTable table table-hover responsive-table">
+                <table id="employeeTable" class="employeeTable table table-hover">-->
                   <!--<thead id="employeeHead" class="sticky-top">
                     <tr>
                       <th scope="col" class="align-middle text-nowrap">First Name</th>
@@ -105,28 +96,29 @@
                       <!--<th scope="col" class="align-middle text-nowrap d-none d-md-table-cell">Location</th>
                       <th scope="col" class="align-middle text-nowrap d-none d-md-table-cell">Email</th>
                     </tr>
-                    <tr>-->
-                 </thead>
-                  <tbody id="employeeTbody" class="employeeTbody">
+                    <tr>
+                 </thead>-->
+                  <!--<tbody id="employeeTbody" class="employeeTbody">-->
                     <!-- RESULTS ARE INSERTED HERE -->
-                  </tbody>
+                 <!-- </tbody>
                 </table>
                 <table class="table table-hover">
                   
                 </table>
               </div> 
+            </div>-->
+
+            <div class="tab-pane show active" id="personnel-tab-pane" role="tabpanel" aria-labelledby="home-tab">
+              <table id="employeeTable" class="employeeTable table table-hover">
+                  <tbody id="employeeTbody" class="employeeTbody">
+                      <!-- RESULTS ARE INSERTED HERE -->
+                  </tbody>
+              </table>
             </div>
 
             <!-- Departments -->
               <div class="tab-pane" id="departments-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-
                 <table class="table table-hover">
-                  <!--<thead>
-                    <tr>
-                      <th class="align-middle text-nowrap">Department</th>
-                      <th class="align-middle text-nowrap d-none d-md-table-cell">Location</th>
-                    </tr>
-                  </thead>-->
                   <tbody id="departments-cards"> 
                     <!-- RESULTS ARE INSERTED HERE -->
                   </tbody>
@@ -136,11 +128,6 @@
               <!-- Locations -->
               <div class="tab-pane" id="locations-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
                 <table class="table table-hover">
-                 <!-- <thead>
-                    <tr>
-                      <th class="align-middle text-nowrap">Location</th>
-                    </tr>
-                  </thead>-->
                   <tbody id="locations-cards"> 
                     <!-- RESULTS ARE INSERTED HERE -->
                   </tbody>
@@ -237,7 +224,7 @@
 
 
               <!-- Edit Employee Modal  -->
-              <div id="editEmployeeModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+              <!--<div id="editEmployeeModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
                 
                 <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
                      
@@ -288,9 +275,94 @@
                     </div>    
                   </div>
                 </div>               
-              </div> 
+              </div> -->
+
+
+              <!--<div class="modal fade" id="editEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editEmployeeForm">
+                                <input type="hidden" id="id_u" name="id" value="">
+                                <div class="form-group">
+                                    <label for="firstName_u">First Name</label>
+                                    <input type="text" class="form-control" id="firstName_u" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName_u">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName_u" name="lastName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="jobTitle_u">Job Title</label>
+                                    <input type="text" class="form-control" id="jobTitle_u" name="jobTitle">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email_u">Email Address</label>
+                                    <input type="email" class="form-control" id="email_u" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editEmployeeDepartmentSelect">Department</label>
+                                    <select class="form-control" id="editEmployeeDepartmentSelect" name="departmentID" required></select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+
+            <div id="editEmployeeModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content shadow">
+                      <div class="modal-header bg-primary bg-gradient text-white">
+                          <h5 class="modal-title">Edit Employee</h5>
+                          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form action="" id="editEmployeeForm">
+                              <input type="hidden" id="id_u" name="id">
+                              <div class="form-floating mb-3">
+                                  <input type="text" class="form-control" id="firstName_u" name="firstName" placeholder="First name" required>
+                                  <label for="firstName_u">First name</label>
+                              </div>
+                              <div class="form-floating mb-3">
+                                  <input type="text" class="form-control" id="lastName_u" name="lastName" placeholder="Last name" required>
+                                  <label for="lastName_u">Last name</label>
+                              </div>
+                              <div class="form-floating mb-3">
+                                  <input type="email" class="form-control" id="email_u" name="email" placeholder="Email address" required>
+                                  <label for="email_u">Email Address</label>
+                              </div>
+                              <div class="form-floating mb-3">
+                                  <input type="text" class="form-control" id="jobTitle_u" name="jobTitle" placeholder="Job title" required>
+                                  <label for="jobTitle_u">Job Title</label>
+                              </div>
+                              <div class="form-floating">
+                                  <select class="form-select" id="editEmployeeDepartmentSelect" required>
+                                      <option value="" disabled selected>Select a department</option>
+                                  </select>
+                              </div>
+                              <div class="modal-footer">
+                                  <input type="submit" value="SUBMIT" id="employeeConfirmAEditBtn" class="btn btn-outline-primary btn-sm myBtn">
+                                  <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
               
-                <!-- Successful Personnel Adding Modal -->
+                <!-- Successful Personnel Update Modal -->
                 <div id="successUpdatePersonnel" class="modal fade" role="dialog">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -741,6 +813,33 @@
 
                   </div>
                 </div>
+
+                <!-- Filter modal -->
+                <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Filter Options</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <label for="filterOption"><strong>Filter employees by departments</strong></label>
+                          <select class="form-select" id="select-departments">
+                          </select>                 
+                    
+                          <label for="filterOption"><strong>Filter employees by locations</strong></label>
+                          <select class="form-select" id="select-locations">
+                          </select>
+                        </select>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
       
       </main>
               
