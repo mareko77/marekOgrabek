@@ -26,9 +26,10 @@
               <div class="row">
           
                 <div class="col">
-                  <input id="searchInp" class="form-control mb-3" placeholder="search">
+                  <input type="text" id="searchInp" class="form-control mb-3" placeholder="search">
                 </div>
-          
+
+                
                 <div class="col-6 text-end me-2">
 
                   <!-- Buttons -->
@@ -82,31 +83,6 @@
 
             
             <div class="tab-content bg-white">
-             
-            <!-- Employees -->
-           <!-- <div class="container tab-pane show active content-area" id="personnel-tab-pane" role="tabpanel" aria-labelledby="home-tab">
-              <div class="table-area">
-                <table id="employeeTable" class="employeeTable table table-hover">-->
-                  <!--<thead id="employeeHead" class="sticky-top">
-                    <tr>
-                      <th scope="col" class="align-middle text-nowrap">First Name</th>
-                      <th scope="col" class="align-middle text-nowrap">Last Name</th>
-                      <th scope="col" class="align-middle text-nowrap d-none d-md-table-cell">Department</th>-->
-                      <!--<th scope="col" class="align-middle text-nowrap d-none d-md-table-cell">Job Title</th>-->
-                      <!--<th scope="col" class="align-middle text-nowrap d-none d-md-table-cell">Location</th>
-                      <th scope="col" class="align-middle text-nowrap d-none d-md-table-cell">Email</th>
-                    </tr>
-                    <tr>
-                 </thead>-->
-                  <!--<tbody id="employeeTbody" class="employeeTbody">-->
-                    <!-- RESULTS ARE INSERTED HERE -->
-                 <!-- </tbody>
-                </table>
-                <table class="table table-hover">
-                  
-                </table>
-              </div> 
-            </div>-->
 
             <div class="tab-pane show active" id="personnel-tab-pane" role="tabpanel" aria-labelledby="home-tab">
               <table id="employeeTable" class="employeeTable table table-hover">
@@ -222,103 +198,6 @@
                   </div>
                 </div>             
 
-
-              <!-- Edit Employee Modal  -->
-              <!--<div id="editEmployeeModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
-                
-                <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
-                     
-                  <div class="modal-content shadow"> 
-                    
-                    <div class="modal-header bg-primary bg-gradient text-white">
-                      <h5 class="modal-title">Edit employee</h5>
-                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-              
-                    <div class="modal-body">
-                        
-                      <form action="" id="editEmployeeForm">
-              
-                        <input type="hidden" id="id_u" name="id">
-              
-                        <div class="form-floating mb-3">
-                          <input type="text" class="form-control" id="firstName_u" name="firstName" placeholder="First name" required>
-                          <label for="firstName_u">First name</label>
-                        </div>
-              
-                        <div class="form-floating mb-3">
-                          <input type="text" class="form-control" id="lastName_u" name="lastName" placeholder="Last name" required>
-                          <label for="lastName_u">Last name</label>
-                        </div>
-
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="email_u" name="email" placeholder="Email address" required>
-                            <label for="email_u">Email Address</label>
-                          </div> 
-              
-                        <div class="form-floating mb-3">
-                          <input type="text" class="form-control" id="jobTitle_u" name="jobTitle" placeholder="Job title" required>
-                          <label for="jobTitle_u">Job Title</label>
-                        </div>                                  
-              
-                        <div class="form-floating">
-                          <select class="form-select" id="editEmployeeDepartmentSelect" required>
-                            <option value="" disabled selected>Select a department</option>
-                        </select>
-                        </div> 
-                        <div class="modal-footer">
-                            <input type="submit"  value="SUBMIT" id="employeeConfirmAEditBtn" class="btn btn-outline-primary btn-sm myBtn">
-                            <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
-                        </div>
-              
-                      </form>
-                    </div>    
-                  </div>
-                </div>               
-              </div> -->
-
-
-              <!--<div class="modal fade" id="editEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editEmployeeForm">
-                                <input type="hidden" id="id_u" name="id" value="">
-                                <div class="form-group">
-                                    <label for="firstName_u">First Name</label>
-                                    <input type="text" class="form-control" id="firstName_u" name="firstName" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastName_u">Last Name</label>
-                                    <input type="text" class="form-control" id="lastName_u" name="lastName" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="jobTitle_u">Job Title</label>
-                                    <input type="text" class="form-control" id="jobTitle_u" name="jobTitle">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email_u">Email Address</label>
-                                    <input type="email" class="form-control" id="email_u" name="email" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="editEmployeeDepartmentSelect">Department</label>
-                                    <select class="form-control" id="editEmployeeDepartmentSelect" name="departmentID" required></select>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
 
             <div id="editEmployeeModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -504,9 +383,9 @@
                                 </div>
                                 
                                 <div class="form-floating">
-                                    <select class="form-select" id="editDepartmentLocationSelect" placeholder="Location">
-                                    </select>
-                                    <label for="editDepartmentLocationSelect">Location</label>
+                                    <select class="form-select" id="editDepartmentLocationSelect" required>
+                                      <option value="" disabled selected>Select a location</option>
+                                  </select>
                                 </div>
                                 <div class="modal-footer">
                                     <input type="submit"  value="SUBMIT" id="updateDepartmentBtn" class="btn btn-outline-primary btn-sm myBtn">
@@ -706,7 +585,7 @@
                                         <input type="hidden" id="id_ul" name="id" class="form-control">	
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control" id="locationName_ul" name="locationName_ul" placeholder="Location" required>
-                                            <label for="firstNameInput">Location name</label>
+                                            <label for="locationName_ul">Location name</label>
                                         </div>
                                         
                                         <div class="modal-footer">
@@ -837,15 +716,9 @@
                     </div>
                   </div>
                 </div>
-
-
-
-      
+                      
       </main>
               
-          
-
-
         <div id="preloader"></div>
         <div id="loader" class="lds-dual-ring hidden overlay"></div>
 
@@ -854,8 +727,7 @@
         <script src="vendor/js/bootstrap.min.js"></script>
         <script src="vendor/js/all.min.js"></script>
         
-        <script type="application/javascript" src="libs/js/script.js"></script>
-        
+        <script type="application/javascript" src="libs/js/script.js"></script>       
         
     </body>
 
