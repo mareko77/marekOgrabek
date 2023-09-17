@@ -245,6 +245,8 @@ $("#editEmployeeModal").on("show.bs.modal", function (e) {
 
                             if (departmentResult.status.name == "ok") {
 
+                                $("#editEmployeeDepartmentSelect").html("");
+
                                 $.each(departmentResult.data, function () {
                                     $("#editEmployeeDepartmentSelect").append(
                                       $("<option>", {
