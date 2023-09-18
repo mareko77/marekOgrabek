@@ -168,14 +168,16 @@
                           </select>
                           <label for="addEmployeeDepartmentSelect">Department</label>
                         </div> 
-                        
-                        <div class="modal-footer">
-                            <input type="submit"  value="SUBMIT" id="employeeConfirmAddBtn" class="btn btn-outline-primary btn-sm myBtn">
-                            <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
-                        </div>
-              
+                                      
                       </form>
+
+                    </div> 
+                        
+                    <div class="modal-footer">
+                      <input type="submit" form="employeeConfirmAddBtn" value="SUBMIT" class="btn btn-outline-primary btn-sm myBtn">
+                      <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
                     </div>    
+                    
                   </div>
                 </div>               
               </div>
@@ -198,7 +200,7 @@
                   </div>
                 </div>             
 
-
+            <!-- Edit Employee modal -->
             <div id="editEmployeeModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
                   <div class="modal-content shadow">
@@ -230,12 +232,12 @@
                                       <option value="" disabled selected>Select a department</option>
                                   </select>
                               </div>
-                              <div class="modal-footer">
-                                  <input type="submit" value="SUBMIT" id="employeeConfirmAEditBtn" class="btn btn-outline-primary btn-sm myBtn">
-                                  <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
-                              </div>
                           </form>
                       </div>
+                      <div class="modal-footer">
+                        <input type="submit" form="editEmployeeForm" value="SUBMIT" class="btn btn-outline-primary btn-sm myBtn">
+                        <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                      </div>     
                   </div>
               </div>
           </div>
@@ -329,13 +331,15 @@
                                         </select>
                                         <label for="addDepartmentLocationSelect">Location</label>
                                     </div>
-                                    <div class="modal-footer">
-                                        <input type="submit"  value="SUBMIT" id="departmentConfirmAddBtn" class="btn btn-outline-primary btn-sm myBtn">
-                                        <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
-                                    </div>
-                        
+                       
                                 </form> 
                             </div>
+
+                            <div class="modal-footer">
+                              <input type="submit" form="addDepartmentForm" value="SUBMIT" class="btn btn-outline-primary btn-sm myBtn">
+                              <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -378,8 +382,8 @@
                                 
                                 <input type="hidden" id="id_ud" name="id" class="form-control">	
                                 <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="departmentName_ud" name="departmentName_ud" placeholder="Department" required>
-                                <label for="departmentNameInput">Department name</label>
+                                  <input type="text" class="form-control" id="departmentName_ud" name="departmentName_ud" placeholder="Department" required>
+                                  <label for="departmentNameInput">Department name</label>
                                 </div>
                                 
                                 <div class="form-floating">
@@ -387,13 +391,16 @@
                                       <option value="" disabled selected>Select a location</option>
                                   </select>
                                 </div>
-                                <div class="modal-footer">
-                                    <input type="submit"  value="SUBMIT" id="updateDepartmentBtn" class="btn btn-outline-primary btn-sm myBtn">
-                                    <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
-                                </div>
-                    
+                                                   
                             </form> 
+
                           </div>
+
+                          <div class="modal-footer">
+                            <input type="submit" form="editDepartmentForm" value="SUBMIT" class="btn btn-outline-primary btn-sm myBtn">
+                            <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                          </div>
+
                     </div>
                 </div>
             </div>
@@ -419,13 +426,8 @@
              
               <!-- Delete Department Modal -->
               <div id="cantDeleteDepartmentModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  
-                <!--   the last two classes centre the modal and, if the content is too long, ensures  -->
-                <!--   that the header and footer are always on display by making the body scroll -->
                 
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                  
-                  <!-- As the backdrop is disabled we can use the Bootstrap shadow class to add definition to the dialog -->
                   
                   <div class="modal-content shadow"> 
                            
@@ -451,9 +453,6 @@
               </div>
               
               <div id="areYouSureDeleteDepartmentModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                
-                <!--   the last two classes centre the modal and, if the content is too long, ensures  -->
-                <!--   that the header and footer are always on display by making the body scroll -->
                 
                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                   
@@ -486,7 +485,7 @@
               
 
 
-              <!--Successful Delete Modal -->
+              <!--Successful Department Delete Modal -->
               <div id="successDelete" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -536,14 +535,16 @@
                                         <input type="text" class="form-control" id="locationName_addl" name="locationName_addl" placeholder="Location" required>
                                         <label for="firstNameInput">Location name</label>
                                     </div>
-                                    
-                                    <div class="modal-footer">
-                                        <input type="submit"  value="SUBMIT" id="addLocationBtn" class="btn btn-outline-primary btn-sm myBtn">
-                                        <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
-                                    </div>
-                        
+                                                           
                                 </form> 
+
                             </div>
+
+                            <div class="modal-footer">
+                              <input type="submit" form="addLocationForm" value="SUBMIT" class="btn btn-outline-primary btn-sm myBtn">
+                              <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -579,6 +580,7 @@
                                 <h5 class="modal-title">Edit location</h5>
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
+
                                 <div class="modal-body">
     
                                     <form action ="" id="editLocationForm">
@@ -587,14 +589,15 @@
                                             <input type="text" class="form-control" id="locationName_ul" name="locationName_ul" placeholder="Location" required>
                                             <label for="locationName_ul">Location name</label>
                                         </div>
-                                        
-                                        <div class="modal-footer">
-                                            <input type="submit"  value="SUBMIT" id="updateLocationBtn" class="btn btn-outline-primary btn-sm myBtn">
-                                            <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
-                                        </div>
-                            
+                                                                    
                                     </form> 
                                 </div>
+
+                                <div class="modal-footer">
+                                  <input type="submit" form="editLocationForm" value="SUBMIT" class="btn btn-outline-primary btn-sm myBtn">
+                                  <button type="button" class="btn btn-outline-danger btn-sm myBtn" data-bs-dismiss="modal">CANCEL</button>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -709,10 +712,10 @@
                           <label for="filterOption"><strong>Filter employees by locations</strong></label>
                           <select class="form-select" id="select-locations">
                           </select>
-                        </select>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      </div>
+                        </select>                    
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                   </div>
                 </div>
